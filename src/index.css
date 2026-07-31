@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Outfit', sans-serif;
+  --font-sans: 'Cause', cursive;
+  --font-display: 'DynaPuff', system-ui;
   
   --color-forest-950: #05140f;
   --color-forest-900: #0a261c;
@@ -21,6 +21,83 @@
   }
 }
 
+/* Force the application root and body to be full-width edge-to-edge */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  overflow-x: hidden;
+}
+
+#root {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+/* Falling Leaves Animations */
+@keyframes leaf-fall {
+  0% {
+    transform: translateY(-10%) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sway-left-right {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+
+@keyframes sway-right-left {
+  0%, 100% {
+    transform: translateX(40px);
+  }
+  50% {
+    transform: translateX(-40px);
+  }
+}
+
+.animate-leaf-fall {
+  animation: leaf-fall var(--leaf-duration, 12s) linear infinite;
+}
+
+.animate-sway-1 {
+  animation: sway-left-right var(--leaf-sway, 5s) ease-in-out infinite;
+}
+
+.animate-sway-2 {
+  animation: sway-right-left var(--leaf-sway, 5.5s) ease-in-out infinite;
+}
+
+/* Scroll Reveal Animation Styles */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-element.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Custom scrollbar and global utility rules */
 ::-webkit-scrollbar {
   width: 8px;
@@ -34,4 +111,16 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #1c7c59;
+}
+
+/* Hide default cursor on desktop screens to allow custom leaf cursor */
+@media (min-width: 768px) {
+  html, body, #root, a, button, select, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
+  
+  /* Retain standard text cursor for inputs and textareas for good UX */
+  input, textarea {
+    cursor: text !important;
+  }
 }

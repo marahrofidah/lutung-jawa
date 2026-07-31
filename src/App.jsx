@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import { levelsData } from './data/levelsData'
+import imgDaunCursor from './assets/daun.png'
 
 // Import Components & Pages
 import Header from './components/Header'
@@ -45,6 +46,46 @@ function App() {
 
   // Show status alerts
   const [alertMsg, setAlertMsg] = useState({ type: '', text: '' })
+
+  // Custom cursor state
+  const [mousePos, setMousePos] = useState({ x: -100, y: -100 })
+  const [isHovered, setIsHovered] = useState(false)
+  const [isCursorVisible, setIsCursorVisible] = useState(false)
+
+  // Custom leaf cursor mouse listener
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+      if (!isCursorVisible) setIsCursorVisible(true)
+    }
+
+    const handleMouseOver = (e) => {
+      const target = e.target
+      if (!target) return
+      const isClickable = target.closest('button') || target.closest('a') || target.closest('.cursor-pointer') || target.tagName === 'BUTTON' || target.tagName === 'A'
+      setIsHovered(!!isClickable)
+    }
+
+    const handleMouseLeave = () => {
+      setIsCursorVisible(false)
+    }
+
+    const handleMouseEnter = () => {
+      setIsCursorVisible(true)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseover', handleMouseOver)
+    document.addEventListener('mouseleave', handleMouseLeave)
+    document.addEventListener('mouseenter', handleMouseEnter)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseover', handleMouseOver)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+      document.removeEventListener('mouseenter', handleMouseEnter)
+    }
+  }, [isCursorVisible])
 
   // Check Supabase connection on load & restore session
   useEffect(() => {
@@ -440,80 +481,96 @@ function App() {
       )}
 
       {/* MAIN CONTAINER */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
-        
-        {screen === 'landing' && (
-          <LandingPage setScreen={setScreen} />
-        )}
+      {screen === 'landing' ? (
+        <LandingPage setScreen={setScreen} />
+      ) : (
+        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+          {screen === 'role-selection' && (
+            <RoleSelection setScreen={setScreen} />
+          )}
 
-        {screen === 'role-selection' && (
-          <RoleSelection setScreen={setScreen} />
-        )}
+          {screen === 'teacher-setup' && (
+            <TeacherSetup 
+              teacherName={teacherName} 
+              setTeacherName={setTeacherName} 
+              handleTeacherSetup={handleTeacherSetup} 
+              setScreen={setScreen} 
+            />
+          )}
 
-        {screen === 'teacher-setup' && (
-          <TeacherSetup 
-            teacherName={teacherName} 
-            setTeacherName={setTeacherName} 
-            handleTeacherSetup={handleTeacherSetup} 
-            setScreen={setScreen} 
-          />
-        )}
+          {screen === 'teacher-dashboard' && currentClass && (
+            <TeacherDashboard 
+              teacherName={teacherName}
+              currentClass={currentClass}
+              groups={groups}
+              selectedGroupDetails={selectedGroupDetails}
+              setSelectedGroupDetails={setSelectedGroupDetails}
+              teacherSelectedLevel={teacherSelectedLevel}
+              setTeacherSelectedLevel={setTeacherSelectedLevel}
+              levelsData={levelsData}
+              triggerAlert={triggerAlert}
+            />
+          )}
 
-        {screen === 'teacher-dashboard' && currentClass && (
-          <TeacherDashboard 
-            teacherName={teacherName}
-            currentClass={currentClass}
-            groups={groups}
-            selectedGroupDetails={selectedGroupDetails}
-            setSelectedGroupDetails={setSelectedGroupDetails}
-            teacherSelectedLevel={teacherSelectedLevel}
-            setTeacherSelectedLevel={setTeacherSelectedLevel}
-            levelsData={levelsData}
-            triggerAlert={triggerAlert}
-          />
-        )}
+          {screen === 'student-setup' && (
+            <StudentSetup 
+              groupName={groupName}
+              setGroupName={setGroupName}
+              classCodeInput={classCodeInput}
+              setClassCodeInput={setClassCodeInput}
+              handleStudentJoin={handleStudentJoin}
+              setScreen={setScreen}
+            />
+          )}
 
-        {screen === 'student-setup' && (
-          <StudentSetup 
-            groupName={groupName}
-            setGroupName={setGroupName}
-            classCodeInput={classCodeInput}
-            setClassCodeInput={setClassCodeInput}
-            handleStudentJoin={handleStudentJoin}
-            setScreen={setScreen}
-          />
-        )}
-
-        {screen === 'student-playroom' && studentGroup && (
-          <StudentPlayroom 
-            studentGroup={studentGroup}
-            levelsData={levelsData}
-            individualAnswers={individualAnswers}
-            groupDecision={groupDecision}
-            memberNameInput={memberNameInput}
-            setMemberNameInput={setMemberNameInput}
-            memberAnswerInput={memberAnswerInput}
-            setMemberAnswerInput={setMemberAnswerInput}
-            memberReasonInput={memberReasonInput}
-            setMemberReasonInput={setMemberReasonInput}
-            groupAnswerInput={groupAnswerInput}
-            setGroupAnswerInput={setGroupAnswerInput}
-            groupReasonInput={groupReasonInput}
-            setGroupReasonInput={setGroupReasonInput}
-            handleIndividualSubmit={handleIndividualSubmit}
-            handleGroupSubmit={handleGroupSubmit}
-            handleNextLevel={handleNextLevel}
-            handleLogout={handleLogout}
-          />
-        )}
-
-      </main>
+          {screen === 'student-playroom' && studentGroup && (
+            <StudentPlayroom 
+              studentGroup={studentGroup}
+              levelsData={levelsData}
+              individualAnswers={individualAnswers}
+              groupDecision={groupDecision}
+              memberNameInput={memberNameInput}
+              setMemberNameInput={setMemberNameInput}
+              memberAnswerInput={memberAnswerInput}
+              setMemberAnswerInput={setMemberAnswerInput}
+              memberReasonInput={memberReasonInput}
+              setMemberReasonInput={setMemberReasonInput}
+              groupAnswerInput={groupAnswerInput}
+              setGroupAnswerInput={setGroupAnswerInput}
+              groupReasonInput={groupReasonInput}
+              setGroupReasonInput={setGroupReasonInput}
+              handleIndividualSubmit={handleIndividualSubmit}
+              handleGroupSubmit={handleGroupSubmit}
+              handleNextLevel={handleNextLevel}
+              handleLogout={handleLogout}
+            />
+          )}
+        </main>
+      )}
 
       {/* FOOTER */}
-      <footer className="mt-auto border-t border-forest-850 bg-forest-950/80 px-6 py-6 text-center text-xs text-slate-450 space-y-1">
-        <p>© 2026 Edukasi Konservasi Lutung Jawa. Built with React, Tailwind CSS & Supabase.</p>
-        <p className="text-[10px] text-emerald-505 font-mono">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
-      </footer>
+      {screen !== 'landing' && (
+        <footer className="mt-auto border-t border-forest-850 bg-forest-950/80 px-6 py-6 text-center text-xs text-slate-450 space-y-1">
+          <p>© 2026 Edukasi Konservasi Lutung Jawa. Built with React, Tailwind CSS & Supabase.</p>
+          <p className="text-[10px] text-emerald-505 font-mono">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
+        </footer>
+      )}
+
+      {/* Custom Leaf Cursor */}
+      {isCursorVisible && (
+        <div 
+          className="hidden md:block fixed pointer-events-none z-[9999] transition-all duration-75 ease-out -translate-x-1/2 -translate-y-1/2"
+          style={{
+            left: `${mousePos.x}px`,
+            top: `${mousePos.y}px`,
+            width: isHovered ? '34px' : '26px',
+            height: isHovered ? '34px' : '26px',
+            transform: `translate(-50%, -50%) rotate(${isHovered ? '25deg' : '0deg'})`,
+          }}
+        >
+          <img src={imgDaunCursor} alt="leaf-cursor" className="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />
+        </div>
+      )}
 
     </div>
   )
