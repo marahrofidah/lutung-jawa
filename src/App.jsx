@@ -430,12 +430,14 @@ function App() {
       )}
 
       {/* HEADER */}
-      <Header 
-        dbConnected={dbConnected} 
-        screen={screen} 
-        handleLogout={handleLogout} 
-        setScreen={setScreen} 
-      />
+      {screen !== 'landing' && (
+        <Header 
+          dbConnected={dbConnected} 
+          screen={screen} 
+          handleLogout={handleLogout} 
+          setScreen={setScreen} 
+        />
+      )}
 
       {/* MAIN CONTAINER */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">

@@ -11,6 +11,14 @@
   --color-forest-600: #1c7c59;
   --color-lutung-orange: #ff7826;
   --color-lutung-amber: #fca311;
+
+  /* Custom Floating Animation */
+  --animate-float: float 4s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 }
 
 /* Custom scrollbar and global utility rules */
