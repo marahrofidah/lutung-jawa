@@ -1,0 +1,520 @@
+import { useState, useEffect } from 'react'
+import { supabase } from './supabaseClient'
+import { levelsData } from './data/levelsData'
+
+// Import Components & Pages
+import Header from './components/Header'
+import LandingPage from './pages/LandingPage'
+import RoleSelection from './pages/RoleSelection'
+import TeacherSetup from './pages/TeacherSetup'
+import TeacherDashboard from './pages/TeacherDashboard'
+import StudentSetup from './pages/StudentSetup'
+import StudentPlayroom from './pages/StudentPlayroom'
+
+function App() {
+  // Navigation & Role States
+  // 'landing', 'role-selection', 'teacher-setup', 'teacher-dashboard', 'student-setup', 'student-playroom'
+  const [screen, setScreen] = useState('landing')
+  
+  // Real-time Connection State
+  const [dbConnected, setDbConnected] = useState(false)
+
+  // Teacher States
+  const [teacherName, setTeacherName] = useState('')
+  const [currentClass, setCurrentClass] = useState(null)
+  const [groups, setGroups] = useState([])
+  const [selectedGroupDetails, setSelectedGroupDetails] = useState(null)
+  const [teacherSelectedLevel, setTeacherSelectedLevel] = useState(1)
+
+  // Student States
+  const [groupName, setGroupName] = useState('')
+  const [classCodeInput, setClassCodeInput] = useState('')
+  const [studentClass, setStudentClass] = useState(null)
+  const [studentGroup, setStudentGroup] = useState(null)
+  const [individualAnswers, setIndividualAnswers] = useState([])
+  const [groupDecision, setGroupDecision] = useState(null)
+  
+  // Individual inputs
+  const [memberNameInput, setMemberNameInput] = useState('')
+  const [memberAnswerInput, setMemberAnswerInput] = useState('')
+  const [memberReasonInput, setMemberReasonInput] = useState('')
+  
+  // Group inputs
+  const [groupAnswerInput, setGroupAnswerInput] = useState('')
+  const [groupReasonInput, setGroupReasonInput] = useState('')
+
+  // Show status alerts
+  const [alertMsg, setAlertMsg] = useState({ type: '', text: '' })
+
+  // Check Supabase connection on load & restore session
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        const { error } = await supabase.from('classes').select('count', { count: 'exact', head: true })
+        if (!error) setDbConnected(true)
+      } catch (err) {
+        console.error("Supabase connection check failed:", err)
+        setDbConnected(false)
+      }
+    }
+    checkConnection()
+
+    // Restore Student/Teacher Session if available
+    const savedRole = localStorage.getItem('role')
+    if (savedRole === 'student') {
+      const savedGroup = localStorage.getItem('student_group')
+      const savedClass = localStorage.getItem('student_class')
+      if (savedGroup && savedClass) {
+        const parsedGroup = JSON.parse(savedGroup)
+        const parsedClass = JSON.parse(savedClass)
+        const verifySession = async () => {
+          const { data: groupData } = await supabase.from('groups').select('*').eq('id', parsedGroup.id).maybeSingle()
+          if (groupData) {
+            setStudentGroup(groupData)
+            setStudentClass(parsedClass)
+            setScreen('student-playroom')
+            triggerAlert('success', `Sesi kelompok '${groupData.group_name}' berhasil dipulihkan!`)
+          } else {
+            localStorage.clear()
+          }
+        }
+        verifySession()
+      }
+    } else if (savedRole === 'teacher') {
+      const savedClass = localStorage.getItem('teacher_class')
+      if (savedClass) {
+        const parsedClass = JSON.parse(savedClass)
+        const verifyClass = async () => {
+          const { data: classData } = await supabase.from('classes').select('*').eq('id', parsedClass.id).maybeSingle()
+          if (classData) {
+            setCurrentClass(classData)
+            setTeacherName(classData.teacher_name)
+            setScreen('teacher-dashboard')
+            triggerAlert('success', `Dashboard Kelas ${classData.class_code} berhasil dipulihkan!`)
+          } else {
+            localStorage.clear()
+          }
+        }
+        verifyClass()
+      }
+    }
+  }, [])
+
+  // Helper alert function
+  const triggerAlert = (type, text) => {
+    setAlertMsg({ type, text })
+    setTimeout(() => {
+      setAlertMsg({ type: '', text: '' })
+    }, 4500)
+  }
+
+  // --- TEACHER ACTIONS ---
+  const handleTeacherSetup = async (e) => {
+    e.preventDefault()
+    if (!teacherName.trim()) return
+    
+    const rand = Math.random().toString(36).substring(2, 6).toUpperCase()
+    const code = `LTJ-${rand}`
+
+    try {
+      const { data, error } = await supabase
+        .from('classes')
+        .insert([{ class_code: code, teacher_name: teacherName }])
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setCurrentClass(data)
+      localStorage.setItem('role', 'teacher')
+      localStorage.setItem('teacher_class', JSON.stringify(data))
+      setScreen('teacher-dashboard')
+      triggerAlert('success', `Kelas baru berhasil dibuat dengan Kode: ${code}`)
+    } catch (err) {
+      console.error(err)
+      triggerAlert('error', `Gagal membuat kelas: ${err.message}`)
+    }
+  }
+
+  // Fetch groups data for Teacher Dashboard
+  const fetchTeacherData = async () => {
+    if (!currentClass) return
+    try {
+      const { data: groupsData, error: gError } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('class_id', currentClass.id)
+        .order('created_at', { ascending: true })
+
+      if (gError) throw gError
+
+      const enrichedGroups = await Promise.all(groupsData.map(async (g) => {
+        const { data: indAnsw } = await supabase
+          .from('individual_answers')
+          .select('*')
+          .eq('group_id', g.id)
+
+        const { data: decAnsw } = await supabase
+          .from('group_decisions')
+          .select('*')
+          .eq('group_id', g.id)
+
+        return {
+          ...g,
+          individualAnswers: indAnsw || [],
+          groupDecisions: decAnsw || []
+        }
+      }))
+
+      setGroups(enrichedGroups)
+    } catch (err) {
+      console.error("Gagal mengambil data monitoring:", err)
+    }
+  }
+
+  // Load and subscribe in Teacher Dashboard
+  useEffect(() => {
+    if (screen !== 'teacher-dashboard' || !currentClass) return
+
+    fetchTeacherData()
+
+    const channel = supabase.channel(`class-monitor-${currentClass.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'groups', filter: `class_id=eq.${currentClass.id}` }, () => {
+        fetchTeacherData()
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'individual_answers' }, () => {
+        fetchTeacherData()
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'group_decisions' }, () => {
+        fetchTeacherData()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [screen, currentClass])
+
+  // --- STUDENT ACTIONS ---
+  const handleStudentJoin = async (e) => {
+    e.preventDefault()
+    if (!groupName.trim() || !classCodeInput.trim()) return
+
+    const formattedCode = classCodeInput.trim().toUpperCase()
+
+    try {
+      // Find Class
+      const { data: classData, error: cError } = await supabase
+        .from('classes')
+        .select('*')
+        .eq('class_code', formattedCode)
+        .maybeSingle()
+
+      if (cError) throw cError
+      if (!classData) {
+        triggerAlert('error', `Kode kelas '${formattedCode}' tidak ditemukan!`)
+        return
+      }
+
+      // Check if group name already exists
+      const { data: existingGroup } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('class_id', classData.id)
+        .eq('group_name', groupName.trim())
+        .maybeSingle()
+
+      if (existingGroup) {
+        triggerAlert('error', `Nama kelompok '${groupName}' sudah digunakan.`)
+        return
+      }
+
+      const { data: newGroup, error: gError } = await supabase
+        .from('groups')
+        .insert([{ class_id: classData.id, group_name: groupName.trim(), current_level: 1 }])
+        .select()
+        .single()
+
+      if (gError) throw gError
+
+      setStudentClass(classData)
+      setStudentGroup(newGroup)
+      localStorage.setItem('role', 'student')
+      localStorage.setItem('student_group', JSON.stringify(newGroup))
+      localStorage.setItem('student_class', JSON.stringify(classData))
+      setScreen('student-playroom')
+      triggerAlert('success', `Berhasil bergabung dengan kelas ${classData.class_code}!`)
+    } catch (err) {
+      console.error(err)
+      triggerAlert('error', `Gagal masuk kelas: ${err.message}`)
+    }
+  }
+
+  // Fetch playroom data for Student Level
+  const fetchStudentLevelData = async () => {
+    if (!studentGroup) return
+    try {
+      const level = studentGroup.current_level
+
+      const { data: indData } = await supabase
+        .from('individual_answers')
+        .select('*')
+        .eq('group_id', studentGroup.id)
+        .eq('level_number', level)
+
+      const { data: decData } = await supabase
+        .from('group_decisions')
+        .select('*')
+        .eq('group_id', studentGroup.id)
+        .eq('level_number', level)
+        .maybeSingle()
+
+      setIndividualAnswers(indData || [])
+      setGroupDecision(decData || null)
+      
+      if (decData) {
+        setGroupAnswerInput(decData.final_answer)
+        setGroupReasonInput(decData.final_reason)
+      } else {
+        setGroupAnswerInput('')
+        setGroupReasonInput('')
+      }
+    } catch (err) {
+      console.error("Gagal mengambil data level:", err)
+    }
+  }
+
+  // Load and subscribe in Student Playroom
+  useEffect(() => {
+    if (screen !== 'student-playroom' || !studentGroup) return
+
+    fetchStudentLevelData()
+
+    const channel = supabase.channel(`group-play-${studentGroup.id}`)
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'individual_answers', 
+        filter: `group_id=eq.${studentGroup.id}` 
+      }, () => {
+        fetchStudentLevelData()
+      })
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'group_decisions', 
+        filter: `group_id=eq.${studentGroup.id}` 
+      }, () => {
+        fetchStudentLevelData()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [screen, studentGroup?.current_level, studentGroup?.id])
+
+  // Submit individual answer
+  const handleIndividualSubmit = async (e) => {
+    e.preventDefault()
+    if (!memberNameInput.trim() || !memberAnswerInput || !memberReasonInput.trim()) {
+      triggerAlert('error', 'Semua kolom jawaban individu wajib diisi!')
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('individual_answers')
+        .insert([{
+          group_id: studentGroup.id,
+          level_number: studentGroup.current_level,
+          member_name: memberNameInput.trim(),
+          answer: memberAnswerInput,
+          reason: memberReasonInput.trim()
+        }])
+
+      if (error) throw error
+
+      setMemberNameInput('')
+      setMemberAnswerInput('')
+      setMemberReasonInput('')
+      triggerAlert('success', 'Jawaban individu Anda berhasil dikirim!')
+    } catch (err) {
+      console.error(err)
+      triggerAlert('error', `Gagal mengirim jawaban: ${err.message}`)
+    }
+  }
+
+  // Submit final group decision
+  const handleGroupSubmit = async (e) => {
+    e.preventDefault()
+    if (!groupAnswerInput || !groupReasonInput.trim()) {
+      triggerAlert('error', 'Kolom keputusan akhir kelompok wajib diisi!')
+      return
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('group_decisions')
+        .insert([{
+          group_id: studentGroup.id,
+          level_number: studentGroup.current_level,
+          final_answer: groupAnswerInput,
+          final_reason: groupReasonInput.trim()
+        }])
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setGroupDecision(data)
+      triggerAlert('success', 'Keputusan akhir kelompok berhasil dikirim!')
+    } catch (err) {
+      console.error(err)
+      triggerAlert('error', `Gagal mengirim keputusan: ${err.message}`)
+    }
+  }
+
+  // Advance to next level
+  const handleNextLevel = async () => {
+    const nextLvl = studentGroup.current_level + 1
+    
+    try {
+      const { data: updatedGroup, error } = await supabase
+        .from('groups')
+        .update({ current_level: nextLvl })
+        .eq('id', studentGroup.id)
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setStudentGroup(updatedGroup)
+      localStorage.setItem('student_group', JSON.stringify(updatedGroup))
+      setIndividualAnswers([])
+      setGroupDecision(null)
+      triggerAlert('success', `Selamat datang di Level ${nextLvl}!`)
+    } catch (err) {
+      console.error(err)
+      triggerAlert('error', `Gagal melanjutkan level: ${err.message}`)
+    }
+  }
+
+  // Exit/Logout session
+  const handleLogout = () => {
+    if (window.confirm("Apakah Anda yakin ingin keluar dari sesi ini?")) {
+      localStorage.clear()
+      setScreen('landing')
+      setCurrentClass(null)
+      setStudentGroup(null)
+      setStudentClass(null)
+      setGroups([])
+    }
+  }
+
+  return (
+    <div className="font-sans min-h-screen bg-radial from-forest-900 to-forest-950 text-slate-100 flex flex-col selection:bg-lutung-orange selection:text-white">
+      
+      {/* Alert Notification */}
+      {alertMsg.text && (
+        <div className={`fixed top-5 right-5 z-50 p-4 rounded-xl shadow-2xl border backdrop-blur-md transition-all duration-300 max-w-sm transform translate-y-0 ${
+          alertMsg.type === 'success' 
+            ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-200' 
+            : 'bg-rose-950/80 border-rose-500/50 text-rose-200'
+        }`}>
+          <div className="flex items-center gap-3">
+            <span className="text-xl">{alertMsg.type === 'success' ? '⚡' : '⚠️'}</span>
+            <p className="text-sm font-medium">{alertMsg.text}</p>
+          </div>
+        </div>
+      )}
+
+      {/* HEADER */}
+      <Header 
+        dbConnected={dbConnected} 
+        screen={screen} 
+        handleLogout={handleLogout} 
+        setScreen={setScreen} 
+      />
+
+      {/* MAIN CONTAINER */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+        
+        {screen === 'landing' && (
+          <LandingPage setScreen={setScreen} />
+        )}
+
+        {screen === 'role-selection' && (
+          <RoleSelection setScreen={setScreen} />
+        )}
+
+        {screen === 'teacher-setup' && (
+          <TeacherSetup 
+            teacherName={teacherName} 
+            setTeacherName={setTeacherName} 
+            handleTeacherSetup={handleTeacherSetup} 
+            setScreen={setScreen} 
+          />
+        )}
+
+        {screen === 'teacher-dashboard' && currentClass && (
+          <TeacherDashboard 
+            teacherName={teacherName}
+            currentClass={currentClass}
+            groups={groups}
+            selectedGroupDetails={selectedGroupDetails}
+            setSelectedGroupDetails={setSelectedGroupDetails}
+            teacherSelectedLevel={teacherSelectedLevel}
+            setTeacherSelectedLevel={setTeacherSelectedLevel}
+            levelsData={levelsData}
+            triggerAlert={triggerAlert}
+          />
+        )}
+
+        {screen === 'student-setup' && (
+          <StudentSetup 
+            groupName={groupName}
+            setGroupName={setGroupName}
+            classCodeInput={classCodeInput}
+            setClassCodeInput={setClassCodeInput}
+            handleStudentJoin={handleStudentJoin}
+            setScreen={setScreen}
+          />
+        )}
+
+        {screen === 'student-playroom' && studentGroup && (
+          <StudentPlayroom 
+            studentGroup={studentGroup}
+            levelsData={levelsData}
+            individualAnswers={individualAnswers}
+            groupDecision={groupDecision}
+            memberNameInput={memberNameInput}
+            setMemberNameInput={setMemberNameInput}
+            memberAnswerInput={memberAnswerInput}
+            setMemberAnswerInput={setMemberAnswerInput}
+            memberReasonInput={memberReasonInput}
+            setMemberReasonInput={setMemberReasonInput}
+            groupAnswerInput={groupAnswerInput}
+            setGroupAnswerInput={setGroupAnswerInput}
+            groupReasonInput={groupReasonInput}
+            setGroupReasonInput={setGroupReasonInput}
+            handleIndividualSubmit={handleIndividualSubmit}
+            handleGroupSubmit={handleGroupSubmit}
+            handleNextLevel={handleNextLevel}
+            handleLogout={handleLogout}
+          />
+        )}
+
+      </main>
+
+      {/* FOOTER */}
+      <footer className="mt-auto border-t border-forest-850 bg-forest-950/80 px-6 py-6 text-center text-xs text-slate-450 space-y-1">
+        <p>© 2026 Edukasi Konservasi Lutung Jawa. Built with React, Tailwind CSS & Supabase.</p>
+        <p className="text-[10px] text-emerald-505 font-mono">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
+      </footer>
+
+    </div>
+  )
+}
+
+export default App
