@@ -56,7 +56,18 @@ function App() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY })
-      if (!isCursorVisible) setIsCursorVisible(true)
+      
+      // Hide if mouse goes near the viewport boundaries (fail-safe), show otherwise
+      if (
+        e.clientX < 4 || 
+        e.clientY < 4 || 
+        e.clientX > window.innerWidth - 4 || 
+        e.clientY > window.innerHeight - 4
+      ) {
+        setIsCursorVisible(false)
+      } else {
+        setIsCursorVisible(true)
+      }
     }
 
     const handleMouseOver = (e) => {
@@ -66,26 +77,14 @@ function App() {
       setIsHovered(!!isClickable)
     }
 
-    const handleMouseLeave = () => {
-      setIsCursorVisible(false)
-    }
-
-    const handleMouseEnter = () => {
-      setIsCursorVisible(true)
-    }
-
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseover', handleMouseOver)
-    document.addEventListener('mouseleave', handleMouseLeave)
-    document.addEventListener('mouseenter', handleMouseEnter)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseover', handleMouseOver)
-      document.removeEventListener('mouseleave', handleMouseLeave)
-      document.removeEventListener('mouseenter', handleMouseEnter)
     }
-  }, [isCursorVisible])
+  }, [])
 
   // Check Supabase connection on load & restore session
   useEffect(() => {
@@ -559,13 +558,14 @@ function App() {
       {/* Custom Leaf Cursor */}
       {isCursorVisible && (
         <div 
-          className="hidden md:block fixed pointer-events-none z-[9999] transition-all duration-75 ease-out -translate-x-1/2 -translate-y-1/2"
+          className="hidden md:block fixed pointer-events-none z-[9999] transition-[width,height,transform] duration-200 ease-out"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y}px`,
             width: isHovered ? '34px' : '26px',
             height: isHovered ? '34px' : '26px',
-            transform: `translate(-50%, -50%) rotate(${isHovered ? '25deg' : '0deg'})`,
+            transform: `translate(-50%, -10%) rotate(${isHovered ? '25deg' : '0deg'})`,
+            transformOrigin: '50% 10%',
           }}
         >
           <img src={imgDaunCursor} alt="leaf-cursor" className="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />

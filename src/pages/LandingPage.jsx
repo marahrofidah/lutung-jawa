@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Import actual assets provided by the user
 import bgHomepage from '../assets/bg_homepage.png'
@@ -7,6 +7,8 @@ import imgMateriInteraktif from '../assets/materi_interaktif.png'
 import imgForumDiskusi from '../assets/forum_diskusi.png'
 import imgVideoPembahasan from '../assets/video_pembahasan.png'
 import imgKumpulkanBadge from '../assets/kumpulkan_badge.png'
+import imgLutungJalan from '../assets/lutung-jalan.png'
+import imgLutungMelambai from '../assets/lutung-melambai.png'
 
 // Leaf color palette (natural jungle tones)
 const LEAF_COLORS = [
@@ -76,7 +78,112 @@ function Leaf({ color, scale, left, delay, duration, swayDuration, isSway1 }) {
   );
 }
 
+// FactButton Component
+const FactButton = () => {
+  const [showFact, setShowFact] = useState(false);
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <button 
+        onClick={(e) => { e.stopPropagation(); setShowFact(!showFact); }}
+        className="px-4 py-2 bg-[#165c43] hover:bg-[#123e32] text-white font-bold rounded-full text-xs shadow-md active:scale-95 transition-all cursor-pointer"
+      >
+        {showFact ? 'Sembunyikan' : 'Buka Fakta Unik'}
+      </button>
+      {showFact && (
+        <p className="text-xs text-slate-800 font-semibold bg-white p-2.5 rounded-xl border border-emerald-500/20 text-center max-w-[240px] shadow-sm">
+          "Bayi Lutung Jawa lahir dengan bulu berwarna oranye terang, lalu berubah menjadi hitam saat dewasa!"
+        </p>
+      )}
+    </div>
+  );
+};
+
+// VideoButton Component
+const VideoButton = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 w-full">
+      <div className="relative w-40 h-24 bg-black rounded-xl overflow-hidden shadow-lg border border-forest-900 flex items-center justify-center">
+        {isPlaying ? (
+          <div className="flex flex-col items-center justify-center text-white space-y-1">
+            <span className="text-[10px] animate-pulse text-emerald-400">Video sedang diputar...</span>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsPlaying(false); }}
+              className="text-[10px] underline hover:text-[#ffbe0b] cursor-pointer"
+            >
+              Stop
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={(e) => { e.stopPropagation(); setIsPlaying(true); }}
+            className="w-10 h-10 rounded-full bg-[#ffbe0b] hover:bg-[#ffb300] flex items-center justify-center text-forest-950 font-bold text-sm shadow-md transition transform hover:scale-110 active:scale-95 cursor-pointer pl-0.5"
+          >
+            ▶
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function LandingPage({ setScreen }) {
+  const [isLutungHovered, setIsLutungHovered] = useState(false)
+  const [activeStep, setActiveStep] = useState(0)
+  
+  // Feeding Game States
+  const [satiety, setSatiety] = useState(0)
+  const [flyingFood, setFlyingFood] = useState(null)
+  const [feedbackMsg, setFeedbackMsg] = useState(null)
+  const [isFeedingCompleted, setIsFeedingCompleted] = useState(false)
+
+  const feedLutung = (foodType, emoji) => {
+    if (satiety >= 100 && foodType !== 'plastic') return
+
+    // Trigger flight animation
+    setFlyingFood(emoji)
+    
+    // Determine feedback and satiety impact
+    let satietyGain = 0
+    let msg = ""
+
+    if (foodType === 'leaf') {
+      satietyGain = 25
+      msg = "Nyam-nyam! Pucuk daun muda ini segar dan kaya serat! Makanan terfavoritku!"
+    } else if (foodType === 'fruit') {
+      satietyGain = 25
+      msg = "Wah, buah hutan manis sekali! Ini sumber energi yang sangat lezat!"
+    } else if (foodType === 'flower') {
+      satietyGain = 25
+      msg = "Hmm! Bunga ini renyah dan wangi. Terima kasih ya!"
+    } else if (foodType === 'plastic') {
+      satietyGain = -20
+      msg = "Aduh! Ini sampah plastik! Aku tidak bisa mencernanya, ini sangat berbahaya!"
+    }
+
+    setFeedbackMsg(msg)
+
+    // Calculate new satiety
+    setSatiety(prev => {
+      const next = Math.max(0, Math.min(100, prev + satietyGain))
+      if (next >= 100) {
+        setIsFeedingCompleted(true)
+      }
+      return next
+    })
+
+    // Reset flying food after animation completes
+    setTimeout(() => {
+      setFlyingFood(null)
+    }, 800)
+  }
+
+  const resetFeedingGame = () => {
+    setSatiety(0)
+    setFeedbackMsg(null)
+    setIsFeedingCompleted(false)
+  }
+
   // Helper to scroll smoothly to a section ID
   const scrollToSection = (id) => {
     const element = document.getElementById(id)
@@ -108,6 +215,85 @@ export default function LandingPage({ setScreen }) {
       elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
+
+  const STEPS_DATA = [
+    {
+      title: "Belajar Kelompok",
+      shortDesc: "Diskusi, berbagi ide, and ambil keputusan bersama.",
+      longDesc: "Kamu akan masuk ke dalam playroom bersama teman kelompokmu. Diskusikan dan pecahkan studi kasus menarik seputar konservasi Lutung Jawa secara real-time.",
+      preview: (
+        <div className="bg-[#123e32]/10 border border-[#123e32]/20 p-5 rounded-2xl space-y-3">
+          <p className="text-[10px] font-bold text-forest-900 uppercase tracking-wider">Simulasi Diskusi Kelompok:</p>
+          <div className="space-y-2 font-sans text-xs">
+            <div className="flex items-start gap-2 bg-white/70 p-2 rounded-xl max-w-[80%] shadow-sm">
+              <span className="font-bold text-[#ffbe0b]">Budi:</span>
+              <span>"Aku rasa Lutung Jawa itu memakan pucuk daun muda deh!"</span>
+            </div>
+            <div className="flex items-start gap-2 bg-white/70 p-2 rounded-xl max-w-[80%] ml-auto shadow-sm text-right">
+              <span>"Iya betul, karena pencernaannya cocok dengan serat daun."</span>
+              <span className="font-bold text-emerald-600">Siti:</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Materi Interaktif",
+      shortDesc: "Kenali Lutung Jawa lewat materi yang menarik dan mudah dipahami.",
+      longDesc: "Setiap misi menyajikan materi komprehensif, mulai dari pengenalan ciri fisik, sebaran habitat asli, ancaman kepunahan, hingga aksi nyata konservasi.",
+      preview: <FactButton />
+    },
+    {
+      title: "Forum Diskusi",
+      shortDesc: "Jawab soal secara individu, diskusi dalam forum kelompok.",
+      longDesc: "Sebelum kelompok mengambil keputusan final, setiap anggota dapat memilih jawaban mereka sendiri dan saling bertukar pendapat di forum internal.",
+      preview: (
+        <div className="bg-[#123e32]/10 border border-[#123e32]/20 p-5 rounded-2xl space-y-3">
+          <p className="text-[10px] font-bold text-forest-900 uppercase tracking-wider">Simulasi Polling Kelompok:</p>
+          <div className="space-y-2 font-sans">
+            <div className="bg-white/80 p-2.5 rounded-xl shadow-sm text-xs space-y-1">
+              <div className="flex justify-between font-bold text-forest-950">
+                <span>Pilihan A: Melindungi Hutan</span>
+                <span>75%</span>
+              </div>
+              <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div className="bg-emerald-500 h-full rounded-full w-[75%]" />
+              </div>
+            </div>
+            <div className="bg-white/80 p-2.5 rounded-xl shadow-sm text-xs space-y-1">
+              <div className="flex justify-between font-bold text-forest-950">
+                <span>Pilihan B: Membiarkan Saja</span>
+                <span>25%</span>
+              </div>
+              <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div className="bg-rose-500 h-full rounded-full w-[25%]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Video Pembahasan",
+      shortDesc: "Dapatkan penjelasan menarik setelah menentukan jawaban akhir.",
+      longDesc: "Setelah jawaban akhir kelompok dikirim, tonton video edukasi interaktif yang membedah jawaban studi kasus berdasarkan tinjauan ilmiah konservasi.",
+      preview: <VideoButton />
+    },
+    {
+      title: "Kumpulkan Badge",
+      shortDesc: "Selesaikan setiap level dan kumpulkan badge keren sebagai pencapaianmu!",
+      longDesc: "Selesaikan tantangan di setiap level untuk mendapatkan badge pencapaian. Koleksi kelima badge untuk membuktikan kepedulian kelompokmu terhadap kelestarian alam!",
+      preview: (
+        <div className="bg-[#123e32]/10 border border-[#123e32]/20 p-5 rounded-2xl flex flex-col justify-center items-center space-y-2 min-h-[120px] cursor-pointer group/badge">
+          <p className="text-[10px] font-bold text-forest-900 uppercase tracking-wider">Arahkan kursor ke badge:</p>
+          <div className="relative w-16 h-16 transform group-hover/badge:scale-110 group-hover/badge:rotate-12 transition duration-300">
+            <img src={imgKumpulkanBadge} alt="Badge" className="w-full h-full object-contain filter drop-shadow-md" />
+            <span className="absolute top-0 right-0 text-xl animate-pulse">✨</span>
+          </div>
+        </div>
+      )
+    }
+  ];
 
   return (
     <div className="w-full text-slate-100 flex flex-col font-sans bg-[#f6f5ee]">
@@ -237,10 +423,10 @@ export default function LandingPage({ setScreen }) {
 
       {/* 3. SECTION: KENAPA BELAJAR DI SINI SERU? */}
       <section id="fitur-seru" className="w-full bg-[#f6f5ee] text-forest-950 py-16 px-6 rounded-t-[100px] relative z-10 -mt-25">
-        <div className="max-w-6xl mx-auto space-y-12">
+        <div className="max-w-6xl mx-auto space-y-12 reveal-element">
           
-          <div className="text-center space-y-2 reveal-element">
-            <h3 className="text-3xl font-display font-extrabold text-forest-950 flex items-center justify-center gap-2">
+          <div className="text-center space-y-2">
+            <h3 className="text-3xl sm:text-4xl font-display font-extrabold text-forest-950 flex items-center justify-center gap-2">
               <span> Kenapa belajar di sini seru? </span>
             </h3>
             <p className="text-sm sm:text-base text-slate-600 max-w-md mx-auto">
@@ -251,15 +437,34 @@ export default function LandingPage({ setScreen }) {
           {/* Connected Steps Grid */}
           <div className="relative grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-4">
             
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-[52px] left-[12%] right-[12%] h-0.5 border-t-2 border-dashed border-[#165c43]/20 z-0"></div>
+            {/* Connection Line with running dots animation */}
+            <div className="hidden lg:block absolute top-[52px] left-[10%] right-[10%] h-4 z-0 pointer-events-none">
+              <svg className="w-full h-full overflow-visible" xmlns="http://www.w3.org/2000/svg">
+                <line 
+                  x1="0" 
+                  y1="8" 
+                  x2="100%" 
+                  y2="8" 
+                  stroke="#165c43" 
+                  strokeWidth="3" 
+                  strokeDasharray="8 8" 
+                  className="animated-dash-line opacity-30" 
+                />
+              </svg>
+            </div>
 
             {/* Step 1: Belajar Kelompok */}
-            <div className="flex flex-col items-center text-center space-y-4 relative z-10 group reveal-element delay-100">
+            <div 
+              onClick={() => setActiveStep(0)}
+              onMouseEnter={() => setActiveStep(0)}
+              className={`flex flex-col items-center text-center space-y-4 relative z-10 group cursor-pointer p-4 rounded-3xl transition-all duration-300 ${
+                activeStep === 0 ? 'bg-[#123e32]/8 border border-[#123e32]/15 shadow-md -translate-y-1 scale-[1.03]' : 'opacity-70 hover:opacity-100 hover:scale-[1.02]'
+              }`}
+            >
               <img 
                 src={imgBelajarKelompok} 
                 alt="Belajar Kelompok" 
-                className="w-24 h-24 object-contain transition duration-200 group-hover:scale-105"
+                className={`w-24 h-24 object-contain transition-transform duration-300 ${activeStep === 0 ? 'scale-110' : 'group-hover:scale-105'}`}
               />
               <div>
                 <h4 className="font-display font-bold text-base text-forest-950">Belajar Kelompok</h4>
@@ -270,11 +475,17 @@ export default function LandingPage({ setScreen }) {
             </div>
 
             {/* Step 2: Materi Interaktif */}
-            <div className="flex flex-col items-center text-center space-y-4 relative z-10 group reveal-element delay-200">
+            <div 
+              onClick={() => setActiveStep(1)}
+              onMouseEnter={() => setActiveStep(1)}
+              className={`flex flex-col items-center text-center space-y-4 relative z-10 group cursor-pointer p-4 rounded-3xl transition-all duration-300 ${
+                activeStep === 1 ? 'bg-[#123e32]/8 border border-[#123e32]/15 shadow-md -translate-y-1 scale-[1.03]' : 'opacity-70 hover:opacity-100 hover:scale-[1.02]'
+              }`}
+            >
               <img 
                 src={imgMateriInteraktif} 
                 alt="Materi Interaktif" 
-                className="w-24 h-24 object-contain transition duration-200 group-hover:scale-105"
+                className={`w-24 h-24 object-contain transition-transform duration-300 ${activeStep === 1 ? 'scale-110' : 'group-hover:scale-105'}`}
               />
               <div>
                 <h4 className="font-display font-bold text-base text-forest-950">Materi Interaktif</h4>
@@ -285,11 +496,17 @@ export default function LandingPage({ setScreen }) {
             </div>
 
             {/* Step 3: Forum Diskusi */}
-            <div className="flex flex-col items-center text-center space-y-4 relative z-10 group reveal-element delay-300">
+            <div 
+              onClick={() => setActiveStep(2)}
+              onMouseEnter={() => setActiveStep(2)}
+              className={`flex flex-col items-center text-center space-y-4 relative z-10 group cursor-pointer p-4 rounded-3xl transition-all duration-300 ${
+                activeStep === 2 ? 'bg-[#123e32]/8 border border-[#123e32]/15 shadow-md -translate-y-1 scale-[1.03]' : 'opacity-70 hover:opacity-100 hover:scale-[1.02]'
+              }`}
+            >
               <img 
                 src={imgForumDiskusi} 
                 alt="Forum Diskusi" 
-                className="w-24 h-24 object-contain transition duration-200 group-hover:scale-105"
+                className={`w-24 h-24 object-contain transition-transform duration-300 ${activeStep === 2 ? 'scale-110' : 'group-hover:scale-105'}`}
               />
               <div>
                 <h4 className="font-display font-bold text-base text-forest-950">Forum Diskusi</h4>
@@ -300,11 +517,17 @@ export default function LandingPage({ setScreen }) {
             </div>
 
             {/* Step 4: Video Pembahasan */}
-            <div className="flex flex-col items-center text-center space-y-4 relative z-10 group reveal-element delay-400">
+            <div 
+              onClick={() => setActiveStep(3)}
+              onMouseEnter={() => setActiveStep(3)}
+              className={`flex flex-col items-center text-center space-y-4 relative z-10 group cursor-pointer p-4 rounded-3xl transition-all duration-300 ${
+                activeStep === 3 ? 'bg-[#123e32]/8 border border-[#123e32]/15 shadow-md -translate-y-1 scale-[1.03]' : 'opacity-70 hover:opacity-100 hover:scale-[1.02]'
+              }`}
+            >
               <img 
                 src={imgVideoPembahasan} 
                 alt="Video Pembahasan" 
-                className="w-24 h-24 object-contain transition duration-200 group-hover:scale-105"
+                className={`w-24 h-24 object-contain transition-transform duration-300 ${activeStep === 3 ? 'scale-110' : 'group-hover:scale-105'}`}
               />
               <div>
                 <h4 className="font-display font-bold text-base text-forest-950">Video Pembahasan</h4>
@@ -315,11 +538,17 @@ export default function LandingPage({ setScreen }) {
             </div>
 
             {/* Step 5: Kumpulkan Badge */}
-            <div className="flex flex-col items-center text-center space-y-4 relative z-10 group reveal-element delay-500">
+            <div 
+              onClick={() => setActiveStep(4)}
+              onMouseEnter={() => setActiveStep(4)}
+              className={`flex flex-col items-center text-center space-y-4 relative z-10 group cursor-pointer p-4 rounded-3xl transition-all duration-300 ${
+                activeStep === 4 ? 'bg-[#123e32]/8 border border-[#123e32]/15 shadow-md -translate-y-1 scale-[1.03]' : 'opacity-70 hover:opacity-100 hover:scale-[1.02]'
+              }`}
+            >
               <img 
                 src={imgKumpulkanBadge} 
                 alt="Kumpulkan Badge" 
-                className="w-24 h-24 object-contain transition duration-200 group-hover:scale-105"
+                className={`w-24 h-24 object-contain transition-transform duration-300 ${activeStep === 4 ? 'scale-110' : 'group-hover:scale-105'}`}
               />
               <div>
                 <h4 className="font-display font-bold text-base text-forest-950">Kumpulkan Badge</h4>
@@ -329,6 +558,26 @@ export default function LandingPage({ setScreen }) {
               </div>
             </div>
 
+          </div>
+
+          {/* Active Step Detailed Presentation Panel */}
+          <div className="bg-white/90 backdrop-blur-sm border border-emerald-500/15 p-6 rounded-3xl shadow-xl max-w-4xl mx-auto mt-12 flex flex-col md:flex-row gap-8 items-center min-h-[190px]">
+            {/* Left Description */}
+            <div className="flex-1 text-left space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="text-3xl">{STEPS_DATA[activeStep].emoji}</span>
+                <h4 className="font-display font-black text-xl text-forest-950">
+                  {STEPS_DATA[activeStep].title}
+                </h4>
+              </div>
+              <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold">
+                {STEPS_DATA[activeStep].longDesc}
+              </p>
+            </div>
+            {/* Right Interactive Preview */}
+            <div className="w-full md:w-80 shrink-0">
+              {STEPS_DATA[activeStep].preview}
+            </div>
           </div>
 
         </div>
@@ -416,7 +665,6 @@ export default function LandingPage({ setScreen }) {
           <div className="bg-amber-950/40 border border-lutung-orange/30 p-6 sm:p-8 rounded-3xl text-left max-w-4xl mx-auto mt-10 relative overflow-hidden reveal-element">
             <div className="absolute -right-6 -bottom-6 opacity-10 text-8xl select-none">💡</div>
             <div className="flex items-start gap-4">
-              <span className="text-3xl shrink-0 select-none">💡</span>
               <div className="space-y-1.5">
                 <h4 className="font-display font-bold text-lg text-[#ffbe0b]">Tips:</h4>
                 <p className="text-base text-amber-100/90 leading-relaxed font-semibold">
@@ -430,13 +678,19 @@ export default function LandingPage({ setScreen }) {
       </section>
 
       {/* 5. SECTION: SEKILAS TENTANG LUTUNG JAWA */}
-      <section id="sekilas-lutung" className="w-full bg-[#f6f5ee] text-forest-950 py-16 px-6 rounded-b-[50px] shadow-inner relative z-20">
-        <div className="max-w-6xl mx-auto space-y-12">
+      <section id="sekilas-lutung" className="w-full bg-[#f6f5ee] text-forest-950 py-16 px-6 rounded-b-[50px] shadow-inner relative z-20 overflow-hidden">
+        {/* Sunbeams ambient background */}
+        <div className="sunbeams-bg pointer-events-none">
+          <div className="sunbeam"></div>
+          <div className="sunbeam sunbeam-2"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
           
           {/* Section Heading */}
           <div className="text-center space-y-2 reveal-element">
             <h3 className="text-3xl sm:text-4xl font-display font-extrabold text-forest-950 flex items-center justify-center gap-2">
-              <span>🦍 Profil Lutung Jawa</span>
+              <span>Profil Lutung Jawa</span>
             </h3>
             <p className="text-sm sm:text-base text-slate-500 font-display italic">
               (Trachypithecus auratus)
@@ -445,16 +699,43 @@ export default function LandingPage({ setScreen }) {
 
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
             
-            {/* Left Visual Column */}
-            <div className="flex-1 flex items-center justify-center reveal-element">
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full border-8 border-white shadow-2xl overflow-hidden group">
+            {/* Left Visual Column with dynamic guides */}
+            <div className="flex-1 flex flex-col items-center justify-center relative min-w-[280px] lg:min-w-[320px] reveal-element">
+              
+              {/* Flying Food Overlay */}
+              {flyingFood && (
+                <span className="flying-food-emoji select-none">
+                  {flyingFood}
+                </span>
+              )}
+
+              {/* Dynamic Speech Bubble */}
+              <div className="bg-white text-forest-950 px-5 py-3.5 rounded-2xl shadow-xl border border-emerald-500/10 relative mb-4 animate-float max-w-[280px] text-center select-none min-h-[75px] flex items-center justify-center">
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-bold">
+                  {feedbackMsg ? feedbackMsg : (
+                    isFeedingCompleted 
+                      ? "Horeee! Aku kenyang dan sehat! Kamu adalah Sahabat Konservasi Sejati!" 
+                      : "Ayo beri aku makan di kartu Makanan di sebelah kanan!"
+                  )}
+                </p>
+                {/* Bubble Pointer */}
+                <div className="absolute left-1/2 -bottom-2 w-3.5 h-3.5 bg-white transform -translate-x-1/2 rotate-45 border-r border-b border-emerald-500/5"></div>
+              </div>
+
+              <div 
+                onMouseEnter={() => setIsLutungHovered(true)}
+                onMouseLeave={() => setIsLutungHovered(false)}
+                className="relative w-64 h-64 sm:w-80 sm:h-80 cursor-pointer group"
+              >
                 <img 
-                  src="/lutung_circle.png" 
+                  src={(isLutungHovered || flyingFood) ? imgLutungMelambai : imgLutungJalan} 
                   alt="Profil Lutung Jawa" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                  className="w-full h-full object-contain transition-transform duration-300 transform scale-100 hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                  <span className="text-white font-display text-sm font-semibold tracking-wider">Sahabat Hutan Kita</span>
+                <div className="absolute inset-x-0 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center pointer-events-none">
+                  <span className="bg-forest-950/85 text-white font-display text-xs px-4 py-2 rounded-full shadow-xl border border-emerald-500/10 backdrop-blur-sm">
+                    {(isLutungHovered || flyingFood) ? 'Nyam, Lezat!' : 'Sahabat Hutan Kita'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -465,7 +746,7 @@ export default function LandingPage({ setScreen }) {
               {/* Card 1: Persebaran */}
               <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
                 <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg">🌍</span> Persebaran
+                  <span className="text-lg"></span>Persebaran
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
                   Lutung Jawa merupakan satwa endemik Indonesia yang hidup di Pulau Jawa, Bali, dan sebagian Pulau Lombok. Satwa ini banyak ditemukan di kawasan hutan yang masih memiliki vegetasi yang baik.
@@ -475,7 +756,7 @@ export default function LandingPage({ setScreen }) {
               {/* Card 2: Habitat */}
               <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
                 <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg">🌳</span> Habitat
+                  <span className="text-lg"></span>Habitat
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
                   Lutung Jawa hidup di hutan hujan tropis, hutan pegunungan, hutan mangrove, dan hutan jati. Mereka menghabiskan sebagian besar waktunya di atas pohon untuk mencari makan, beristirahat, dan berlindung.
@@ -483,27 +764,80 @@ export default function LandingPage({ setScreen }) {
               </div>
 
               {/* Card 3: Makanan */}
-              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md transition">
                 <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg">🍃</span> Makanan
+                  <span className="text-lg"></span>Makanan & Game Beri Makan
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold">
-                  Lutung Jawa termasuk hewan herbivor. Makanan utamanya adalah:
+                  Lutung Jawa adalah herbivor. Klik makanan sehat di bawah untuk memberinya makan, dan hindari sampah berbahaya!
                 </p>
-                <div className="grid grid-cols-2 gap-2 mt-3 pl-2">
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-700 font-semibold">
-                    <span className="text-emerald-500 text-xs">●</span> Daun muda
+
+                {/* Satiety Progress Bar */}
+                <div className="mt-4 bg-slate-100 p-3 rounded-xl border border-slate-200/50 space-y-1.5">
+                  <div className="flex justify-between items-center text-xs font-bold text-slate-700">
+                    <span className="flex items-center gap-1">
+                      {isFeedingCompleted ? 'Kenyang Maksimal!' : 'Satiety (Tingkat Kenyang):'}
+                    </span>
+                    <span className={isFeedingCompleted ? 'text-emerald-600 animate-pulse font-extrabold' : ''}>
+                      {satiety}%
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-700 font-semibold">
-                    <span className="text-emerald-500 text-xs">●</span> Buah-buahan
-                  </div>
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-700 font-semibold">
-                    <span className="text-emerald-500 text-xs">●</span> Bunga
-                  </div>
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-700 font-semibold">
-                    <span className="text-emerald-500 text-xs">●</span> Tunas dan biji
+                  <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden relative">
+                    <div 
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        isFeedingCompleted 
+                          ? 'bg-gradient-to-r from-emerald-400 to-green-500 animate-pulse' 
+                          : satiety > 50 
+                            ? 'bg-emerald-500' 
+                            : satiety > 20 
+                              ? 'bg-amber-500' 
+                              : 'bg-rose-500'
+                      }`}
+                      style={{ width: `${satiety}%` }}
+                    />
                   </div>
                 </div>
+
+                {/* Feeding Options Grid */}
+                <div className="grid grid-cols-2 gap-2.5 mt-4">
+                  <button
+                    onClick={() => feedLutung('leaf', '🍃')}
+                    disabled={isFeedingCompleted}
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-emerald-100/80 hover:bg-emerald-200/90 border border-emerald-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                  >
+                    <span></span>Daun Muda
+                  </button>
+                  <button
+                    onClick={() => feedLutung('fruit', '🍎')}
+                    disabled={isFeedingCompleted}
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-rose-800 font-bold bg-rose-100/80 hover:bg-rose-200/90 border border-rose-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                  >
+                    <span></span>Buah Hutan
+                  </button>
+                  <button
+                    onClick={() => feedLutung('flower', '🌸')}
+                    disabled={isFeedingCompleted}
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-pink-800 font-bold bg-pink-100/80 hover:bg-pink-200/90 border border-pink-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                  >
+                    <span></span>Bunga Hutan
+                  </button>
+                  <button
+                    onClick={() => feedLutung('plastic', '🗑️')}
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-slate-800 font-bold bg-slate-100 hover:bg-slate-200/90 border border-slate-300 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer"
+                  >
+                    <span></span>Sampah Plastik
+                  </button>
+                </div>
+
+                {/* Reset Button when Completed */}
+                {isFeedingCompleted && (
+                  <button
+                    onClick={resetFeedingGame}
+                    className="w-full mt-3 py-2 bg-[#165c43] hover:bg-[#123e32] text-white font-bold rounded-xl text-xs shadow-md transition active:scale-98 cursor-pointer font-display"
+                  >
+                    Main Lagi / Reset Game
+                  </button>
+                )}
               </div>
 
             </div>
@@ -563,7 +897,6 @@ export default function LandingPage({ setScreen }) {
           
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🐒</span>
               <h4 className="font-display font-extrabold text-sm text-white">LUTUNG JAWA</h4>
             </div>
             <p className="leading-relaxed text-slate-500">
@@ -593,11 +926,6 @@ export default function LandingPage({ setScreen }) {
             <h5 className="font-bold text-white font-display">Kontak</h5>
             <ul className="space-y-2 text-slate-500">
               <li>Email: <a href="mailto:hello@lutungjawa.id" className="hover:text-white transition">hello@lutungjawa.id</a></li>
-              <li className="flex gap-3 text-lg pt-1">
-                <span className="cursor-pointer hover:text-white">📷</span>
-                <span className="cursor-pointer hover:text-white">🎥</span>
-                <span className="cursor-pointer hover:text-white">💬</span>
-              </li>
             </ul>
           </div>
 
