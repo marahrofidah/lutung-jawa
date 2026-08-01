@@ -454,19 +454,25 @@ function App() {
   }
 
   const isRoleSelection = screen === 'role-selection';
-  const isYellowBg = screen === 'teacher-setup';
-  const isGreenBg = screen === 'student-setup';
+  const isTeacherSetup = screen === 'teacher-setup';
+  const isTeacherDashboard = screen === 'teacher-dashboard';
+  const isStudentSetup = screen === 'student-setup';
+  const isStudentPlayroom = screen === 'student-playroom';
 
   return (
     <div 
       className={`font-sans min-h-screen flex flex-col selection:bg-lutung-orange selection:text-white transition-all duration-300 ${
         isRoleSelection
           ? 'bg-cover bg-center bg-no-repeat text-forest-950'
-          : isYellowBg 
+          : isTeacherSetup
             ? 'bg-[#ffcc00] text-forest-950' 
-            : isGreenBg
-              ? 'bg-[#002916] text-forest-950'
-              : 'bg-radial from-forest-900 to-forest-950 text-slate-100'
+            : isTeacherDashboard
+              ? 'bg-[#fff8d4] text-forest-950' 
+              : isStudentSetup
+                ? 'bg-[#a7f3d0] text-forest-950'
+                : isStudentPlayroom
+                  ? 'bg-[#e5f2eb] text-forest-950'
+                  : 'bg-[#f6f5ee] text-forest-950'
       }`}
       style={isRoleSelection ? { backgroundImage: `url(${imgBgRole})` } : {}}
     >
@@ -565,15 +571,9 @@ function App() {
 
       {/* FOOTER */}
       {screen !== 'landing' && (
-        <footer className={`mt-auto px-6 py-6 text-center text-xs space-y-1 transition-all duration-300 ${
-          isYellowBg || isGreenBg || isRoleSelection 
-            ? 'bg-transparent border-none text-gray-600/80' 
-            : 'border-t border-forest-850 bg-forest-950/80 text-slate-450'
-        }`}>
+        <footer className="mt-auto px-6 py-6 text-center text-xs space-y-1 transition-all duration-300 bg-transparent border-none text-forest-900/60">
           <p>© 2026 Edukasi Konservasi Lutung Jawa.</p>
-          <p className={`text-[10px] font-mono transition-colors ${
-            isYellowBg || isGreenBg || isRoleSelection ? 'text-emerald-800/80' : 'text-emerald-500/60'
-          }`}>Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
+          <p className="text-[10px] font-mono transition-colors text-emerald-800/80">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
         </footer>
       )}
 

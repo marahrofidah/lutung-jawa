@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 // Import actual assets provided by the user
-import bgHomepage from '../assets/bg_homepage.png'
+import bgHomepage from '../assets/bg-fix.png'
 import imgBelajarKelompok from '../assets/belajar_kelompok.png'
 import imgMateriInteraktif from '../assets/materi_interaktif.png'
 import imgForumDiskusi from '../assets/forum_diskusi.png'
@@ -405,15 +405,7 @@ export default function LandingPage({ setScreen }) {
               </button>
             </div>
 
-            {/* Right Side Info Box (positioned to not block the background monkey on branch - hidden on mobile) */}
-            <div className="hidden md:flex justify-end lg:mt-16">
-              <div className="max-w-[220px] bg-[#4a3525]/95 border-2 border-[#6b4e37] text-[#fbf0df] p-4.5 rounded-2xl shadow-2xl space-y-1.5 text-left transform rotate-1">
-                <span className="text-xl font-black text-[#ffbe0b] block font-display tracking-wider">Tahukah kamu?</span>
-                <p className="text-[15px] text-slate-200 leading-relaxed font-medium">
-                  Lutung Jawa hanya dapat ditemukan di Pulau Jawa dan kini terancam punah.
-                </p>
-              </div>
-            </div>
+
 
           </div>
 
