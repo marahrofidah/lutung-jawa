@@ -298,9 +298,8 @@ export default function LandingPage({ setScreen }) {
   return (
     <div className="w-full text-slate-100 flex flex-col font-sans bg-[#f6f5ee]">
       
-      {/* HERO WRAPPER with bg_homepage.png covering the top section */}
       <div 
-        className="w-full bg-cover bg-center bg-no-repeat relative min-h-[700px] md:min-h-[820px] lg:min-h-[900px] flex flex-col overflow-hidden"
+        className="w-full bg-cover bg-[position:35%_center] md:bg-center bg-no-repeat relative min-h-[700px] md:min-h-[820px] lg:min-h-[900px] flex flex-col overflow-hidden"
         style={{ backgroundImage: `url(${bgHomepage})` }}
       >
         {/* Falling Leaves Effect */}
@@ -311,13 +310,13 @@ export default function LandingPage({ setScreen }) {
         </div>
 
         {/* 1. ABSOLUTE TRANSPARENT HEADER */}
-        <header className="w-full px-6 py-4 flex items-center justify-between z-40">
+        <header className="w-full px-4 sm:px-6 py-4 flex items-center justify-between z-40">
           <div className="flex items-center gap-3 cursor-pointer select-none">
             <div>
-              <h1 className="font-display font-extrabold text-xl tracking-tight text-forest-950 flex items-center gap-2">
+              <h1 className="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-forest-950 flex items-center gap-2">
                 LUTUNG JAWA
               </h1>
-              <p className="text-[10px] text-forest-800 font-mono tracking-widest uppercase">Edukasi Konservasi</p>
+              <p className="text-xs sm:text-[15px] text-forest-800 font-mono tracking-widest uppercase">Edukasi Konservasi</p>
             </div>
           </div>
 
@@ -332,7 +331,7 @@ export default function LandingPage({ setScreen }) {
               </div>
               <button 
                 onClick={() => scrollToSection('fitur-seru')}
-                className="bg-gradient-to-b from-[#8b5a2b] to-[#5c3a21] hover:from-[#9c6a3b] hover:to-[#6c4a31] border-2 border-[#3d2516] text-[#f7e7d0] hover:text-white px-8 py-3.5 rounded-2xl text-base font-bold font-display shadow-lg hover:shadow-xl transition-all transform hover:translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                className="bg-gradient-to-b from-[#8b5a2b] to-[#5c3a21] hover:from-[#9c6a3b] hover:to-[#6c4a31] border-2 border-[#3d2516] text-[#f7e7d0] hover:text-white px-8 py-3.5 rounded-2xl text-xl font-medium font-display shadow-lg hover:shadow-xl transition-all transform hover:translate-y-0.5 flex items-center gap-2 cursor-pointer"
               >
                 <span>Petunjuk</span>
               </button>
@@ -347,7 +346,7 @@ export default function LandingPage({ setScreen }) {
               </div>
               <button 
                 onClick={() => scrollToSection('sekilas-lutung')}
-                className="bg-gradient-to-b from-[#8b5a2b] to-[#5c3a21] hover:from-[#9c6a3b] hover:to-[#6c4a31] border-2 border-[#3d2516] text-[#f7e7d0] hover:text-white px-8 py-3.5 rounded-2xl text-base font-bold font-display shadow-lg hover:shadow-xl transition-all transform hover:translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                className="bg-gradient-to-b from-[#8b5a2b] to-[#5c3a21] hover:from-[#9c6a3b] hover:to-[#6c4a31] border-2 border-[#3d2516] text-[#f7e7d0] hover:text-white px-8 py-3.5 rounded-2xl text-xl font-display font-medium shadow-lg hover:shadow-xl transition-all transform hover:translate-y-0.5 flex items-center gap-2 cursor-pointer"
               >
                 <span>Profil Lutung Jawa</span>
               </button>
@@ -358,9 +357,9 @@ export default function LandingPage({ setScreen }) {
           <div>
             <button 
               onClick={() => setScreen('role-selection')}
-              className="flex items-center gap-3.5 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-bold px-7 py-3 rounded-full text-base transition duration-200 transform hover:scale-105 shadow-md cursor-pointer"
+              className="flex items-center gap-2 sm:gap-3.5 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-medium px-4 py-2 sm:px-7 sm:py-3 rounded-full text-xs sm:text-lg transition duration-200 transform hover:scale-105 shadow-md cursor-pointer"
             >
-              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-forest-800 text-xs shadow-inner font-mono">▶</span>
+              <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white flex items-center justify-center text-forest-800 text-[10px] sm:text-xs shadow-inner font-mono shrink-0">▶</span>
               <span className="font-display">Mulai Bermain</span>
             </button>
           </div>
@@ -376,22 +375,22 @@ export default function LandingPage({ setScreen }) {
             <div className="space-y-6 text-left max-w-xl">
               
               {/* Speech Bubble */}
-              <div className="inline-flex items-center gap-2 bg-white text-forest-950 px-6 py-3 rounded-2xl shadow-xl border border-emerald-500/10 relative animate-float">
+              <div className="inline-flex items-center gap-2 bg-white text-forest-950 px-4 py-2 sm:px-6 sm:py-3 rounded-2xl shadow-xl border border-emerald-500/10 relative animate-float">
                 <div>
-                  <p className="text-sm sm:text-base font-bold font-display leading-tight">Hai, teman-teman!</p>
-                  <p className="text-xs sm:text-sm text-slate-500 font-semibold leading-none mt-1">Yuk bantu aku menjaga hutan!</p>
+                  <p className="text-xs sm:text-base font-bold font-display leading-tight">Hai, teman-teman!</p>
+                  <p className="text-[10px] sm:text-sm text-slate-500 font-semibold leading-none mt-1">Yuk bantu aku menjaga hutan!</p>
                 </div>
                 {/* Pointer */}
-                <div className="absolute left-8 -bottom-2 w-4 h-4 bg-white transform rotate-45 border-r border-b border-emerald-500/5"></div>
+                <div className="absolute left-6 sm:left-8 -bottom-2 w-3.5 h-3.5 bg-white transform rotate-45 border-r border-b border-emerald-500/5"></div>
               </div>
 
               <div className="space-y-4">
-                <h2 className="text-4xl sm:text-5xl lg:text-7xl font-display font-extrabold text-forest-950 leading-tight drop-shadow-sm">
+                <h2 className="text-3xl sm:text-5xl lg:text-7xl font-display font-extrabold text-forest-950 leading-tight drop-shadow-sm">
                   Belajar Seru,<br />
                   Selamatkan<br />
                   <span className="text-[#123e32]">Lutung Jawa!</span>
                 </h2>
-                <p className="text-forest-900 text-base sm:text-lg max-w-lg leading-relaxed font-semibold">
+                <p className="text-forest-900 text-sm sm:text-lg max-w-[260px] sm:max-w-lg leading-relaxed font-semibold">
                   Belajar bersama kelompokmu melalui 5 level misi seru untuk mengenal, memahami, dan melindungi Lutung Jawa.
                 </p>
               </div>
@@ -399,18 +398,18 @@ export default function LandingPage({ setScreen }) {
               {/* CTA Play Button */}
               <button 
                 onClick={() => setScreen('role-selection')}
-                className="flex items-center justify-between gap-6 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-extrabold px-6 py-3 rounded-full shadow-lg transition duration-200 transform hover:-translate-y-0.5 cursor-pointer"
+                className="flex items-center justify-between gap-4 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-medium px-5 py-2.5 sm:px-6 sm:py-3 rounded-full shadow-lg transition duration-200 transform hover:-translate-y-0.5 cursor-pointer w-fit text-xs sm:text-2xl"
               >
-                <span className="font-display text-sm tracking-wide">Mulai Petualangan</span>
-                <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-forest-850 text-[10px] shadow-md shrink-0">▶</span>
+                <span className="font-display text-start tracking-wide text-xs sm:text-sm">Mulai Petualangan</span>
+                <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white flex items-center justify-center text-forest-850 text-[8px] sm:text-[10px] shadow-md shrink-0">▶</span>
               </button>
             </div>
 
-            {/* Right Side Info Box (positioned to not block the background monkey on branch) */}
-            <div className="flex justify-end lg:mt-16">
-              <div className="max-w-[210px] bg-[#4a3525]/95 border-2 border-[#6b4e37] text-[#fbf0df] p-4.5 rounded-2xl shadow-2xl space-y-1.5 text-left transform rotate-1">
-                <span className="text-xs font-black text-[#ffbe0b] block font-display tracking-wider">Tahukah kamu?</span>
-                <p className="text-[11px] text-slate-200 leading-relaxed font-medium">
+            {/* Right Side Info Box (positioned to not block the background monkey on branch - hidden on mobile) */}
+            <div className="hidden md:flex justify-end lg:mt-16">
+              <div className="max-w-[220px] bg-[#4a3525]/95 border-2 border-[#6b4e37] text-[#fbf0df] p-4.5 rounded-2xl shadow-2xl space-y-1.5 text-left transform rotate-1">
+                <span className="text-xl font-black text-[#ffbe0b] block font-display tracking-wider">Tahukah kamu?</span>
+                <p className="text-[15px] text-slate-200 leading-relaxed font-medium">
                   Lutung Jawa hanya dapat ditemukan di Pulau Jawa dan kini terancam punah.
                 </p>
               </div>
@@ -422,7 +421,7 @@ export default function LandingPage({ setScreen }) {
       </div>
 
       {/* 3. SECTION: KENAPA BELAJAR DI SINI SERU? */}
-      <section id="fitur-seru" className="w-full bg-[#f6f5ee] text-forest-950 py-16 px-6 rounded-t-[100px] relative z-10 -mt-25">
+      <section id="fitur-seru" className="w-full bg-[#f6f5ee] text-forest-950 py-12 px-6 rounded-t-[40px] sm:rounded-t-[100px] relative z-10 -mt-16 sm:-mt-25">
         <div className="max-w-6xl mx-auto space-y-12 reveal-element">
           
           <div className="text-center space-y-2">
@@ -728,7 +727,7 @@ export default function LandingPage({ setScreen }) {
                 className="relative w-64 h-64 sm:w-80 sm:h-80 cursor-pointer group"
               >
                 <img 
-                  src={(isLutungHovered || flyingFood) ? imgLutungMelambai : imgLutungJalan} 
+                  src={(isLutungHovered || flyingFood) ? imgLutungJalan : imgLutungMelambai} 
                   alt="Profil Lutung Jawa" 
                   className="w-full h-full object-contain transition-transform duration-300 transform scale-100 hover:scale-105" 
                 />
@@ -743,26 +742,6 @@ export default function LandingPage({ setScreen }) {
             {/* Right Information Column */}
             <div className="flex-1 w-full space-y-6 reveal-element delay-200">
               
-              {/* Card 1: Persebaran */}
-              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-                <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg"></span>Persebaran
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
-                  Lutung Jawa merupakan satwa endemik Indonesia yang hidup di Pulau Jawa, Bali, dan sebagian Pulau Lombok. Satwa ini banyak ditemukan di kawasan hutan yang masih memiliki vegetasi yang baik.
-                </p>
-              </div>
-
-              {/* Card 2: Habitat */}
-              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
-                <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg"></span>Habitat
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
-                  Lutung Jawa hidup di hutan hujan tropis, hutan pegunungan, hutan mangrove, dan hutan jati. Mereka menghabiskan sebagian besar waktunya di atas pohon untuk mencari makan, beristirahat, dan berlindung.
-                </p>
-              </div>
-
               {/* Card 3: Makanan */}
               <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md transition">
                 <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
@@ -803,27 +782,27 @@ export default function LandingPage({ setScreen }) {
                   <button
                     onClick={() => feedLutung('leaf', '🍃')}
                     disabled={isFeedingCompleted}
-                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-emerald-100/80 hover:bg-emerald-200/90 border border-emerald-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-amber-300 hover:bg-amber-300/30 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
                   >
                     <span></span>Daun Muda
                   </button>
                   <button
                     onClick={() => feedLutung('fruit', '🍎')}
                     disabled={isFeedingCompleted}
-                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-rose-800 font-bold bg-rose-100/80 hover:bg-rose-200/90 border border-rose-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-amber-300 hover:bg-amber-300/30 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
                   >
                     <span></span>Buah Hutan
                   </button>
                   <button
                     onClick={() => feedLutung('flower', '🌸')}
                     disabled={isFeedingCompleted}
-                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-pink-800 font-bold bg-pink-100/80 hover:bg-pink-200/90 border border-pink-300/60 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-amber-300 hover:bg-amber-300/30 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed"
                   >
                     <span></span>Bunga Hutan
                   </button>
                   <button
                     onClick={() => feedLutung('plastic', '🗑️')}
-                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-slate-800 font-bold bg-slate-100 hover:bg-slate-200/90 border border-slate-300 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer"
+                    className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-emerald-800 font-bold bg-amber-300 hover:bg-amber-300/30 px-3 py-2 rounded-xl active:scale-95 transition cursor-pointer"
                   >
                     <span></span>Sampah Plastik
                   </button>
@@ -833,11 +812,31 @@ export default function LandingPage({ setScreen }) {
                 {isFeedingCompleted && (
                   <button
                     onClick={resetFeedingGame}
-                    className="w-full mt-3 py-2 bg-[#165c43] hover:bg-[#123e32] text-white font-bold rounded-xl text-xs shadow-md transition active:scale-98 cursor-pointer font-display"
+                    className="w-full mt-3 py-2 bg-[#165c43] hover:bg-[#123e32] text-white font-display rounded-xl text-xs shadow-md transition active:scale-98 cursor-pointer"
                   >
                     Main Lagi / Reset Game
                   </button>
                 )}
+              </div>
+
+              {/* Card 1: Persebaran */}
+              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+                <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
+                  <span className="text-lg"></span>Persebaran
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
+                  Lutung Jawa merupakan satwa endemik Indonesia yang hidup di Pulau Jawa, Bali, dan sebagian Pulau Lombok. Satwa ini banyak ditemukan di kawasan hutan yang masih memiliki vegetasi yang baik.
+                </p>
+              </div>
+
+              {/* Card 2: Habitat */}
+              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">
+                <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
+                  <span className="text-lg"></span>Habitat
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold text-justify">
+                  Lutung Jawa hidup di hutan hujan tropis, hutan pegunungan, hutan mangrove, dan hutan jati. Mereka menghabiskan sebagian besar waktunya di atas pohon untuk mencari makan, beristirahat, dan berlindung.
+                </p>
               </div>
 
             </div>
@@ -931,7 +930,7 @@ export default function LandingPage({ setScreen }) {
 
         </div>
         
-        <div className="max-w-6xl mx-auto pt-8 mt-8 border-t border-forest-900 text-center text-[10px] text-slate-500">
+        <div className="max-w-6xl mx-auto pt-8 mt-8 border-t text-center text-[10px] text-slate-500">
           <p>© 2026 Lutung Jawa. All rights reserved.</p>
         </div>
       </footer>

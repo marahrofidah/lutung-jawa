@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import { levelsData } from './data/levelsData'
 import imgDaunCursor from './assets/daun.png'
+import imgBgRole from './assets/bg-role.png'
 
 // Import Components & Pages
 import Header from './components/Header'
@@ -452,8 +453,23 @@ function App() {
     }
   }
 
+  const isRoleSelection = screen === 'role-selection';
+  const isYellowBg = screen === 'teacher-setup';
+  const isGreenBg = screen === 'student-setup';
+
   return (
-    <div className="font-sans min-h-screen bg-radial from-forest-900 to-forest-950 text-slate-100 flex flex-col selection:bg-lutung-orange selection:text-white">
+    <div 
+      className={`font-sans min-h-screen flex flex-col selection:bg-lutung-orange selection:text-white transition-all duration-300 ${
+        isRoleSelection
+          ? 'bg-cover bg-center bg-no-repeat text-forest-950'
+          : isYellowBg 
+            ? 'bg-[#ffcc00] text-forest-950' 
+            : isGreenBg
+              ? 'bg-[#002916] text-forest-950'
+              : 'bg-radial from-forest-900 to-forest-950 text-slate-100'
+      }`}
+      style={isRoleSelection ? { backgroundImage: `url(${imgBgRole})` } : {}}
+    >
       
       {/* Alert Notification */}
       {alertMsg.text && (
@@ -470,7 +486,7 @@ function App() {
       )}
 
       {/* HEADER */}
-      {screen !== 'landing' && (
+      {screen !== 'landing' && screen !== 'role-selection' && screen !== 'teacher-setup' && screen !== 'student-setup' && (
         <Header 
           dbConnected={dbConnected} 
           screen={screen} 
@@ -549,9 +565,15 @@ function App() {
 
       {/* FOOTER */}
       {screen !== 'landing' && (
-        <footer className="mt-auto border-t border-forest-850 bg-forest-950/80 px-6 py-6 text-center text-xs text-slate-450 space-y-1">
-          <p>© 2026 Edukasi Konservasi Lutung Jawa. Built with React, Tailwind CSS & Supabase.</p>
-          <p className="text-[10px] text-emerald-505 font-mono">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
+        <footer className={`mt-auto px-6 py-6 text-center text-xs space-y-1 transition-all duration-300 ${
+          isYellowBg || isGreenBg || isRoleSelection 
+            ? 'bg-transparent border-none text-gray-600/80' 
+            : 'border-t border-forest-850 bg-forest-950/80 text-slate-450'
+        }`}>
+          <p>© 2026 Edukasi Konservasi Lutung Jawa.</p>
+          <p className={`text-[10px] font-mono transition-colors ${
+            isYellowBg || isGreenBg || isRoleSelection ? 'text-emerald-800/80' : 'text-emerald-500/60'
+          }`}>Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
         </footer>
       )}
 
