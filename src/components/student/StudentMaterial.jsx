@@ -89,7 +89,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
         <div className="paper-container-shadow">
           <div className="card-paper-green paper-rough-1 px-8 sm:px-12 py-5 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-[15px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
+              <span className="text-[12px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
                 Tahap 1: Materi Pembelajaran
               </span>
               <h4 className="font-display font-black text-2xl text-[#02462e] mt-1.5 flex items-center gap-2">

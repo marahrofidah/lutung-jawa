@@ -62,11 +62,8 @@ export default function StudentBadge({
           <div className="card-paper-green paper-rough-1 p-8 sm:p-12 space-y-6 relative overflow-hidden">
             
             <div className="space-y-4">
-              <span className="text-[10px] font-sans bg-emerald-600 text-white px-3.5 py-1 rounded-full font-display font-extrabold shadow-sm">
-                TAHAP 5: HASIL TANTANGAN
-              </span>
               <h3 className="text-3xl font-display font-black text-[#02462e] tracking-tight leading-tight">
-                Hore! Jawaban Kelompok Benar! 🎉
+                Jawaban Benar!
               </h3>
               <p className="text-slate-655 text-sm sm:text-base font-semibold leading-relaxed max-w-md mx-auto">
                 Kerja sama yang luar biasa! Kelompok Anda berhasil memecahkan tantangan sains Lutung Jawa di Level {studentGroup.current_level} ini.

@@ -83,8 +83,8 @@ export default function StudentQuestion({
           </div>
           
           <div className="border-b border-[#02462e]/10 pb-3 pt-4">
-            <span className="text-[10px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
-              TAHAP 2: TANTANGAN UTAMA
+            <span className="text-[12px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
+              Tahap 2: Tantangan Utama
             </span>
             <h4 className="font-display font-black text-xl sm:text-2xl text-[#02462e] mt-3">
               Tantangan Level {currentLvlData.level}
@@ -253,7 +253,7 @@ export default function StudentQuestion({
                 </svg>
               </div>
               
-              <h4 className="font-display font-black text-lg text-[#02462e] border-b border-[#02462e]/10 pb-3 flex items-center gap-2 pt-2">
+              <h4 className="font-display font-black text-2xl text-[#02462e] border-b border-[#02462e]/10 pb-3 flex items-center gap-2 pt-2">
                 <svg className="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
@@ -264,7 +264,7 @@ export default function StudentQuestion({
                 
                 {/* Name Input - Ruled Line Style */}
                 <div className="space-y-1 text-left">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-sans">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider block font-sans">
                     Nama Anggota Kelompok
                   </label>
                   <input 
@@ -272,14 +272,14 @@ export default function StudentQuestion({
                     value={memberNameInput}
                     onChange={(e) => setMemberNameInput(e.target.value)}
                     placeholder="Masukkan nama Anda..."
-                    className="w-full bg-transparent border-b-2 border-dashed border-[#02462e]/30 text-slate-800 focus:outline-none focus:border-[#02462e] py-1.5 px-1 font-sans font-extrabold text-sm placeholder-slate-400/70"
+                    className="w-full bg-transparent border-b-2 border-dashed border-[#02462e]/30 text-slate-800 focus:outline-none focus:border-[#02462e] py-1.5 px-1 font-sans font-extrabold text-base placeholder-slate-400"
                     required
                   />
                 </div>
 
                 {/* Dropzone with Wax Seal Display */}
                 <div className="space-y-1 text-left">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-sans">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider block font-sans">
                     Pilihan Terpilih (Seret atau Ketuk Kartu)
                   </label>
                   
@@ -296,7 +296,7 @@ export default function StudentQuestion({
                     }`}
                   >
                     {isDragOver ? (
-                      <span className="text-xs text-[#02462e] font-display font-black animate-pulse">
+                      <span className="text-sm text-[#02462e] font-display font-black animate-pulse">
                         📥 Lepaskan Kartu Di Sini
                       </span>
                     ) : memberAnswerInput ? (
@@ -306,18 +306,18 @@ export default function StudentQuestion({
                           {memberAnswerInput}
                         </div>
                         <div className="text-left">
-                          <span className="text-[9px] bg-rose-100 text-rose-800 border border-rose-200 px-2 py-0.5 rounded font-bold uppercase tracking-wider block w-max">
+                          <span className="text-xs bg-rose-100 text-rose-800 border border-rose-200 px-2 py-0.5 rounded font-bold uppercase tracking-wider block w-max">
                             Segel Sah
                           </span>
-                          <span className="text-xs text-slate-700 font-bold mt-1 block">Telah dikunci di jurnal</span>
+                          <span className="text-sm text-slate-700 font-bold mt-1 block">Telah dikunci di jurnal</span>
                         </div>
                       </div>
                     ) : (
                       <div className="flex flex-col items-center gap-1 py-1">
-                        <span className="text-xs text-amber-800/80 font-bold italic">
+                        <span className="text-sm text-amber-800/80 font-bold italic">
                           ✍️ Taruh jawaban di sini
                         </span>
-                        <span className="text-[9px] text-slate-400 font-medium">
+                        <span className="text-xs text-slate-400 font-medium">
                           (Seret kartu kuis atau ketuk kartu di kiri)
                         </span>
                       </div>
@@ -327,7 +327,7 @@ export default function StudentQuestion({
 
                 {/* Reason Textarea - Ruled Notebook Line Style */}
                 <div className="space-y-1 text-left">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-sans">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider block font-sans">
                     Alasan / Argumen Jawaban
                   </label>
                   <textarea 
@@ -335,7 +335,7 @@ export default function StudentQuestion({
                     onChange={(e) => setMemberReasonInput(e.target.value)}
                     placeholder="Jelaskan alasan ilmiah pilihan Anda..."
                     rows="4"
-                    className="w-full bg-transparent border-b-2 border-slate-350 focus:border-[#02462e] text-slate-800 focus:outline-none px-1 font-bold text-sm placeholder-slate-400/70 resize-none"
+                    className="w-full bg-transparent border-b-2 border-slate-350 focus:border-[#02462e] text-slate-800 focus:outline-none px-1 font-bold text-base placeholder-slate-400 resize-none"
                     style={{
                       backgroundImage: 'linear-gradient(rgba(2, 70, 46, 0.12) 1px, transparent 1px)',
                       backgroundSize: '100% 28px',
@@ -350,7 +350,7 @@ export default function StudentQuestion({
                 <button 
                   type="submit"
                   disabled={!memberAnswerInput}
-                  className={`w-full font-display font-black py-3.5 rounded-2xl text-xs transition duration-150 flex items-center justify-center gap-2 shadow-md border-2 ${
+                  className={`w-full font-display font-black py-3.5 rounded-2xl text-sm transition duration-150 flex items-center justify-center gap-2 shadow-md border-2 ${
                     memberAnswerInput 
                       ? 'bg-[#02462e] hover:bg-[#fec700] text-white hover:text-[#02462e] border-[#02462e] cursor-pointer shadow-lg hover:scale-102' 
                       : 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'

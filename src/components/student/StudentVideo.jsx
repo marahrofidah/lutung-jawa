@@ -30,7 +30,7 @@ export default function StudentVideo({ currentLvlData, onNext }) {
           <div className="paper-container-shadow relative z-10">
             <div className="card-paper-yellow paper-rough-2 p-5 space-y-2">
               <span className="font-display font-black text-[#02462e] text-xs uppercase tracking-wider block">
-                Pembahasan Ilmiah:
+                {Number(currentLvlData?.level) === 1 ? "Umpan Balik:" : "Pembahasan Ilmiah:"}
               </span>
               <p className="text-slate-700 text-sm sm:text-base leading-relaxed text-justify font-bold italic">
                 {currentLvlData.discussion}

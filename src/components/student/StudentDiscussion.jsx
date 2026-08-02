@@ -34,7 +34,7 @@ export default function StudentDiscussion({
               <svg className="w-5 h-5 text-[#02462e]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <h5 className="font-bold text-xs sm:text-sm text-[#02462e] tracking-wider font-sans">
+              <h5 className="font-bold text-sm sm:text-base text-[#02462e] tracking-wider font-sans">
                 Gagasan Anggota (Jawaban Individu)
               </h5>
             </div>
@@ -55,7 +55,7 @@ export default function StudentDiscussion({
                         <span className="font-display font-extrabold text-sm sm:text-base text-[#02462e] truncate pr-2">
                           {ans.member_name}
                         </span>
-                        <span className="text-[10px] font-sans font-black px-2.5 py-0.5 rounded border bg-slate-50 border-slate-200 text-lutung-orange shrink-0">
+                        <span className="text-xs font-sans font-black px-2.5 py-0.5 rounded border bg-slate-50 border-slate-200 text-lutung-orange shrink-0">
                           Pilihan: {ans.answer}
                         </span>
                       </div>
@@ -74,27 +74,27 @@ export default function StudentDiscussion({
         {/* Right Card: Consensus Scroll Form */}
         <div className="xl:col-span-2 paper-container-shadow">
           <div className="card-paper-yellow paper-rough-2 border-2 border-[#fec700]/70 p-6 sm:p-7 flex flex-col justify-between gap-6 relative min-h-full">
-            <div className="absolute right-4 top-4 text-xs font-sans text-[#02462e]/45 font-bold select-none">
+            <div className="absolute right-4 top-4 text-xs sm:text-sm font-sans text-[#02462e]/45 font-bold select-none">
               Musyawarah Kelompok
             </div>
-
+ 
             <div className="space-y-4">
               <div className="flex items-center gap-2 border-b border-amber-250/60 pb-3">
                 <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h5 className="font-bold text-xs sm:text-sm text-[#02462e] tracking-wider font-sans">
+                <h5 className="font-bold text-sm sm:text-base text-[#02462e] tracking-wider font-sans">
                   Keputusan Akhir Resmi
                 </h5>
               </div>
-
+ 
               <form onSubmit={handleGroupSubmit} className="space-y-4">
-                <p className="text-xs text-slate-550 leading-relaxed font-semibold">
+                <p className="text-sm text-slate-700 leading-relaxed font-bold">
                   Diskusikan seluruh gagasan anggota di sebelah kiri. Tentukan satu kesimpulan jawaban dan alasan kelompok yang disepakati bersama.
                 </p>
-
+ 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-sans">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider block font-sans">
                     Pilihan Akhir Kelompok
                   </label>
                   <div className="flex items-center justify-around gap-2 py-1.5">
@@ -117,9 +117,9 @@ export default function StudentDiscussion({
                     })}
                   </div>
                 </div>
-
+ 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-sans">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-wider block font-sans">
                     Alasan Kesepakatan Kelompok
                   </label>
                   <textarea 
@@ -127,27 +127,23 @@ export default function StudentDiscussion({
                     onChange={(e) => setGroupReasonInput(e.target.value)}
                     placeholder="Tuliskan argumen ilmiah hasil musyawarah kelompok..."
                     rows="3"
-                    className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-xl p-2.5 text-xs focus:outline-none focus:border-lutung-orange resize-none font-semibold shadow-inner"
+                    className="w-full bg-white/70 border border-slate-200 text-slate-900 rounded-xl p-2.5 text-sm focus:outline-none focus:border-lutung-orange resize-none font-semibold shadow-inner placeholder-slate-400"
                     required
                   ></textarea>
                 </div>
-
+ 
                 <button 
                   type="submit"
                   disabled={individualAnswers.length === 0}
-                  className={`w-full font-display font-black py-3.5 rounded-xl text-xs transition duration-250 border border-transparent shadow-md ${
+                  className={`w-full font-display font-black py-3.5 rounded-xl text-sm transition duration-250 border border-transparent shadow-md ${
                     individualAnswers.length > 0 
-                      ? 'bg-lutung-orange hover:bg-lutung-orange/90 text-white cursor-pointer shadow-lg' 
+                      ? 'bg-lutung-orange hover:bg-lutung-orange/90 text-white cursor-pointer shadow-lg hover:scale-102' 
                       : 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
                   }`}
                 >
                   Kirim Keputusan Kelompok Akhir
                 </button>
               </form>
-            </div>
-
-            <div className="bg-[#fec700]/10 border border-[#fec700]/30 rounded-2xl p-4 text-xs text-[#02462e] leading-relaxed font-semibold">
-              Tip: Setelah keputusan kelompok dikirim, semua anggota kelompok akan diarahkan ke video pembahasan level ini.
             </div>
           </div>
         </div>

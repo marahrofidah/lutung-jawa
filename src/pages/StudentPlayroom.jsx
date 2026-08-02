@@ -261,7 +261,7 @@ export default function StudentPlayroom({
               <span className="text-xs text-slate-500 font-boldtracking-wider font-sans">Level Aktif:</span>
               <div className="bg-[#02462e] text-[#fec700] font-display font-black text-sm px-4 py-2.5 rounded-2xl shadow-sm tracking-wider flex items-center gap-2 border border-[#fec700]/30">
                 <span>LEVEL {studentGroup.current_level}</span>
-                <span className="text-xs bg-black/20 px-2 py-0.5 rounded-lg font-display">{studentGroup.current_level}/5</span>
+                <span className="text-sm bg-black/20 px-2 py-0.5 rounded-lg font-display">{studentGroup.current_level}/5</span>
               </div>
             </div>
           </div>

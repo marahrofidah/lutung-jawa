@@ -19,7 +19,7 @@ export const levelsData = [
     ],
     correctAnswer: "B",
     videoUrl: "https://www.youtube.com/embed/9gM63ZixU_A",
-    discussion: "Jawaban yang benar adalah B. Berdasarkan studi kasus, pembukaan lahan perkebunan dan pemukiman serta penebangan pohon menyebabkan berkurangnya jumlah pohon dan rusaknya konektivitas kanopi hutan, yang menyulitkan Lutung Jawa untuk berpindah tempat dan mendapatkan pakan alami.",
+    discussion: "Hebat! Kamu telah berhasil mengidentifikasi masalah pada habitat Lutung Jawa.\n\nDalam suatu ekosistem, setiap komponen saling berhubungan. Berkurangnya vegetasi tidak hanya memengaruhi tumbuhan, tetapi juga berdampak pada ketersediaan makanan, tempat berlindung, dan kelangsungan hidup satwa yang tinggal di dalamnya. Pada level berikutnya, kamu akan menganalisis lebih dalam bagaimana perubahan tersebut memengaruhi hubungan antar makhluk hidup dalam ekosistem.",
     badgeName: "Sobat Hutan (Forest Friend)",
     badgeIcon: "🌲",
     badgeDescription: "Lencana atas pemahaman mendalam tentang sebaran habitat alami Lutung Jawa."
