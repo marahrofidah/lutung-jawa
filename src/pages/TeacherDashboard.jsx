@@ -368,42 +368,45 @@ export default function TeacherDashboard({
                   <div className="card-paper-green paper-rough-2 p-6 relative overflow-hidden">
                     <div className="text-xs text-slate-500 font-bold block mb-4 text-center font-sans relative z-10">Lihat Level:</div>
                     
-                    <div className="relative flex items-center justify-between max-w-2xl mx-auto py-4 z-10">
-                      {/* Connection Line */}
-                      <div className="absolute left-0 right-0 h-1.5 bg-slate-200/80 top-1/2 -translate-y-1/2 z-0 rounded-full">
+                    <div className="relative max-w-2xl mx-auto py-4 z-10">
+                      {/* Connection Line (starts at Center of Col 1 and ends at Center of Col 5) */}
+                      <div className="absolute left-[48px] right-[48px] h-1.5 bg-slate-200/80 top-[40px] z-0 rounded-full">
                         <div 
                           className="bg-gradient-to-r from-[#fec700] to-emerald-600 h-full rounded-full transition-all duration-300"
                           style={{ width: `${((selectedGroupDetails.current_level - 1) / 4) * 100}%` }}
                         ></div>
                       </div>
 
-                      {[1, 2, 3, 4, 5].map((lvl) => {
-                        const isCurrent = lvl === teacherSelectedLevel
-                        const isLevelUnlocked = lvl <= selectedGroupDetails.current_level
-                        const themeName = levelsData[lvl - 1].theme.split(' - ')[0]
+                      {/* Circles Flex Container */}
+                      <div className="relative flex items-start justify-between z-10 w-full">
+                        {[1, 2, 3, 4, 5].map((lvl) => {
+                          const isCurrent = lvl === teacherSelectedLevel
+                          const isLevelUnlocked = lvl <= selectedGroupDetails.current_level
+                          const themeName = levelsData[lvl - 1].theme.split(' - ')[0]
 
-                        return (
-                          <div key={lvl} className="flex flex-col items-center gap-2 z-10 relative">
-                            <button
-                              onClick={() => isLevelUnlocked && setTeacherSelectedLevel(lvl)}
-                              className={`w-12 h-12 rounded-full font-display font-black text-sm transition-all duration-200 flex items-center justify-center border-4 ${
-                                isCurrent 
-                                  ? 'bg-[#02462e] text-[#fec700] border-[#fec700] scale-110 shadow-md ring-4 ring-[#02462e]/10' 
-                                  : isLevelUnlocked 
-                                    ? 'bg-[#fec700] text-[#02462e] border-[#02462e] hover:scale-105 cursor-pointer shadow-sm' 
-                                    : 'bg-slate-200/80 text-slate-400 border-slate-350 cursor-not-allowed'
-                              }`}
-                              disabled={!isLevelUnlocked}
-                              title={isLevelUnlocked ? `Level ${lvl}` : `Belum dicapai kelompok`}
-                            >
-                              {lvl}
-                            </button>
-                            <span className={`text-xs font-bold tracking-tight ${isCurrent ? 'text-[#02462e]' : 'text-slate-400'}`}>
-                              {themeName}
-                            </span>
-                          </div>
-                        )
-                      })}
+                          return (
+                            <div key={lvl} className="flex flex-col items-center gap-2 w-24 text-center z-10">
+                              <button
+                                onClick={() => isLevelUnlocked && setTeacherSelectedLevel(lvl)}
+                                className={`w-12 h-12 rounded-full font-display font-black text-sm transition-all duration-200 flex items-center justify-center border-4 ${
+                                  isCurrent 
+                                    ? 'bg-[#02462e] text-[#fec700] border-[#fec700] scale-110 shadow-md ring-4 ring-[#02462e]/10' 
+                                    : isLevelUnlocked 
+                                      ? 'bg-[#fec700] text-[#02462e] border-[#02462e] hover:scale-105 cursor-pointer shadow-sm' 
+                                      : 'bg-slate-200/80 text-slate-400 border-slate-350 cursor-not-allowed'
+                                }`}
+                                disabled={!isLevelUnlocked}
+                                title={isLevelUnlocked ? `Level ${lvl}` : `Belum dicapai kelompok`}
+                              >
+                                {lvl}
+                              </button>
+                              <span className={`text-[10px] sm:text-xs font-bold tracking-tight leading-tight max-w-[90px] ${isCurrent ? 'text-[#02462e] font-extrabold' : 'text-slate-400'}`}>
+                                {themeName}
+                              </span>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
