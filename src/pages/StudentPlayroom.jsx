@@ -1,10 +1,80 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
+import imgSobatHutan from '../assets/sobat-hutan.png'
+import imgPecintaDaun from '../assets/pecinta-daun.png'
 import StudentMaterial from '../components/student/StudentMaterial'
 import StudentQuestion from '../components/student/StudentQuestion'
 import StudentDiscussion from '../components/student/StudentDiscussion'
 import StudentVideo from '../components/student/StudentVideo'
 import StudentBadge from '../components/student/StudentBadge'
+
+// Leaf color palette (natural jungle tones)
+const LEAF_COLORS = [
+  '#165c43', // Forest Dark Green
+  '#1c7c59', // Forest Light Green
+  '#84cc16', // Jungle Lime
+  '#fca311', // Amber/Yellow
+  '#ff7826', // Orange
+];
+
+// Leaf helper to generate fixed random leaves
+const leavesData = Array.from({ length: 15 }).map((_, i) => {
+  const color = LEAF_COLORS[i % LEAF_COLORS.length];
+  const scale = 0.4 + (i % 6) * 0.1; // 0.4 to 0.9
+  const left = `${5 + (i * 7) % 90}%`; // Distribute across width
+  const delay = `${i * 1.5}s`; // Staggered entry
+  const duration = `${12 + (i % 5) * 2}s`; // 12s to 20s
+  const swayDuration = `${4.5 + (i % 4) * 0.8}s`; // 4.5s to 6.9s
+  const isSway1 = i % 2 === 0;
+
+  return {
+    id: i,
+    color,
+    scale,
+    left,
+    delay,
+    duration,
+    swayDuration,
+    isSway1
+  };
+});
+
+function Leaf({ color, scale, left, delay, duration, swayDuration, isSway1 }) {
+  return (
+    <div 
+      className={`absolute top-0 pointer-events-none z-10 ${isSway1 ? 'animate-sway-1' : 'animate-sway-2'}`}
+      style={{
+        left,
+        animationDelay: delay,
+        '--leaf-sway': swayDuration,
+        width: `${scale * 32}px`,
+        height: `${scale * 32}px`,
+      }}
+    >
+      <div 
+        className="w-full h-full animate-leaf-fall"
+        style={{
+          animationDelay: delay,
+          '--leaf-duration': duration,
+        }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <path 
+            d="M2 22C2 22 6 20 9 16C12 12 16 11 22 2C22 2 13 4 9 9C5 14 2 18 2 22Z" 
+            fill={color} 
+            fillOpacity="0.7"
+          />
+          <path 
+            d="M2 22C6 18 10 15 15 11" 
+            stroke="#05140f" 
+            strokeWidth="1.2" 
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 export default function StudentPlayroom({
   studentGroup,
@@ -199,6 +269,26 @@ export default function StudentPlayroom({
   // Custom vector badge icon renderer for final graduation screen
   const renderBadge = (level, size = "md") => {
     const sizeClasses = size === "lg" ? "w-16 h-16" : "w-10 h-10"
+    if (Number(level) === 1) {
+      return (
+        <img 
+          src={imgSobatHutan} 
+          alt="Lencana Sobat Hutan" 
+          className={`${sizeClasses} mx-auto object-contain select-none`}
+        />
+      )
+    }
+
+    if (Number(level) === 2) {
+      return (
+        <img 
+          src={imgPecintaDaun} 
+          alt="Lencana Pecinta Daun" 
+          className={`${sizeClasses} mx-auto object-contain select-none`}
+        />
+      )
+    }
+
     const colorClasses = {
       1: "text-[#02462e] bg-emerald-50 border-emerald-500/25",
       2: "text-green-700 bg-green-50 border-green-500/25",
@@ -208,10 +298,12 @@ export default function StudentPlayroom({
     }
 
     const icons = {
-      1: ( // Habitat - Star/Globe
-        <svg className="w-full h-full p-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+      1: ( // Habitat - Sobat Hutan Image Badge
+        <img 
+          src={imgSobatHutan} 
+          alt="Lencana Sobat Hutan" 
+          className="w-full h-full object-contain p-0.5 select-none"
+        />
       ),
       2: ( // Food - Leaf
         <svg className="w-full h-full p-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,7 +335,13 @@ export default function StudentPlayroom({
   }
 
   return (
-    <div className="space-y-8 py-6 animate-fade-in text-forest-950 font-sans">
+    <div className="space-y-8 py-6 animate-fade-in text-forest-950 font-sans relative overflow-hidden">
+      {/* Falling Leaves Effect */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {leavesData.map((leaf) => (
+          <Leaf key={leaf.id} {...leaf} />
+        ))}
+      </div>
       
       {/* Level & Group Title Header */}
       {!isLvlFinished && (

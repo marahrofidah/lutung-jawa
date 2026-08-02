@@ -330,7 +330,7 @@ export default function LandingPage({ setScreen }) {
                 <div className="w-[3.5px] h-full bg-[#5c3a21]"></div>
               </div>
               <button 
-                onClick={() => scrollToSection('fitur-seru')}
+                onClick={() => scrollToSection('langkah-bermain')}
                 className="bg-gradient-to-b from-[#8b5a2b] to-[#5c3a21] hover:from-[#9c6a3b] hover:to-[#6c4a31] border-2 border-[#3d2516] text-[#f7e7d0] hover:text-white px-8 py-3.5 rounded-2xl text-xl font-medium font-display shadow-lg hover:shadow-xl transition-all transform hover:translate-y-0.5 flex items-center gap-2 cursor-pointer"
               >
                 <span>Petunjuk</span>
@@ -552,22 +552,24 @@ export default function LandingPage({ setScreen }) {
           </div>
 
           {/* Active Step Detailed Presentation Panel */}
-          <div className="bg-white/90 backdrop-blur-sm border border-emerald-500/15 p-6 rounded-3xl shadow-xl max-w-4xl mx-auto mt-12 flex flex-col md:flex-row gap-8 items-center min-h-[190px]">
-            {/* Left Description */}
-            <div className="flex-1 text-left space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="text-3xl">{STEPS_DATA[activeStep].emoji}</span>
-                <h4 className="font-display font-black text-xl text-forest-950">
-                  {STEPS_DATA[activeStep].title}
-                </h4>
+          <div className="paper-container-shadow max-w-4xl mx-auto mt-12 transform rotate-[-0.3deg]">
+            <div className="card-paper paper-rough-2 p-6 sm:p-8 flex flex-col md:flex-row gap-8 items-center min-h-[190px] border border-amber-250/20 text-slate-800">
+              {/* Left Description */}
+              <div className="flex-1 text-left space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl">{STEPS_DATA[activeStep].emoji}</span>
+                  <h4 className="font-display font-black text-xl text-[#02462e]">
+                    {STEPS_DATA[activeStep].title}
+                  </h4>
+                </div>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-bold">
+                  {STEPS_DATA[activeStep].longDesc}
+                </p>
               </div>
-              <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold">
-                {STEPS_DATA[activeStep].longDesc}
-              </p>
-            </div>
-            {/* Right Interactive Preview */}
-            <div className="w-full md:w-80 shrink-0">
-              {STEPS_DATA[activeStep].preview}
+              {/* Right Interactive Preview */}
+              <div className="w-full md:w-80 shrink-0">
+                {STEPS_DATA[activeStep].preview}
+              </div>
             </div>
           </div>
 
@@ -575,7 +577,7 @@ export default function LandingPage({ setScreen }) {
       </section>
 
       {/* 4. SECTION: LANGKAH BERMAIN */}
-      <section className="w-full bg-forest-950 py-16 px-6 text-center border-t border-forest-900/50">
+      <section id="langkah-bermain" className="w-full bg-forest-950 py-16 px-6 text-center border-t border-forest-900/50">
         <div className="max-w-6xl mx-auto space-y-12">
           
           <div className="space-y-2 reveal-element">
@@ -589,76 +591,37 @@ export default function LandingPage({ setScreen }) {
 
           {/* Steps Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            {/* Step 1 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-100">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">1</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Amati gambar, data, atau informasi yang diberikan.
-                </p>
+            {[
+              { num: 1, text: "Amati gambar, data, atau informasi yang diberikan.", paper: "card-paper", rough: "paper-rough-1", rot: "rotate-[-1deg]", delay: "delay-100" },
+              { num: 2, text: "Bacalah studi kasus yang tersedia pada setiap level dengan teliti.", paper: "card-paper-yellow", rough: "paper-rough-2", rot: "rotate-[0.8deg]", delay: "delay-200" },
+              { num: 3, text: "Kerjakan setiap misi sesuai petunjuk pada level tersebut.", paper: "card-paper", rough: "paper-rough-1", rot: "rotate-[-0.5deg]", delay: "delay-300" },
+              { num: 4, text: "Jawab pertanyaan berdasarkan hasil pengamatan dan analisismu.", paper: "card-paper-yellow", rough: "paper-rough-2", rot: "rotate-[1.2deg]", delay: "delay-400" },
+              { num: 5, text: "Selesaikan seluruh level secara berurutan.", paper: "card-paper", rough: "paper-rough-1", rot: "rotate-[-0.8deg]", delay: "delay-500" },
+              { num: 6, text: "Setelah menyelesaikan semua level, lihat skor, badge yang diperoleh, dan refleksi pembelajaran.", paper: "card-paper-yellow", rough: "paper-rough-2", rot: "rotate-[0.5deg]", delay: "delay-[600ms]" }
+            ].map((step) => (
+              <div key={step.num} className={`paper-container-shadow transform ${step.rot} hover:rotate-0 hover:scale-102 transition-all duration-200 reveal-element ${step.delay}`}>
+                <div className={`${step.paper} ${step.rough} p-6 min-h-[150px] text-left flex flex-col justify-between gap-4 shadow-sm`}>
+                  <div className="space-y-3">
+                    <span className="w-8 h-8 bg-[#02462e] text-[#fec700] font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md select-none">
+                      {step.num}
+                    </span>
+                    <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-bold">
+                      {step.text}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-200">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">2</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Bacalah studi kasus yang tersedia pada setiap level dengan teliti.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-300">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">3</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Kerjakan setiap misi sesuai petunjuk pada level tersebut.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 4 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-400">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">4</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Jawab pertanyaan berdasarkan hasil pengamatan dan analisismu.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 5 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-500">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">5</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Selesaikan seluruh level secara berurutan.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 6 */}
-            <div className="bg-forest-900/40 border border-forest-850 p-6 rounded-2xl text-left hover:border-lutung-orange/40 transition duration-205 shadow-lg flex flex-col justify-between reveal-element delay-[600ms]">
-              <div className="space-y-3">
-                <span className="w-8 h-8 bg-[#ffbe0b] text-forest-950 font-bold rounded-full flex items-center justify-center text-sm font-mono shadow-md">6</span>
-                <p className="text-base text-slate-200 leading-relaxed font-semibold">
-                  Setelah menyelesaikan semua level, lihat skor, badge yang diperoleh, dan refleksi pembelajaran.
-                </p>
-              </div>
-            </div>
-
+            ))}
           </div>
 
           {/* Tips Banner */}
-          <div className="bg-amber-950/40 border border-lutung-orange/30 p-6 sm:p-8 rounded-3xl text-left max-w-4xl mx-auto mt-10 relative overflow-hidden reveal-element">
-            <div className="absolute -right-6 -bottom-6 opacity-10 text-8xl select-none">💡</div>
-            <div className="flex items-start gap-4">
-              <div className="space-y-1.5">
-                <h4 className="font-display font-bold text-lg text-[#ffbe0b]">Tips:</h4>
-                <p className="text-base text-amber-100/90 leading-relaxed font-semibold">
+          <div className="paper-container-shadow max-w-4xl mx-auto mt-10 relative overflow-hidden reveal-element">
+            <div className="card-paper-yellow paper-rough-2 p-6 sm:p-8 text-left relative pl-10">
+              <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-amber-400/20 border-r border-dashed border-amber-400/35"></div>
+              <div className="absolute right-4 bottom-2 opacity-15 text-6xl select-none">💡</div>
+              <div className="space-y-1.5 text-slate-800">
+                <h4 className="font-display font-black text-lg text-amber-700">Tips:</h4>
+                <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-bold">
                   Bacalah setiap informasi dengan cermat. Tidak semua masalah memiliki satu jawaban yang sama. Berikan alasan yang logis berdasarkan konsep IPA dan kondisi pada studi kasus.
                 </p>
               </div>
@@ -735,13 +698,14 @@ export default function LandingPage({ setScreen }) {
             <div className="flex-1 w-full space-y-6 reveal-element delay-200">
               
               {/* Card 3: Makanan */}
-              <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md transition">
-                <h4 className="font-display font-bold text-base sm:text-lg text-forest-900 flex items-center gap-2">
-                  <span className="text-lg"></span>Makanan & Game Beri Makan
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed font-semibold">
-                  Lutung Jawa adalah herbivor. Klik makanan sehat di bawah untuk memberinya makan, dan hindari sampah berbahaya!
-                </p>
+              <div className="paper-container-shadow">
+                <div className="card-paper paper-rough-1 p-5 border border-slate-200/50 text-slate-800 text-left">
+                  <h4 className="font-display font-black text-base sm:text-lg text-[#02462e] flex items-center gap-2">
+                    Makanan & Game Beri Makan
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed font-bold">
+                    Lutung Jawa adalah herbivor. Klik makanan sehat di bawah untuk memberinya makan, dan hindari sampah berbahaya!
+                  </p>
 
                 {/* Satiety Progress Bar */}
                 <div className="mt-4 bg-slate-100 p-3 rounded-xl border border-slate-200/50 space-y-1.5">
@@ -810,6 +774,7 @@ export default function LandingPage({ setScreen }) {
                   </button>
                 )}
               </div>
+            </div>
 
               {/* Card 1: Persebaran */}
               <div className="bg-white/80 backdrop-blur-sm border border-emerald-500/10 p-5 rounded-2xl shadow-md hover:shadow-lg transition">

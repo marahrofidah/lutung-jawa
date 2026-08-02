@@ -1,6 +1,74 @@
 import React, { useState } from 'react'
 import { supabase } from '../supabaseClient'
 
+// Leaf color palette (natural jungle tones)
+const LEAF_COLORS = [
+  '#165c43', // Forest Dark Green
+  '#1c7c59', // Forest Light Green
+  '#84cc16', // Jungle Lime
+  '#fca311', // Amber/Yellow
+  '#ff7826', // Orange
+];
+
+// Leaf helper to generate fixed random leaves
+const leavesData = Array.from({ length: 15 }).map((_, i) => {
+  const color = LEAF_COLORS[i % LEAF_COLORS.length];
+  const scale = 0.4 + (i % 6) * 0.1; // 0.4 to 0.9
+  const left = `${5 + (i * 7) % 90}%`; // Distribute across width
+  const delay = `${i * 1.5}s`; // Staggered entry
+  const duration = `${12 + (i % 5) * 2}s`; // 12s to 20s
+  const swayDuration = `${4.5 + (i % 4) * 0.8}s`; // 4.5s to 6.9s
+  const isSway1 = i % 2 === 0;
+
+  return {
+    id: i,
+    color,
+    scale,
+    left,
+    delay,
+    duration,
+    swayDuration,
+    isSway1
+  };
+});
+
+function Leaf({ color, scale, left, delay, duration, swayDuration, isSway1 }) {
+  return (
+    <div 
+      className={`absolute top-0 pointer-events-none z-10 ${isSway1 ? 'animate-sway-1' : 'animate-sway-2'}`}
+      style={{
+        left,
+        animationDelay: delay,
+        '--leaf-sway': swayDuration,
+        width: `${scale * 32}px`,
+        height: `${scale * 32}px`,
+      }}
+    >
+      <div 
+        className="w-full h-full animate-leaf-fall"
+        style={{
+          animationDelay: delay,
+          '--leaf-duration': duration,
+        }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <path 
+            d="M2 22C2 22 6 20 9 16C12 12 16 11 22 2C22 2 13 4 9 9C5 14 2 18 2 22Z" 
+            fill={color} 
+            fillOpacity="0.7"
+          />
+          <path 
+            d="M2 22C6 18 10 15 15 11" 
+            stroke="#05140f" 
+            strokeWidth="1.2" 
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 export default function TeacherDashboard({ 
   teacherName, 
   currentClass, 
@@ -10,9 +78,12 @@ export default function TeacherDashboard({
   teacherSelectedLevel, 
   setTeacherSelectedLevel, 
   levelsData, 
-  triggerAlert 
+  triggerAlert,
+  onRefreshData
 }) {
   const [activeTab, setActiveTab] = useState('monitoring') // 'monitoring' | 'summary'
+  const [classCodeCopied, setClassCodeCopied] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   // Supabase deletion handler to clean up unused groups
   const handleDeleteGroup = async (groupId, groupName) => {
@@ -62,7 +133,13 @@ export default function TeacherDashboard({
   const totalGroupDecisions = groups.reduce((acc, g) => acc + (g.groupDecisions?.length || 0), 0)
 
   return (
-    <div className="space-y-8 py-6 animate-fade-in text-forest-950 font-sans">
+    <div className="space-y-8 py-6 animate-fade-in text-forest-950 font-sans relative overflow-hidden">
+      {/* Falling Leaves Effect */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {leavesData.map((leaf) => (
+          <Leaf key={leaf.id} {...leaf} />
+        ))}
+      </div>
       
       {/* Top Banner Control Desk */}
       <div className="paper-container-shadow">
@@ -70,13 +147,6 @@ export default function TeacherDashboard({
           <div className="absolute left-0 top-0 bottom-0 w-2.5 bg-[#fec700] z-20"></div>
           
           <div className="space-y-2 relative z-10">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#02462e]"></span>
-              </span>
-              <span className="text-xs font-display tracking-widest text-[#02462e] font-bold">Status Dashboard Real-Time</span>
-            </div>
             <h3 className="text-2xl sm:text-3xl font-display font-black text-[#02462e] flex flex-wrap items-center gap-2">
               Kelas Guru: <span className="bg-[#02462e] text-[#fec700] px-4 py-1.5 rounded-2xl text-xl sm:text-2xl font-black font-display">{teacherName}</span>
             </h3>
@@ -89,16 +159,71 @@ export default function TeacherDashboard({
             </div>
             <button 
               onClick={() => {
-                navigator.clipboard.writeText(currentClass.class_code)
-                triggerAlert('success', 'Kode kelas berhasil disalin ke clipboard!')
+                try {
+                  navigator.clipboard.writeText(currentClass.class_code)
+                } catch (err) {
+                  const tempInput = document.createElement('input')
+                  tempInput.value = currentClass.class_code
+                  document.body.appendChild(tempInput)
+                  tempInput.select()
+                  document.execCommand('copy')
+                  document.body.removeChild(tempInput)
+                }
+                setClassCodeCopied(true)
+                triggerAlert('success', 'Kode kelas berhasil disalin!')
+                setTimeout(() => setClassCodeCopied(false), 2500)
               }}
-              className="bg-[#02462e] hover:bg-[#fec700] text-white hover:text-[#02462e] px-5 py-3.5 rounded-xl border border-[#02462e] transition duration-150 cursor-pointer flex items-center gap-2 font-display font-bold shadow-md"
+              className={`px-5 py-3.5 rounded-xl transition duration-150 cursor-pointer flex items-center gap-2 font-display font-bold shadow-md ${
+                classCodeCopied 
+                  ? 'bg-emerald-600 border-emerald-600 text-white' 
+                  : 'bg-[#02462e] hover:bg-[#fec700] text-white hover:text-[#02462e] border border-[#02462e]'
+              }`}
               title="Salin Kode Kelas"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012 2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              {classCodeCopied ? (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-bold font-display">Tersalin!</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012 2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                  </svg>
+                  <span className="text-xs font-bold font-display">Salin</span>
+                </>
+              )}
+            </button>
+
+            {/* Manual Reload Button */}
+            <button 
+              onClick={async () => {
+                if (isRefreshing) return
+                setIsRefreshing(true)
+                try {
+                  await onRefreshData()
+                  triggerAlert('success', 'Data kelas berhasil diperbarui!')
+                } catch (err) {
+                  triggerAlert('error', 'Gagal memperbarui data kelas.')
+                } finally {
+                  setIsRefreshing(false)
+                }
+              }}
+              className="bg-white hover:bg-slate-100 text-[#02462e] border border-slate-350 px-5 py-3.5 rounded-xl transition duration-150 cursor-pointer flex items-center gap-2 font-display font-bold shadow-md active:scale-95 disabled:opacity-55 disabled:cursor-not-allowed"
+              title="Muat Ulang Data Kelas"
+              disabled={isRefreshing}
+            >
+              <svg 
+                className={`w-5 h-5 ${isRefreshing ? 'animate-spin text-emerald-600' : 'text-[#02462e]'}`} 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18" />
               </svg>
-              <span className="text-xs font-bold font-display">Salin</span>
+              <span className="text-xs font-bold font-display">{isRefreshing ? 'Memuat...' : 'Muat Ulang'}</span>
             </button>
           </div>
         </div>
@@ -114,11 +239,7 @@ export default function TeacherDashboard({
               : 'bg-[#02462e]/40 text-white/80 hover:bg-[#02462e]/60'
           }`}
         >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span>Monitoring Kelompok</span>
+          <span>Daftar Kelompok</span>
         </button>
         <button
           onClick={() => setActiveTab('summary')}

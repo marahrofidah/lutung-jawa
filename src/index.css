@@ -75,7 +75,8 @@ html, body {
 }
 
 .animate-leaf-fall {
-  animation: leaf-fall var(--leaf-duration, 12s) linear infinite;
+  animation: leaf-fall var(--leaf-duration, 12s) linear infinite both;
+  opacity: 0;
 }
 
 .animate-sway-1 {

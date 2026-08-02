@@ -21,27 +21,45 @@ export const levelsData = [
     videoUrl: "https://www.youtube.com/embed/9gM63ZixU_A",
     discussion: "Hebat! Kamu telah berhasil mengidentifikasi masalah pada habitat Lutung Jawa.\n\nDalam suatu ekosistem, setiap komponen saling berhubungan. Berkurangnya vegetasi tidak hanya memengaruhi tumbuhan, tetapi juga berdampak pada ketersediaan makanan, tempat berlindung, dan kelangsungan hidup satwa yang tinggal di dalamnya. Pada level berikutnya, kamu akan menganalisis lebih dalam bagaimana perubahan tersebut memengaruhi hubungan antar makhluk hidup dalam ekosistem.",
     badgeName: "Sobat Hutan (Forest Friend)",
-    badgeIcon: "🌲",
-    badgeDescription: "Lencana atas pemahaman mendalam tentang sebaran habitat alami Lutung Jawa."
+    badgeDescription: "Lencana atas keberhasilan mengidentifikasi dan mengelompokkan komponen biotik dan abiotik di habitat Lutung Jawa."
   },
   {
     level: 2,
     theme: "Makanan & Pencernaan",
     title: "Ahli Nutrisi Rimba",
     material: "Lutung Jawa termasuk satwa herbivora yang dominan memakan dedaunan (folivora) serta buah-buahan (frugivora). Sekitar 60-80% makanan mereka adalah daun muda, kuncup bunga, dan biji-bijian. Mereka memiliki lambung yang besar dan kompleks dengan bakteri pembantu khusus (mirip sistem pencernaan sapi) untuk memecah serat kasar dari daun hutan yang keras.",
-    question: "Mengapa Lutung Jawa lebih memprioritaskan memakan daun muda dibandingkan daun yang sudah tua?",
+    caseStudy: {
+      title: "Studi Kasus: Mengapa Populasi Lutung Jawa Menurun?",
+      instruction: "Bacalah cerita berikut dengan saksama!",
+      story: "Petugas di Kawasan Konservasi Gunung Lestari melakukan pemantauan terhadap populasi Lutung Jawa selama tiga tahun terakhir. Hasil pengamatan menunjukkan bahwa jumlah Lutung Jawa di kawasan tersebut terus menurun.\n\nBerdasarkan hasil survei, diketahui bahwa sebagian kawasan hutan mengalami perubahan akibat aktivitas manusia, seperti pembukaan lahan di sekitar hutan. Akibatnya, beberapa pohon yang menjadi sumber makanan dan tempat berlindung Lutung Jawa semakin berkurang. Kanopi pohon yang sebelumnya saling terhubung kini mulai terpisah sehingga Lutung Jawa lebih sulit berpindah untuk mencari makan.\n\nMeskipun sungai di kawasan tersebut masih mengalir dengan baik dan cahaya matahari tetap tersedia, petugas sering menemukan kelompok Lutung Jawa berpindah ke wilayah lain untuk mencari makanan yang lebih banyak.\n\nPetugas konservasi ingin mengetahui penyebab utama menurunnya populasi Lutung Jawa agar dapat menentukan langkah pelestarian yang tepat. Pemerintah daerah berencana membuka lahan baru di sekitar kawasan hutan untuk meningkatkan kegiatan ekonomi masyarakat. Di sisi lain, petugas konservasi khawatir pembukaan lahan tersebut dapat mempercepat penurunan populasi Lutung Jawa.",
+      conclusion: "Setelah membaca studi kasus dan mengamati kondisi habitat, jawablah pertanyaan berikut.",
+      tableData: [
+        { component: "Populasi Lutung Jawa", condition: "Menurun dari tahun ke tahun" },
+        { component: "Pohon Ficus", condition: "Jumlahnya berkurang" },
+        { component: "Pohon besar", condition: "Sebagian ditebang sehingga kanopi terputus" },
+        { component: "Vegetasi hutan", condition: "Semakin sedikit" },
+        { component: "Sungai", condition: "Kondisinya masih baik" },
+        { component: "Cahaya matahari", condition: "Tetap tersedia" }
+      ],
+      chartData: [
+        { year: "2023", population: 40 },
+        { year: "2024", population: 34 },
+        { year: "2025", population: 27 }
+      ]
+    },
+    question: "Berdasarkan studi kasus, hasil eksplorasi, dan data pengamatan, analisislah penyebab utama menurunnya populasi Lutung Jawa di kawasan konservasi tersebut. Jelaskan hubungan antara sumber pakan, tempat berlindung, dan kondisi habitat dengan penurunan populasi Lutung Jawa.",
     options: [
-      { key: "A", text: "Daun tua terlalu keras untuk digigit oleh gigi mereka" },
-      { key: "B", text: "Daun muda memiliki kandungan serat kasar yang lebih rendah dan lebih mudah difermentasi oleh bakteri di lambung mereka" },
-      { key: "C", text: "Daun tua mengandung zat beracun yang dapat mematikan seluruh koloni lutung" },
-      { key: "D", text: "Daun muda rasanya jauh lebih manis karena tinggi gula" }
+      { key: "A", text: "Penurunan populasi Lutung Jawa disebabkan oleh berkurangnya sumber pakan, tempat berlindung, dan terputusnya kanopi hutan akibat pembukaan lahan." },
+      { key: "B", text: "Penurunan populasi Lutung Jawa disebabkan oleh kondisi sungai yang tidak lagi mampu memenuhi kebutuhan satwa." },
+      { key: "C", text: "Penurunan populasi Lutung Jawa disebabkan oleh berkurangnya cahaya matahari yang masuk ke kawasan hutan." },
+      { key: "D", text: "Penurunan populasi Lutung Jawa disebabkan oleh pertambahan jumlah Lutung Jawa sehingga terjadi persaingan antarkelompok." }
     ],
-    correctAnswer: "B",
+    correctAnswer: "A",
     videoUrl: "https://www.youtube.com/embed/Pj196Yh2KSc",
-    discussion: "Jawaban yang benar adalah B. Daun muda mengandung lebih sedikit selulosa (serat kasar) dan kaya akan protein air dibandingkan daun tua. Ini membuatnya lebih mudah dicerna dan difermentasi oleh mikrobioma dalam perut kompleks Lutung Jawa untuk menghasilkan energi maksimal.",
+    discussion: "Bagus! Kamu telah berhasil menganalisis penyebab permasalahan berdasarkan hubungan antar komponen dalam ekosistem.\n\nPopulasi Lutung Jawa tidak menurun begitu saja. Berkurangnya vegetasi menyebabkan sumber makanan dan tempat berlindung menjadi terbatas. Kanopi pohon yang terputus juga menghambat pergerakan Lutung Jawa saat mencari makan. Kondisi tersebut membuat habitat menjadi kurang sesuai sehingga sebagian Lutung Jawa berpindah ke wilayah lain dan jumlah populasinya di kawasan tersebut terus menurun.",
     badgeName: "Pecinta Daun (Leaf Lover)",
     badgeIcon: "🍃",
-    badgeDescription: "Lencana atas pemahaman sistem adaptasi pencernaan unik Lutung Jawa."
+    badgeDescription: "Lencana atas keberhasilan menganalisis hubungan antar-komponen ekosistem dan penyebab penurunan populasi Lutung Jawa."
   },
   {
     level: 3,
@@ -59,7 +77,6 @@ export const levelsData = [
     videoUrl: "https://www.youtube.com/embed/tM03S3-l-n4",
     discussion: "Jawaban yang benar adalah C. Kerusakan dan penyusutan luas hutan memisahkan kelompok-kelompok lutung (fragmentasi), sedangkan perburuan liar untuk perdagangan ilegal hewan peliharaan secara langsung memotong rantai populasi produktif mereka di alam bebas.",
     badgeName: "Penjaga Kehidupan (Life Guard)",
-    badgeIcon: "🛡️",
     badgeDescription: "Lencana atas kesadaran tinggi mengenai ancaman kepunahan Lutung Jawa."
   },
   {
@@ -78,7 +95,6 @@ export const levelsData = [
     videoUrl: "https://www.youtube.com/embed/5_7t72B9k0I",
     discussion: "Jawaban yang benar adalah B. Warna oranye terang pada bayi lutung merangsang naluri keibuan dan kepedulian seluruh betina dalam kelompok untuk mengasuhnya bersama (alloparenting), serta mempermudah pengawasan posisi bayi di kerimbunan hutan.",
     badgeName: "Penjaga Bayi Oranye (Baby Guardian)",
-    badgeIcon: "🐒",
     badgeDescription: "Lencana atas pemahaman perilaku sosial dan reproduksi keluarga Lutung."
   },
   {
@@ -97,7 +113,6 @@ export const levelsData = [
     videoUrl: "https://www.youtube.com/embed/uGvV9N6j_L8",
     discussion: "Jawaban yang benar adalah C. Lutung peliharaan sering kali kehilangan insting bertahan hidup dan dapat membawa virus/penyakit dari manusia. Sekolah hutan memulihkan insting liarnya dan proses karantina memastikan mereka tidak menyebarkan penyakit ke populasi liar.",
     badgeName: "Pahlawan Konservasi (Conservation Hero)",
-    badgeIcon: "🏆",
     badgeDescription: "Lencana tertinggi atas kelulusan materi aksi nyata konservasi Lutung Jawa!"
   }
 ];

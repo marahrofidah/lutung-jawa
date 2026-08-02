@@ -4,18 +4,20 @@ import imgTaukah from '../../assets/taukah.png'
 
 export default function StudentMaterial({ currentLvlData, onNext }) {
   const isLevel1 = Number(currentLvlData?.level) === 1
+  const isLevel2 = Number(currentLvlData?.level) === 2
+  const isInteractiveLvl = isLevel1 || isLevel2
 
-  // Interactive hotspots states for Level 1
+  // Interactive hotspots states for Level 1 & Level 2
   const [activeInfo, setActiveInfo] = useState(null)
   const [discovered, setDiscovered] = useState([])
 
-  const hotspots = {
+  const hotspotsLevel1 = {
     lutung: {
       id: 'lutung',
       index: 1,
       name: 'Lutung Jawa',
       type: 'Biotik (Makhluk Hidup)',
-      color: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
       description: 'Lutung Jawa merupakan primata endemik Pulau Jawa yang berperan sebagai konsumen primer. Satwa ini memakan daun muda, buah, bunga, dan biji. Lutung Jawa bergantung pada hutan yang sehat untuk mendapatkan makanan, tempat tinggal, dan perlindungan.',
       top: '33%',
       left: '70%'
@@ -25,7 +27,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
       index: 2,
       name: 'Pohon Ficus (Pohon Ara)',
       type: 'Biotik (Makhluk Hidup)',
-      color: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
       description: 'Pohon Ficus menghasilkan buah yang menjadi salah satu sumber makanan penting bagi Lutung Jawa dan berbagai satwa lainnya. Pohon ini juga membantu menjaga keseimbangan ekosistem hutan dengan menyediakan makanan sepanjang tahun.',
       top: '42%',
       left: '42%'
@@ -35,7 +37,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
       index: 3,
       name: 'Pohon Besar',
       type: 'Biotik (Makhluk Hidup)',
-      color: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
       description: 'Pohon-pohon besar menjadi tempat berlindung, beristirahat, dan berpindah bagi Lutung Jawa. Kanopi pohon yang saling terhubung memudahkan lutung bergerak tanpa harus turun ke tanah.',
       top: '55%',
       left: '82%'
@@ -72,6 +74,71 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
     }
   }
 
+  const hotspotsLevel2 = {
+    lutung: {
+      id: 'lutung',
+      index: 1,
+      name: 'Lutung Jawa',
+      type: 'Hubungan dengan tumbuhan',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
+      description: 'Lutung Jawa memakan daun muda, buah, bunga, dan biji. Karena itu, keberadaan tumbuhan sangat penting sebagai sumber makanan.',
+      top: '33%',
+      left: '70%'
+    },
+    ficus: {
+      id: 'ficus',
+      index: 2,
+      name: 'Pohon Ficus',
+      type: 'Hubungan dengan Lutung Jawa',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
+      description: 'Buah Ficus menjadi salah satu sumber makanan penting bagi Lutung Jawa. Jika jumlah pohon Ficus berkurang, ketersediaan makanan juga akan menurun.',
+      top: '42%',
+      left: '42%'
+    },
+    pohon: {
+      id: 'pohon',
+      index: 3,
+      name: 'Pohon Besar',
+      type: 'Hubungan dengan Lutung Jawa',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
+      description: 'Pohon besar menjadi tempat berlindung, beristirahat, dan jalur berpindah antarpohon. Kanopi yang saling terhubung membuat Lutung Jawa lebih aman dari predator.',
+      top: '55%',
+      left: '82%'
+    },
+    tanah: {
+      id: 'tanah',
+      index: 4,
+      name: 'Vegetasi Hutan',
+      type: 'Hubungan dengan ekosistem',
+      color: 'bg-emerald-100 text-[#02462e] border-emerald-300',
+      description: 'Vegetasi yang rapat menjaga suhu dan kelembapan hutan sehingga lingkungan tetap sesuai untuk berbagai makhluk hidup.',
+      top: '90%',
+      left: '58%'
+    },
+    sungai: {
+      id: 'sungai',
+      index: 5,
+      name: 'Sungai',
+      type: 'Hubungan dengan makhluk hidup',
+      color: 'bg-blue-100 text-blue-800 border-blue-300',
+      description: 'Air sungai dibutuhkan tumbuhan untuk tumbuh. Tumbuhan yang sehat akan menyediakan makanan bagi Lutung Jawa.',
+      top: '78%',
+      left: '25%'
+    },
+    matahari: {
+      id: 'matahari',
+      index: 6,
+      name: 'Cahaya Matahari',
+      type: 'Hubungan dengan tumbuhan',
+      color: 'bg-blue-100 text-blue-800 border-blue-300',
+      description: 'Cahaya matahari membantu tumbuhan melakukan fotosintesis sehingga menghasilkan makanan yang menjadi awal rantai makanan.',
+      top: '10%',
+      left: '10%'
+    }
+  }
+
+  const hotspots = isLevel2 ? hotspotsLevel2 : hotspotsLevel1
+
   const handleHotspotClick = (key) => {
     setActiveInfo(hotspots[key])
     if (!discovered.includes(key)) {
@@ -81,7 +148,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
 
   const allDiscovered = discovered.length === 6
 
-  if (isLevel1) {
+  if (isInteractiveLvl) {
     return (
       <div className="space-y-6 py-4 animate-scale-up text-left max-w-6xl mx-auto font-sans">
         
@@ -93,7 +160,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
                 Tahap 1: Materi Pembelajaran
               </span>
               <h4 className="font-display font-black text-2xl text-[#02462e] mt-1.5 flex items-center gap-2">
-                <span>Eksplorasi Habitat</span>
+                <span>{isLevel2 ? 'Eksplorasi Hubungan dalam Ekosistem' : 'Eksplorasi Habitat'}</span>
               </h4>
             </div>
             
@@ -184,7 +251,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
                   /* Info Display */
                   <div className="space-y-4 animate-scale-up">
                     <div className="flex items-center gap-3 border-b border-[#02462e]/10 pb-3.5">
-                      <span className="text-3xl select-none">{activeInfo.emoji}</span>
+                      {activeInfo.emoji && <span className="text-3xl select-none">{activeInfo.emoji}</span>}
                       <div>
                         <h5 className="font-display font-black text-xl text-[#02462e]">{activeInfo.name}</h5>
                         <span className={`inline-block text-[9px] font-sans font-extrabold uppercase px-2.5 py-0.5 rounded-full border mt-1 ${activeInfo.color}`}>
@@ -218,7 +285,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
                     <div className="space-y-2 max-w-xs mx-auto">
                       <h5 className="font-display font-black text-sm text-[#02462e] uppercase tracking-wider">Petunjuk Eksplorasi</h5>
                       <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-                        Klik atau ketuk setiap pin merah bernomor pada ilustrasi habitat Lutung Jawa untuk mempelajari perannya dalam ekosistem.
+                        Klik atau ketuk setiap pin merah bernomor pada ilustrasi habitat Lutung Jawa untuk mempelajari hubungan antar komponen ekosistem.
                       </p>
                     </div>
                   </div>
@@ -228,7 +295,9 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
               {/* Bottom discovery tip */}
               {!allDiscovered && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-800 leading-relaxed font-bold text-center mt-6">
-                  Temukan semua 6 komponen ekosistem di peta sebelah kiri untuk melanjutkan petualangan!
+                  {isLevel2 
+                    ? 'Temukan semua 6 hubungan ekosistem di peta sebelah kiri untuk melanjutkan petualangan!' 
+                    : 'Temukan semua 6 komponen ekosistem di peta sebelah kiri untuk melanjutkan petualangan!'}
                 </div>
               )}
             </div>
@@ -239,15 +308,16 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
         {allDiscovered && (
           <div className="paper-container-shadow animate-scale-up">
             <div className="card-paper-yellow paper-rough-2 border-2 border-amber-400 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
-              
-              {/* Illustration and text layout */}
-              
               <div className="flex-1 text-left space-y-2">
                 <h5 className="font-display font-black text-[#02462e] text-lg flex items-center gap-1.5">
                   <span>Tahukah Kamu?</span>
                 </h5>
                 <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-bold italic">
-                  Semua komponen di dalam ekosistem saling berhubungan. Komponen biotik membutuhkan komponen abiotik untuk bertahan hidup. Jika salah satu komponen terganggu, keseimbangan ekosistem juga dapat terganggu.
+                  {isLevel2 ? (
+                    "Hubungan timbal balik antar komponen biotik dan abiotik membentuk keseimbangan jaring kehidupan. Gangguan pada satu rantai hubungan dapat berdampak luas pada seluruh populasi satwa di dalamnya."
+                  ) : (
+                    "Semua komponen di dalam ekosistem saling berhubungan. Komponen biotik membutuhkan komponen abiotik untuk bertahan hidup. Jika salah satu komponen terganggu, keseimbangan ekosistem juga dapat terganggu."
+                  )}
                 </p>
               </div>
             </div>

@@ -14,6 +14,51 @@ export default function StudentQuestion({
   showDiscussion
 }) {
   const [isDragOver, setIsDragOver] = useState(false)
+  const [selectedLvl2Year, setSelectedLvl2Year] = useState('2025')
+  const [selectedLvl2Row, setSelectedLvl2Row] = useState(0)
+
+  const lvl2Components = [
+    { 
+      name: "Pohon Ficus", 
+      condition: "Jumlahnya berkurang",
+      analysis: "Pohon Ficus adalah spesies kunci (keystone). Hilangnya pohon ficus memotong suplai buah tahunan yang menjadi sumber pakan utama Lutung Jawa." 
+    },
+    { 
+      name: "Pohon besar", 
+      condition: "Sebagian ditebang sehingga kanopi terputus",
+      analysis: "Pohon besar berfungsi sebagai penopang kanopi atas. Tanpa kanopi yang saling terhubung, jalur jelajah Lutung Jawa terputus dan mereka terancam bahaya predator darat jika turun ke tanah." 
+    },
+    { 
+      name: "Vegetasi hutan", 
+      condition: "Semakin sedikit",
+      analysis: "Vegetasi yang rapat berfungsi menstabilkan iklim mikro hutan. Berkurangnya vegetasi membuat kelembapan turun dan suhu habitat meningkat." 
+    },
+    { 
+      name: "Sungai", 
+      condition: "Kondisinya masih baik",
+      analysis: "Aliran air sungai masih normal dan mengalir lancar. Hal ini membuktikan bahwa persediaan air bersih tidak mengalami gangguan dalam kasus ini." 
+    },
+    { 
+      name: "Cahaya matahari", 
+      condition: "Tetap tersedia",
+      analysis: "Cahaya matahari tetap bersinar dengan melimpah untuk mendukung fotosintesis tumbuhan tersisa agar dapat bertumbuh kembali." 
+    }
+  ]
+
+  const lvl2YearNotes = {
+    '2023': {
+      title: "Patroli Hutan 2023 - Kondisi Asri",
+      notes: "Tahun Pemantauan Awal: Hutan masih terhubung sangat rapat. Kelompok Lutung Jawa aktif beraktivitas di kanopi atas tanpa perlu turun ke tanah. Ketersediaan buah Ficus melimpah."
+    },
+    '2024': {
+      title: "Patroli Hutan 2024 - Mulai Mengalami Tekanan",
+      notes: "Tahun Kedua: Pembukaan lahan pertanian warga dimulai di sisi luar hutan. Sebanyak 6 pohon besar pelindung ditebang. Koridor lintasan tajuk pohon terputus di beberapa jalur penjelajahan utama."
+    },
+    '2025': {
+      title: "Patroli Hutan 2025 - Fragmentasi Koridor Parah",
+      notes: "Tahun Ketiga: Kanopi terpisah jauh hingga 15 meter. Lutung kesulitan menjangkau pohon ficus di seberangnya. Beberapa ekor dilaporkan terluka akibat terpaksa turun ke tanah untuk mencari makan."
+    }
+  }
 
   // Drag handlers
   const handleDragStart = (e, key) => {
@@ -66,6 +111,125 @@ export default function StudentQuestion({
                 <p key={pIdx}>{p}</p>
               ))}
             </div>
+
+            {/* Level 2 Data & Chart Display */}
+            {(currentLvlData.caseStudy.tableData || currentLvlData.caseStudy.chartData) && (
+              <div className="space-y-7 py-2">
+                
+                {/* 1. Perkembangan Populasi Lutung Jawa Stamp Cards */}
+                <div className="space-y-3">
+                  <h5 className="font-display font-black text-base sm:text-lg text-[#02462e] uppercase tracking-wider flex items-center gap-2 select-none">
+                    <svg className="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+                    </svg>
+                    <span>Perkembangan Populasi Lutung Jawa</span>
+                  </h5>
+                  
+                  <div className="grid grid-cols-3 gap-4">
+                    {[
+                      { year: '2023', population: '40 ekor', status: 'Kondisi Awal', color: 'bg-emerald-50 text-emerald-800 border-emerald-300' },
+                      { year: '2024', population: '34 ekor', status: 'Mulai Menurun', color: 'bg-amber-50 text-amber-800 border-amber-300' },
+                      { year: '2025', population: '27 ekor', status: 'Kondisi Kritis', color: 'bg-rose-50 text-rose-800 border-rose-300' }
+                    ].map((item) => {
+                      const isSelected = selectedLvl2Year === item.year
+                      return (
+                        <div
+                          key={item.year}
+                          onClick={() => setSelectedLvl2Year(item.year)}
+                          className={`p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 text-center select-none shadow-md ${
+                            isSelected
+                              ? 'bg-gradient-to-br from-amber-100 to-amber-50 border-amber-450 scale-105 ring-4 ring-amber-300/30 shadow-lg'
+                              : 'bg-white/80 border-slate-200 hover:bg-white hover:scale-102'
+                          }`}
+                        >
+                          <span className="text-xs sm:text-sm font-black text-slate-500 block font-mono uppercase tracking-wider">{item.year}</span>
+                          <span className="text-2xl sm:text-3xl font-display font-black text-lutung-orange block my-1">{item.population}</span>
+                          <span className={`inline-block text-[10px] sm:text-xs font-black uppercase px-3 py-0.5 rounded-full border ${item.color}`}>
+                            {item.status}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Year Notes Detail Card */}
+                  {selectedLvl2Year && lvl2YearNotes[selectedLvl2Year] && (
+                    <div className="card-paper paper-rough-2 p-5 bg-amber-50/60 border border-amber-250/30 rounded-2xl text-left animate-scale-up shadow-inner relative pl-8 select-none">
+                      <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-amber-400/20 border-r border-dashed border-amber-400/35"></div>
+                      <span className="text-xs font-sans bg-amber-600 text-white px-2.5 py-0.5 rounded font-extrabold uppercase tracking-wider block w-max mb-2">
+                        Buku Harian Patroli Peneliti
+                      </span>
+                      <h6 className="font-display font-black text-[#02462e] text-sm sm:text-base">
+                        {lvl2YearNotes[selectedLvl2Year].title}
+                      </h6>
+                      <p className="text-slate-800 text-sm sm:text-base font-bold leading-relaxed mt-1.5">
+                        {lvl2YearNotes[selectedLvl2Year].notes}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Laporan Kondisi Komponen Hutan Cards */}
+                <div className="space-y-3 pt-2">
+                  <h5 className="font-display font-black text-base sm:text-lg text-[#02462e] uppercase tracking-wider flex items-center gap-2 select-none">
+                    <svg className="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012 2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                    <span>Laporan Kondisi Komponen Hutan</span>
+                  </h5>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    {lvl2Components.map((comp, idx) => {
+                      const isSelected = selectedLvl2Row === idx
+                      const isWarning = comp.condition.includes("berkurang") || comp.condition.includes("tebang") || comp.condition.includes("sedikit")
+                      const isSuccess = comp.condition.includes("baik") || comp.condition.includes("tersedia")
+                      
+                      return (
+                        <div
+                          key={comp.name}
+                          onClick={() => setSelectedLvl2Row(idx)}
+                          className={`p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex items-center justify-between gap-4 select-none shadow-md ${
+                            isSelected
+                              ? 'bg-[#02462e] border-[#02462e] text-white scale-[1.01] shadow-lg font-bold'
+                              : 'bg-white/80 border-slate-200 hover:bg-white hover:scale-102 hover:border-amber-350'
+                          }`}
+                        >
+                          <span className={`text-sm sm:text-base font-black ${isSelected ? 'text-[#fec700]' : 'text-[#02462e]'}`}>{comp.name}</span>
+                          <span className={`inline-block text-[10px] sm:text-xs font-black uppercase px-3 py-1 rounded-full border text-center shrink-0 ${
+                            isSelected
+                              ? 'bg-white/10 border-white/20 text-white'
+                              : isSuccess 
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-250' 
+                                : isWarning 
+                                  ? 'bg-amber-50 text-amber-800 border-amber-250' 
+                                  : 'bg-rose-50 text-rose-800 border-rose-250'
+                          }`}>
+                            {comp.condition}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Component Detail Analysis Card */}
+                  {selectedLvl2Row !== null && lvl2Components[selectedLvl2Row] && (
+                    <div className="card-paper-green paper-rough-2 p-5 bg-emerald-50/70 border border-emerald-250/30 rounded-2xl text-left animate-scale-up shadow-inner relative pl-8 select-none">
+                      <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-emerald-600/20 border-r border-dashed border-emerald-600/35"></div>
+                      <span className="text-xs font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-2.5 py-0.5 rounded font-extrabold uppercase tracking-wider block w-max mb-2">
+                        Analisis Ekologi Lapangan
+                      </span>
+                      <h6 className="font-display font-black text-[#02462e] text-sm sm:text-base">
+                        {lvl2Components[selectedLvl2Row].name} &mdash; <span className="italic">{lvl2Components[selectedLvl2Row].condition}</span>
+                      </h6>
+                      <p className="text-slate-800 text-sm sm:text-base font-bold leading-relaxed mt-1.5">
+                        {lvl2Components[selectedLvl2Row].analysis}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+            )}
             
             <div className="bg-[#02462e]/5 border-l-4 border-[#02462e] p-3 text-xs text-[#02462e] font-bold rounded-r-xl">
               {currentLvlData.caseStudy.conclusion}
@@ -315,7 +479,7 @@ export default function StudentQuestion({
                     ) : (
                       <div className="flex flex-col items-center gap-1 py-1">
                         <span className="text-sm text-amber-800/80 font-bold italic">
-                          ✍️ Taruh jawaban di sini
+                          Taruh jawaban di sini
                         </span>
                         <span className="text-xs text-slate-400 font-medium">
                           (Seret kartu kuis atau ketuk kartu di kiri)

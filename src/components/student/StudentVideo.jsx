@@ -7,8 +7,8 @@ export default function StudentVideo({ currentLvlData, onNext }) {
         <div className="card-paper paper-rough-1 p-6 sm:p-8 space-y-6 relative overflow-hidden">
           
           <div className="border-b border-[#02462e]/10 pb-4">
-            <span className="text-[10px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
-              TAHAP 4: PEMBAHASAN VIDEO
+            <span className="text-[12px] font-sans bg-[#02462e] text-[#fec700] border border-[#fec700]/30 px-3 py-1 rounded-lg font-extrabold tracking-wider">
+             Tahap 4: Pembahasan
             </span>
             <h4 className="font-display font-black text-2xl text-[#02462e] mt-3">
               Materi Penjelasan Level {currentLvlData.level}
@@ -30,7 +30,7 @@ export default function StudentVideo({ currentLvlData, onNext }) {
           <div className="paper-container-shadow relative z-10">
             <div className="card-paper-yellow paper-rough-2 p-5 space-y-2">
               <span className="font-display font-black text-[#02462e] text-xs uppercase tracking-wider block">
-                {Number(currentLvlData?.level) === 1 ? "Umpan Balik:" : "Pembahasan Ilmiah:"}
+                {Number(currentLvlData?.level) === 1 || Number(currentLvlData?.level) === 2 ? "Umpan Balik:" : "Pembahasan Ilmiah:"}
               </span>
               <p className="text-slate-700 text-sm sm:text-base leading-relaxed text-justify font-bold italic">
                 {currentLvlData.discussion}

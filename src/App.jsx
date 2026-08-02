@@ -197,6 +197,11 @@ function App() {
       }))
 
       setGroups(enrichedGroups)
+      setSelectedGroupDetails(prev => {
+        if (!prev) return null
+        const fresh = enrichedGroups.find(g => g.id === prev.id)
+        return fresh ? fresh : null
+      })
     } catch (err) {
       console.error("Gagal mengambil data monitoring:", err)
     }
@@ -375,6 +380,7 @@ function App() {
               setTeacherSelectedLevel={setTeacherSelectedLevel}
               levelsData={levelsData}
               triggerAlert={triggerAlert}
+              onRefreshData={fetchTeacherData}
             />
           )}
 
