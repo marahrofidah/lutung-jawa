@@ -1,5 +1,5 @@
 import React from 'react'
-import imgDaun from '../assets/daun.png'
+import imgDaun from '../assets/daun.webp'
 
 export default function Header({ dbConnected, screen, handleLogout, setScreen }) {
   return (

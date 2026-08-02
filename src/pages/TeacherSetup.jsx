@@ -1,5 +1,5 @@
 import React from 'react'
-import imgGuru from '../assets/guru.png'
+import imgGuru from '../assets/guru.webp'
 
 export default function TeacherSetup({ teacherName, setTeacherName, handleTeacherSetup, setScreen }) {
   return (

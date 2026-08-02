@@ -1,6 +1,6 @@
 import React from 'react'
-import imgGuru from '../assets/guru.png'
-import imgMurid from '../assets/murid.png'
+import imgGuru from '../assets/guru.webp'
+import imgMurid from '../assets/murid.webp'
 
 export default function RoleSelection({ setScreen }) {
   return (

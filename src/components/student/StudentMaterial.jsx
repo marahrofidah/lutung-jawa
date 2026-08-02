@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import imgLv1 from '../../assets/lv-1.png'
-import imgTaukah from '../../assets/taukah.png'
+import imgLv1 from '../../assets/lv-1.webp'
+import imgTaukah from '../../assets/taukah.webp'
 
 export default function StudentMaterial({ currentLvlData, onNext }) {
   const isLevel1 = Number(currentLvlData?.level) === 1

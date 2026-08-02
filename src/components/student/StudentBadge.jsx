@@ -1,6 +1,6 @@
 import React from 'react'
-import imgSobatHutan from '../../assets/sobat-hutan.png'
-import imgPecintaDaun from '../../assets/pecinta-daun.png'
+import imgSobatHutan from '../../assets/sobat-hutan.webp'
+import imgPecintaDaun from '../../assets/pecinta-daun.webp'
 
 export default function StudentBadge({
   studentGroup,

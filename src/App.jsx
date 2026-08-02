@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import { levelsData } from './data/levelsData'
-import imgDaunCursor from './assets/daun.png'
-import imgBgRole from './assets/bg-role.png'
-import imgBgDashboard from './assets/bg-dashboard.png'
+import imgDaunCursor from './assets/daun.webp'
+import imgBgRole from './assets/bg-role.webp'
+import imgBgDashboard from './assets/bg-dashboard.webp'
 
 // Import Components & Pages
 import Header from './components/Header'

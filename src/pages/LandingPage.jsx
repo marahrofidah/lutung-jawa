@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
 // Import actual assets provided by the user
-import bgHomepage from '../assets/bg-fix.png'
-import imgBelajarKelompok from '../assets/belajar_kelompok.png'
-import imgMateriInteraktif from '../assets/materi_interaktif.png'
-import imgForumDiskusi from '../assets/forum_diskusi.png'
-import imgVideoPembahasan from '../assets/video_pembahasan.png'
-import imgKumpulkanBadge from '../assets/kumpulkan_badge.png'
-import imgLutungJalan from '../assets/lutung-jalan.png'
-import imgLutungMelambai from '../assets/lutung-melambai.png'
+import bgHomepage from '../assets/bg-fix.webp'
+import imgBelajarKelompok from '../assets/belajar_kelompok.webp'
+import imgMateriInteraktif from '../assets/materi_interaktif.webp'
+import imgForumDiskusi from '../assets/forum_diskusi.webp'
+import imgVideoPembahasan from '../assets/video_pembahasan.webp'
+import imgKumpulkanBadge from '../assets/kumpulkan_badge.webp'
+import imgLutungJalan from '../assets/lutung-jalan.webp'
+import imgLutungMelambai from '../assets/lutung-melambai.webp'
 
 // Leaf color palette (natural jungle tones)
 const LEAF_COLORS = [

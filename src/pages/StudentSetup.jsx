@@ -1,5 +1,5 @@
 import React from 'react'
-import imgMurid from '../assets/murid.png'
+import imgMurid from '../assets/murid.webp'
 
 export default function StudentSetup({ 
   groupName, 
