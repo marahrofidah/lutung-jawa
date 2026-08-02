@@ -467,11 +467,11 @@ function App() {
           : isTeacherSetup
             ? 'bg-[#ffcc00] text-forest-950' 
             : isTeacherDashboard
-              ? 'bg-[#fff8d4] text-forest-950' 
+              ? 'bg-[#02462e] text-slate-100' 
               : isStudentSetup
-                ? 'bg-[#a7f3d0] text-forest-950'
+                ? 'bg-[#02462e] text-forest-950'
                 : isStudentPlayroom
-                  ? 'bg-[#e5f2eb] text-forest-950'
+                  ? 'bg-[#02462e] text-slate-100'
                   : 'bg-[#f6f5ee] text-forest-950'
       }`}
       style={isRoleSelection ? { backgroundImage: `url(${imgBgRole})` } : {}}
@@ -571,7 +571,7 @@ function App() {
 
       {/* FOOTER */}
       {screen !== 'landing' && (
-        <footer className="mt-auto px-6 py-6 text-center text-xs space-y-1 transition-all duration-300 bg-transparent border-none text-forest-900/60">
+        <footer className="mt-auto px-6 py-6 text-center text-xs space-y-1 transition-all duration-300 bg-transparent border-none text-gray-500">
           <p>© 2026 Edukasi Konservasi Lutung Jawa.</p>
           <p className="text-[10px] font-mono transition-colors text-emerald-800/80">Didedikasikan untuk Kelestarian Satwa Endemik Indonesia</p>
         </footer>

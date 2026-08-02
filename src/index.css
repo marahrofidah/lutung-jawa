@@ -201,3 +201,8 @@ html, body {
   z-index: 50;
   animation: fly-to-lutung 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
+/* Highly readable clean sans-serif for body descriptions and paragraphs */
+.font-readable {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+}

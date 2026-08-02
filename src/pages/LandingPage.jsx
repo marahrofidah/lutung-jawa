@@ -922,7 +922,7 @@ export default function LandingPage({ setScreen }) {
 
         </div>
         
-        <div className="max-w-6xl mx-auto pt-8 mt-8 border-t text-center text-[10px] text-slate-500">
+        <div className="max-w-6xl mx-auto pt-8 mt-8 border-t text-center text-[10px] text-stone-50">
           <p>© 2026 Lutung Jawa. All rights reserved.</p>
         </div>
       </footer>
