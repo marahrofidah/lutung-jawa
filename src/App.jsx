@@ -34,18 +34,6 @@ function App() {
   const [classCodeInput, setClassCodeInput] = useState('')
   const [studentClass, setStudentClass] = useState(null)
   const [studentGroup, setStudentGroup] = useState(null)
-  const [individualAnswers, setIndividualAnswers] = useState([])
-  const [groupDecision, setGroupDecision] = useState(null)
-  
-  // Individual inputs
-  const [memberNameInput, setMemberNameInput] = useState('')
-  const [memberAnswerInput, setMemberAnswerInput] = useState('')
-  const [memberReasonInput, setMemberReasonInput] = useState('')
-  
-  // Group inputs
-  const [groupAnswerInput, setGroupAnswerInput] = useState('')
-  const [groupReasonInput, setGroupReasonInput] = useState('')
-
   // Show status alerts
   const [alertMsg, setAlertMsg] = useState({ type: '', text: '' })
 
@@ -292,155 +280,7 @@ function App() {
     }
   }
 
-  // Fetch playroom data for Student Level
-  const fetchStudentLevelData = async () => {
-    if (!studentGroup) return
-    try {
-      const level = studentGroup.current_level
 
-      const { data: indData } = await supabase
-        .from('individual_answers')
-        .select('*')
-        .eq('group_id', studentGroup.id)
-        .eq('level_number', level)
-
-      const { data: decData } = await supabase
-        .from('group_decisions')
-        .select('*')
-        .eq('group_id', studentGroup.id)
-        .eq('level_number', level)
-        .maybeSingle()
-
-      setIndividualAnswers(indData || [])
-      setGroupDecision(decData || null)
-      
-      if (decData) {
-        setGroupAnswerInput(decData.final_answer)
-        setGroupReasonInput(decData.final_reason)
-      } else {
-        setGroupAnswerInput('')
-        setGroupReasonInput('')
-      }
-    } catch (err) {
-      console.error("Gagal mengambil data level:", err)
-    }
-  }
-
-  // Load and subscribe in Student Playroom
-  useEffect(() => {
-    if (screen !== 'student-playroom' || !studentGroup) return
-
-    fetchStudentLevelData()
-
-    const channel = supabase.channel(`group-play-${studentGroup.id}`)
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'individual_answers', 
-        filter: `group_id=eq.${studentGroup.id}` 
-      }, () => {
-        fetchStudentLevelData()
-      })
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'group_decisions', 
-        filter: `group_id=eq.${studentGroup.id}` 
-      }, () => {
-        fetchStudentLevelData()
-      })
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [screen, studentGroup?.current_level, studentGroup?.id])
-
-  // Submit individual answer
-  const handleIndividualSubmit = async (e) => {
-    e.preventDefault()
-    if (!memberNameInput.trim() || !memberAnswerInput || !memberReasonInput.trim()) {
-      triggerAlert('error', 'Semua kolom jawaban individu wajib diisi!')
-      return
-    }
-
-    try {
-      const { error } = await supabase
-        .from('individual_answers')
-        .insert([{
-          group_id: studentGroup.id,
-          level_number: studentGroup.current_level,
-          member_name: memberNameInput.trim(),
-          answer: memberAnswerInput,
-          reason: memberReasonInput.trim()
-        }])
-
-      if (error) throw error
-
-      setMemberNameInput('')
-      setMemberAnswerInput('')
-      setMemberReasonInput('')
-      triggerAlert('success', 'Jawaban individu Anda berhasil dikirim!')
-    } catch (err) {
-      console.error(err)
-      triggerAlert('error', `Gagal mengirim jawaban: ${err.message}`)
-    }
-  }
-
-  // Submit final group decision
-  const handleGroupSubmit = async (e) => {
-    e.preventDefault()
-    if (!groupAnswerInput || !groupReasonInput.trim()) {
-      triggerAlert('error', 'Kolom keputusan akhir kelompok wajib diisi!')
-      return
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('group_decisions')
-        .insert([{
-          group_id: studentGroup.id,
-          level_number: studentGroup.current_level,
-          final_answer: groupAnswerInput,
-          final_reason: groupReasonInput.trim()
-        }])
-        .select()
-        .single()
-
-      if (error) throw error
-
-      setGroupDecision(data)
-      triggerAlert('success', 'Keputusan akhir kelompok berhasil dikirim!')
-    } catch (err) {
-      console.error(err)
-      triggerAlert('error', `Gagal mengirim keputusan: ${err.message}`)
-    }
-  }
-
-  // Advance to next level
-  const handleNextLevel = async () => {
-    const nextLvl = studentGroup.current_level + 1
-    
-    try {
-      const { data: updatedGroup, error } = await supabase
-        .from('groups')
-        .update({ current_level: nextLvl })
-        .eq('id', studentGroup.id)
-        .select()
-        .single()
-
-      if (error) throw error
-
-      setStudentGroup(updatedGroup)
-      localStorage.setItem('student_group', JSON.stringify(updatedGroup))
-      setIndividualAnswers([])
-      setGroupDecision(null)
-      triggerAlert('success', `Selamat datang di Level ${nextLvl}!`)
-    } catch (err) {
-      console.error(err)
-      triggerAlert('error', `Gagal melanjutkan level: ${err.message}`)
-    }
-  }
 
   // Exit/Logout session
   const handleLogout = () => {
@@ -467,18 +307,16 @@ function App() {
           ? 'bg-cover bg-center bg-no-repeat text-forest-950'
           : isTeacherSetup
             ? 'bg-[#ffcc00] text-forest-950' 
-            : isTeacherDashboard
+            : (isTeacherDashboard || isStudentPlayroom)
               ? 'bg-cover bg-center bg-no-repeat bg-fixed text-forest-950' 
               : isStudentSetup
                 ? 'bg-[#02462e] text-forest-950'
-                : isStudentPlayroom
-                  ? 'bg-[#02462e] text-slate-100'
-                  : 'bg-[#f6f5ee] text-forest-950'
+                : 'bg-[#f6f5ee] text-forest-950'
       }`}
       style={
         isRoleSelection 
           ? { backgroundImage: `url(${imgBgRole})` } 
-          : isTeacherDashboard 
+          : (isTeacherDashboard || isStudentPlayroom)
             ? { backgroundImage: `url(${imgBgDashboard})` } 
             : {}
       }
@@ -554,23 +392,10 @@ function App() {
           {screen === 'student-playroom' && studentGroup && (
             <StudentPlayroom 
               studentGroup={studentGroup}
+              setStudentGroup={setStudentGroup}
               levelsData={levelsData}
-              individualAnswers={individualAnswers}
-              groupDecision={groupDecision}
-              memberNameInput={memberNameInput}
-              setMemberNameInput={setMemberNameInput}
-              memberAnswerInput={memberAnswerInput}
-              setMemberAnswerInput={setMemberAnswerInput}
-              memberReasonInput={memberReasonInput}
-              setMemberReasonInput={setMemberReasonInput}
-              groupAnswerInput={groupAnswerInput}
-              setGroupAnswerInput={setGroupAnswerInput}
-              groupReasonInput={groupReasonInput}
-              setGroupReasonInput={setGroupReasonInput}
-              handleIndividualSubmit={handleIndividualSubmit}
-              handleGroupSubmit={handleGroupSubmit}
-              handleNextLevel={handleNextLevel}
               handleLogout={handleLogout}
+              triggerAlert={triggerAlert}
             />
           )}
         </main>

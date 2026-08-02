@@ -4,16 +4,22 @@ export const levelsData = [
     theme: "Habitat & Distribusi",
     title: "Penjelajah Rimba",
     material: "Lutung Jawa (Trachypithecus auratus) adalah satwa endemik Indonesia yang hanya ditemukan di pulau Jawa, Bali, dan Lombok. Mereka sangat menyukai hutan primer dan sekunder, mulai dari hutan bakau pesisir pantai hingga hutan pegunungan tinggi. Satwa ini sangat bergantung pada tajuk pohon tinggi sebagai ruang gerak, tidur, dan berlindung dari predator.",
-    question: "Di manakah habitat alami yang TIDAK dihuni oleh populasi alami Lutung Jawa?",
+    caseStudy: {
+      title: "Studi Kasus: Perubahan di Habitat Lutung Jawa",
+      instruction: "Bacalah cerita berikut dengan seksama!",
+      story: "Beberapa tahun yang lalu, kawasan hutan tempat hidup Lutung Jawa masih dipenuhi oleh berbagai jenis pohon. Di hutan tersebut terdapat pohon-pohon besar sebagai tempat berpindah dan beristirahat, serta pohon Ficus yang menghasilkan buah sebagai salah satu sumber makanan Lutung Jawa.\n\nNamun, dalam beberapa bulan terakhir, sebagian kawasan hutan mulai berubah. Beberapa pohon ditebang untuk membuka lahan perkebunan dan permukiman. Akibatnya, jumlah pohon di beberapa bagian hutan semakin berkurang. Kanopi pohon yang sebelumnya saling terhubung kini menjadi terputus.\n\nLutung Jawa mulai kesulitan berpindah dari satu pohon ke pohon lainnya. Ketersediaan makanan juga semakin berkurang karena jumlah tumbuhan yang menjadi sumber pakan menurun. Beberapa kelompok Lutung Jawa bahkan terlihat berpindah ke wilayah lain untuk mencari habitat yang lebih sesuai. Masyarakat di sekitar hutan mulai khawatir karena semakin jarang melihat Lutung Jawa di habitat alaminya.",
+      conclusion: "Setelah membaca studi kasus dan mengamati kondisi habitat, jawablah pertanyaan berikut."
+    },
+    question: "Menurutmu, apa masalah utama yang sedang terjadi pada habitat Lutung Jawa? Jelaskan alasanmu berdasarkan informasi yang terdapat pada studi kasus dan hasil pengamatan habitat.",
     options: [
-      { key: "A", text: "Hutan Bakau Pesisir Jawa Timur" },
-      { key: "B", text: "Hutan Pegunungan Tinggi Jawa Barat" },
-      { key: "C", text: "Hutan Sabana Terbuka Nusa Tenggara Timur" },
-      { key: "D", text: "Hutan Lindung Taman Nasional Bali Barat" }
+      { key: "A", text: "Populasi Lutung Jawa meningkat sehingga habitat menjadi terlalu padat." },
+      { key: "B", text: "Terjadi kerusakan habitat akibat penebangan pohon dan pembukaan lahan." },
+      { key: "C", text: "Curah hujan yang tinggi menyebabkan Lutung Jawa meninggalkan habitatnya." },
+      { key: "D", text: "Jumlah predator di hutan meningkat sehingga Lutung Jawa berpindah tempat." }
     ],
-    correctAnswer: "C",
+    correctAnswer: "B",
     videoUrl: "https://www.youtube.com/embed/9gM63ZixU_A",
-    discussion: "Jawaban yang benar adalah C. Lutung Jawa merupakan satwa endemik pulau Jawa, Bali, dan Lombok. Mereka tidak menyebar secara alami hingga ke wilayah Nusa Tenggara Timur (NTT) yang memiliki tipe vegetasi sabana terbuka yang kurang mendukung pola hidup arboreal (tinggal di pepohonan) mereka.",
+    discussion: "Jawaban yang benar adalah B. Berdasarkan studi kasus, pembukaan lahan perkebunan dan pemukiman serta penebangan pohon menyebabkan berkurangnya jumlah pohon dan rusaknya konektivitas kanopi hutan, yang menyulitkan Lutung Jawa untuk berpindah tempat dan mendapatkan pakan alami.",
     badgeName: "Sobat Hutan (Forest Friend)",
     badgeIcon: "🌲",
     badgeDescription: "Lencana atas pemahaman mendalam tentang sebaran habitat alami Lutung Jawa."
