@@ -3,6 +3,7 @@ import { supabase } from './supabaseClient'
 import { levelsData } from './data/levelsData'
 import imgDaunCursor from './assets/daun.png'
 import imgBgRole from './assets/bg-role.png'
+import imgBgDashboard from './assets/bg-dashboard.png'
 
 // Import Components & Pages
 import Header from './components/Header'
@@ -467,14 +468,20 @@ function App() {
           : isTeacherSetup
             ? 'bg-[#ffcc00] text-forest-950' 
             : isTeacherDashboard
-              ? 'bg-[#02462e] text-slate-100' 
+              ? 'bg-cover bg-center bg-no-repeat bg-fixed text-forest-950' 
               : isStudentSetup
                 ? 'bg-[#02462e] text-forest-950'
                 : isStudentPlayroom
                   ? 'bg-[#02462e] text-slate-100'
                   : 'bg-[#f6f5ee] text-forest-950'
       }`}
-      style={isRoleSelection ? { backgroundImage: `url(${imgBgRole})` } : {}}
+      style={
+        isRoleSelection 
+          ? { backgroundImage: `url(${imgBgRole})` } 
+          : isTeacherDashboard 
+            ? { backgroundImage: `url(${imgBgDashboard})` } 
+            : {}
+      }
     >
       
       {/* Alert Notification */}
@@ -505,7 +512,7 @@ function App() {
       {screen === 'landing' ? (
         <LandingPage setScreen={setScreen} />
       ) : (
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+        <main className={`flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col ${(screen === 'teacher-dashboard' || screen === 'student-playroom') ? 'justify-start pt-32 pb-6 sm:pb-8 lg:pb-10' : 'justify-center py-4 sm:py-6 lg:py-8'}`}>
           {screen === 'role-selection' && (
             <RoleSelection setScreen={setScreen} />
           )}

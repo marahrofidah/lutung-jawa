@@ -206,3 +206,94 @@ html, body {
 .font-readable {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
+
+/* Premium textured paper card styles */
+.card-paper {
+  background-color: #faf6ee;
+  box-shadow: inset 0px 0px 30px rgba(255,255,255,0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.card-paper-green {
+  background-color: #f2f7f4;
+  box-shadow: inset 0px 0px 30px rgba(255,255,255,0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-paper-green::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.07;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.card-paper-yellow {
+  background-color: #fdfae7;
+  box-shadow: inset 0px 0px 20px rgba(255,255,255,0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-paper-yellow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+/* Torn/Rough paper wrapper to apply shadow conforming to clip-path shape */
+.paper-container-shadow {
+  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.12)) drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.06));
+}
+
+.paper-card-shadow-selected {
+  filter: drop-shadow(0px 10px 20px rgba(254, 199, 0, 0.3)) drop-shadow(0px 2px 4px rgba(254, 199, 0, 0.15));
+}
+
+/* Jagged torn bottom edge for the header */
+.header-torn-bottom {
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 86%,
+    98.5% 89%, 97% 85%, 95.5% 88%, 94% 84%, 92.5% 90%, 91% 85%, 89.5% 88%, 88% 84%, 86.5% 89%, 85% 85%, 83.5% 88%, 82% 84%, 80.5% 89%, 79% 85%, 77.5% 88%, 76% 84%, 74.5% 90%, 73% 85%, 71.5% 88%, 70% 84%, 68.5% 89%, 67% 85%, 65.5% 88%, 64% 84%, 62.5% 89%, 61% 85%, 59.5% 88%, 58% 84%, 56.5% 90%, 55% 85%, 53.5% 88%, 52% 84%, 50.5% 89%, 49% 85%, 47.5% 88%, 46% 84%, 44.5% 89%, 43% 85%, 41.5% 88%, 40% 84%, 38.5% 90%, 37% 85%, 35.5% 88%, 34% 84%, 32.5% 89%, 31% 85%, 29.5% 88%, 28% 84%, 26.5% 89%, 25% 85%, 23.5% 88%, 22% 84%, 20.5% 90%, 19% 85%, 17.5% 88%, 16% 84%, 14.5% 89%, 13% 85%, 11.5% 88%, 10% 84%, 8.5% 89%, 7% 85%, 5.5% 88%, 4% 84%, 2.5% 89%, 0% 86%
+  );
+}
+
+/* Jagged torn paper shapes */
+.paper-rough-1 {
+  clip-path: polygon(
+    0% 1.5%, 12% 0%, 25% 1.2%, 38% 0.3%, 50% 1.5%, 62% 0%, 75% 1%, 88% 0.5%, 100% 1.5%,
+    98.8% 15%, 100% 30%, 98.5% 45%, 99.5% 60%, 98.8% 75%, 100% 90%, 99% 98.5%,
+    88% 99.5%, 75% 98.5%, 62% 100%, 50% 98.8%, 38% 100%, 25% 98.5%, 12% 99.8%, 0% 98.5%,
+    1.2% 85%, 0% 70%, 1.5% 55%, 0.3% 40%, 1.2% 25%, 0% 10%
+  );
+}
+
+.paper-rough-2 {
+  clip-path: polygon(
+    0% 0.5%, 15% 1.2%, 30% 0.2%, 45% 1%, 60% 0%, 75% 1.5%, 90% 0.3%, 100% 0.8%,
+    99.2% 12%, 98.5% 28%, 100% 44%, 98.8% 60%, 99.5% 76%, 98.5% 92%, 100% 99.2%,
+    90% 98.8%, 75% 100%, 60% 98.5%, 45% 99.5%, 30% 98.2%, 15% 99.8%, 0% 99.2%,
+    0.8% 88%, 1.5% 72%, 0.2% 56%, 1% 40%, 0.3% 24%, 1.2% 8%
+  );
+}
