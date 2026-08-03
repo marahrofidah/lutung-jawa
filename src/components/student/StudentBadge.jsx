@@ -114,35 +114,8 @@ export default function StudentBadge({
           <div className="absolute inset-0 bg-[repeating-conic-gradient(from_0deg,_#fec700_0deg_15deg,_transparent_15deg_30deg)] opacity-30"></div>
         </div>
 
-        {/* Sparkle Particles */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[
-            { left: '15%', delay: '0.2s', size: '1.2rem', top: '75%' },
-            { left: '30%', delay: '0.8s', size: '1.5rem', top: '70%' },
-            { left: '45%', delay: '0s', size: '1.8rem', top: '80%' },
-            { left: '60%', delay: '1.4s', size: '1.3rem', top: '65%' },
-            { left: '75%', delay: '0.5s', size: '1.6rem', top: '78%' },
-            { left: '25%', delay: '1.8s', size: '1.4rem', top: '60%' },
-            { left: '68%', delay: '2.1s', size: '1.7rem', top: '62%' },
-            { left: '85%', delay: '1.0s', size: '1.5rem', top: '74%' },
-          ].map((sp, idx) => (
-            <span
-              key={idx}
-              className="sparkle-particle"
-              style={{
-                left: sp.left,
-                top: sp.top,
-                animationDelay: sp.delay,
-                fontSize: sp.size,
-              }}
-            >
-              ✨
-            </span>
-          ))}
-        </div>
-
-        {/* Pulsing Glowing Badge */}
-        <div className="relative z-10 animate-sparkle-glow flex flex-col items-center gap-6">
+        {/* Glowing Badge (Static, no pulse animation) */}
+        <div className="relative z-10 flex flex-col items-center gap-6">
           <div className="bg-white/10 p-6 rounded-full border border-yellow-400/30 shadow-[0_0_55px_rgba(254,199,0,0.35)] backdrop-blur-sm">
             {renderBadge(studentGroup.current_level)}
           </div>
