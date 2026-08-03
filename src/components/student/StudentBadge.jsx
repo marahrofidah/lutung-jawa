@@ -106,29 +106,24 @@ export default function StudentBadge({
 
   if (showCelebration) {
     return (
-      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-forest-950/85 backdrop-blur-md transition-all duration-500 overflow-hidden animate-fade-in">
-        {/* Spinning Sunbeam Background Rays */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-20 animate-spin-slow">
-          <div className="w-full h-full rounded-full bg-[radial-gradient(circle,_#fec700_0%,_transparent_70%)]"></div>
-          {/* Light Rays */}
-          <div className="absolute inset-0 bg-[repeating-conic-gradient(from_0deg,_#fec700_0deg_15deg,_transparent_15deg_30deg)] opacity-30"></div>
-        </div>
-
-        {/* Glowing Badge (Static, no pulse animation) */}
-        <div className="relative z-10 flex flex-col items-center gap-6">
-          <div className="bg-white/10 p-6 rounded-full border border-yellow-400/30 shadow-[0_0_55px_rgba(254,199,0,0.35)] backdrop-blur-sm">
-            {renderBadge(studentGroup.current_level)}
-          </div>
-          <div className="text-center space-y-2">
-            <span className="text-[11px] text-[#fec700] font-black uppercase tracking-widest font-mono">
-              Lencana Baru Diperoleh!
-            </span>
-            <h3 className="font-display font-extrabold text-3xl text-white drop-shadow-md">
-              {currentLvlData.badgeName}
-            </h3>
-            <p className="text-xs text-slate-350 font-semibold max-w-sm px-6 leading-relaxed">
-              {currentLvlData.badgeDescription}
-            </p>
+      <div className="max-w-2xl mx-auto space-y-6 py-4 animate-scale-up text-center">
+        <div className="paper-container-shadow">
+          <div className="card-paper-green paper-rough-1 p-8 sm:p-12 space-y-6 min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden animate-fade-in">
+            {/* Embedded Celebration View - Static, no backdrop or spinning rays */}
+            <div className="space-y-6 py-4 flex flex-col items-center justify-center">
+              <span className="text-[11px] text-emerald-800/80 font-black uppercase tracking-widest font-mono">
+                Lencana Baru Diperoleh!
+              </span>
+              <div className="bg-emerald-50/50 p-6 rounded-full border border-emerald-500/20 shadow-[0_0_40px_rgba(2,70,46,0.12)]">
+                {renderBadge(studentGroup.current_level)}
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-display font-black text-2xl text-[#02462e]">{currentLvlData.badgeName}</h4>
+                <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-sm mx-auto leading-normal">
+                  {currentLvlData.badgeDescription}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
