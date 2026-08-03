@@ -40,6 +40,14 @@ function App() {
   // Background music states
   const audioRef = useRef(null)
   const [isMuted, setIsMuted] = useState(true)
+  const [volume, setVolume] = useState(0.4) // default 40% volume
+
+  // Sync volume state to audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume
+    }
+  }, [volume])
 
   // Custom cursor state
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 })
@@ -445,7 +453,9 @@ function App() {
       />
 
       {/* Floating Background Music Controller */}
-      <div className="fixed bottom-5 left-5 z-50">
+      <div 
+        className="fixed bottom-5 left-5 z-50 flex items-center gap-2 bg-amber-950/80 border border-[#5c3a21] py-1.5 px-2 rounded-full shadow-lg group hover:pr-4 transition-all duration-300 backdrop-blur-sm"
+      >
         <button
           onClick={() => {
             if (!audioRef.current) return
@@ -457,24 +467,52 @@ function App() {
               setIsMuted(true)
             }
           }}
-          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 transition-all duration-205 cursor-pointer ${
+          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-205 cursor-pointer shrink-0 ${
             isMuted 
-              ? 'bg-amber-900/80 border-[#5c3a21] text-[#f7e7d0] hover:bg-amber-800' 
-              : 'bg-emerald-700/80 border-[#123e32] text-white hover:bg-emerald-650 animate-pulse'
+              ? 'bg-amber-900 border border-[#5c3a21] text-[#f7e7d0] hover:bg-amber-800' 
+              : 'bg-emerald-700 text-white hover:bg-emerald-650 animate-pulse'
           }`}
           title={isMuted ? "Putar Musik Latar" : "Senapkan Musik"}
         >
           {isMuted ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
             </svg>
           ) : (
-            <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
             </svg>
           )}
         </button>
+
+        {/* Volume Slider (Slide-out on hover) */}
+        <div className="w-0 overflow-hidden group-hover:w-20 transition-all duration-300 flex items-center">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={(e) => {
+              const val = parseFloat(e.target.value)
+              setVolume(val)
+              if (audioRef.current) {
+                audioRef.current.volume = val
+                // If user changes volume, make sure they hear it
+                if (val > 0 && isMuted) {
+                  audioRef.current.play().catch(err => console.log("Autoplay blocked:", err))
+                  setIsMuted(false)
+                } else if (val === 0 && !isMuted) {
+                  audioRef.current.pause()
+                  setIsMuted(true)
+                }
+              }
+            }}
+            className="w-20 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#fec700] hover:accent-[#ffd000]"
+            title={`Volume: ${Math.round(volume * 100)}%`}
+          />
+        </div>
       </div>
 
     </div>
