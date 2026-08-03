@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClient'
 import { levelsData } from './data/levelsData'
 import imgDaunCursor from './assets/daun.webp'
@@ -36,6 +36,10 @@ function App() {
   const [studentGroup, setStudentGroup] = useState(null)
   // Show status alerts
   const [alertMsg, setAlertMsg] = useState({ type: '', text: '' })
+
+  // Background music states
+  const audioRef = useRef(null)
+  const [isMuted, setIsMuted] = useState(true)
 
   // Custom cursor state
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 })
@@ -431,6 +435,47 @@ function App() {
           <img src={imgDaunCursor} alt="leaf-cursor" className="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />
         </div>
       )}
+
+      {/* HTML5 Background Audio Element */}
+      <audio 
+        ref={audioRef} 
+        src="/bg-music.mp3" 
+        loop 
+        preload="auto"
+      />
+
+      {/* Floating Background Music Controller */}
+      <div className="fixed bottom-5 left-5 z-50">
+        <button
+          onClick={() => {
+            if (!audioRef.current) return
+            if (isMuted) {
+              audioRef.current.play().catch(err => console.log("Autoplay blocked:", err))
+              setIsMuted(false)
+            } else {
+              audioRef.current.pause()
+              setIsMuted(true)
+            }
+          }}
+          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 transition-all duration-205 cursor-pointer ${
+            isMuted 
+              ? 'bg-amber-900/80 border-[#5c3a21] text-[#f7e7d0] hover:bg-amber-800' 
+              : 'bg-emerald-700/80 border-[#123e32] text-white hover:bg-emerald-650 animate-pulse'
+          }`}
+          title={isMuted ? "Putar Musik Latar" : "Senapkan Musik"}
+        >
+          {isMuted ? (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+          )}
+        </button>
+      </div>
 
     </div>
   )
