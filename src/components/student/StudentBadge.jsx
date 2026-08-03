@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import imgSobatHutan from '../../assets/sobat-hutan.webp'
 import imgPecintaDaun from '../../assets/pecinta-daun.webp'
 
@@ -9,6 +9,31 @@ export default function StudentBadge({
   handleNextLevel
 }) {
   const isCorrect = groupDecision?.final_answer === currentLvlData.correctAnswer
+  const [showCelebration, setShowCelebration] = useState(isCorrect)
+
+  useEffect(() => {
+    if (isCorrect) {
+      // Play sparkle/cling chime sound
+      const playChime = () => {
+        const audio = new Audio('/cling.mp3')
+        audio.volume = 0.5
+        audio.play().catch(() => {
+          // Fallback to online royalty-free chime WAV sound if local mp3 is missing
+          const fallback = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-84.wav')
+          fallback.volume = 0.4
+          fallback.play().catch(err => console.log("Sound autoplay blocked:", err))
+        })
+      }
+      playChime()
+
+      // Automatically transition to the standard badge info page after 3.2 seconds
+      const timer = setTimeout(() => {
+        setShowCelebration(false)
+      }, 3200)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isCorrect])
 
   // Custom vector badge icon renderer
   const renderBadge = (level) => {
@@ -75,6 +100,64 @@ export default function StudentBadge({
     return (
       <div className={`w-28 h-28 mx-auto rounded-full border-4 flex items-center justify-center shrink-0 shadow-lg ${colorClasses[level]}`}>
         {icons[level]}
+      </div>
+    )
+  }
+
+  if (showCelebration) {
+    return (
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-forest-950/85 backdrop-blur-md transition-all duration-500 overflow-hidden animate-fade-in">
+        {/* Spinning Sunbeam Background Rays */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-20 animate-spin-slow">
+          <div className="w-full h-full rounded-full bg-[radial-gradient(circle,_#fec700_0%,_transparent_70%)]"></div>
+          {/* Light Rays */}
+          <div className="absolute inset-0 bg-[repeating-conic-gradient(from_0deg,_#fec700_0deg_15deg,_transparent_15deg_30deg)] opacity-30"></div>
+        </div>
+
+        {/* Sparkle Particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[
+            { left: '15%', delay: '0.2s', size: '1.2rem', top: '75%' },
+            { left: '30%', delay: '0.8s', size: '1.5rem', top: '70%' },
+            { left: '45%', delay: '0s', size: '1.8rem', top: '80%' },
+            { left: '60%', delay: '1.4s', size: '1.3rem', top: '65%' },
+            { left: '75%', delay: '0.5s', size: '1.6rem', top: '78%' },
+            { left: '25%', delay: '1.8s', size: '1.4rem', top: '60%' },
+            { left: '68%', delay: '2.1s', size: '1.7rem', top: '62%' },
+            { left: '85%', delay: '1.0s', size: '1.5rem', top: '74%' },
+          ].map((sp, idx) => (
+            <span
+              key={idx}
+              className="sparkle-particle"
+              style={{
+                left: sp.left,
+                top: sp.top,
+                animationDelay: sp.delay,
+                fontSize: sp.size,
+              }}
+            >
+              ✨
+            </span>
+          ))}
+        </div>
+
+        {/* Pulsing Glowing Badge */}
+        <div className="relative z-10 animate-sparkle-glow flex flex-col items-center gap-6">
+          <div className="bg-white/10 p-6 rounded-full border border-yellow-400/30 shadow-[0_0_55px_rgba(254,199,0,0.35)] backdrop-blur-sm">
+            {renderBadge(studentGroup.current_level)}
+          </div>
+          <div className="text-center space-y-2">
+            <span className="text-[11px] text-[#fec700] font-black uppercase tracking-widest font-mono">
+              Lencana Baru Diperoleh!
+            </span>
+            <h3 className="font-display font-extrabold text-3xl text-white drop-shadow-md">
+              {currentLvlData.badgeName}
+            </h3>
+            <p className="text-xs text-slate-350 font-semibold max-w-sm px-6 leading-relaxed">
+              {currentLvlData.badgeDescription}
+            </p>
+          </div>
+        </div>
       </div>
     )
   }
