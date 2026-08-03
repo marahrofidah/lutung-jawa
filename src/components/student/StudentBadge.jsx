@@ -118,10 +118,6 @@ export default function StudentBadge({
           <div className="animate-spring-pop">
             <div className="relative p-6 rounded-full bg-white/5 border border-yellow-400/30 shadow-[0_0_50px_rgba(254,199,0,0.25)] backdrop-blur-md">
               {renderBadge(studentGroup.current_level)}
-              
-              {/* Corner accent sparkles (static decoration) */}
-              <div className="absolute -top-1 -right-1 text-lg">✨</div>
-              <div className="absolute -bottom-1 -left-1 text-lg">✨</div>
             </div>
           </div>
 
