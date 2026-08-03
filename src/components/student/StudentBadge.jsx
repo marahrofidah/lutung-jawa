@@ -106,25 +106,38 @@ export default function StudentBadge({
 
   if (showCelebration) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 py-4 animate-scale-up text-center">
-        <div className="paper-container-shadow">
-          <div className="card-paper-green paper-rough-1 p-8 sm:p-12 space-y-6 min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden animate-fade-in">
-            {/* Embedded Celebration View - Static, no backdrop or spinning rays */}
-            <div className="space-y-6 py-4 flex flex-col items-center justify-center">
-              <span className="text-[11px] text-emerald-800/80 font-black uppercase tracking-widest font-mono">
-                Lencana Baru Diperoleh!
-              </span>
-              <div className="bg-emerald-50/50 p-6 rounded-full border border-emerald-500/20 shadow-[0_0_40px_rgba(2,70,46,0.12)]">
-                {renderBadge(studentGroup.current_level)}
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-display font-black text-2xl text-[#02462e]">{currentLvlData.badgeName}</h4>
-                <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-sm mx-auto leading-normal">
-                  {currentLvlData.badgeDescription}
-                </p>
-              </div>
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gradient-to-b from-[#022c22]/95 via-[#011f18]/97 to-[#01140f]/98 backdrop-blur-lg overflow-hidden animate-fade-in">
+        
+        {/* Soft elegant static golden ambient glow in background */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        {/* Outer card wrapping badge and text to make it feel cohesive */}
+        <div className="relative z-10 flex flex-col items-center gap-8 max-w-md w-full px-6 text-center select-none">
+          
+          {/* Badge Container with Spring Pop-up Animation and a beautiful golden ring */}
+          <div className="animate-spring-pop">
+            <div className="relative p-6 rounded-full bg-white/5 border border-yellow-400/30 shadow-[0_0_50px_rgba(254,199,0,0.25)] backdrop-blur-md">
+              {renderBadge(studentGroup.current_level)}
+              
+              {/* Corner accent sparkles (static decoration) */}
+              <div className="absolute -top-1 -right-1 text-lg">✨</div>
+              <div className="absolute -bottom-1 -left-1 text-lg">✨</div>
             </div>
           </div>
+
+          {/* Text panel sliding up after a short delay */}
+          <div className="space-y-3 animate-slide-up-fade opacity-0 fill-mode-forwards" style={{ animationDelay: '0.25s' }}>
+            <span className="text-[11px] text-[#fec700] font-black uppercase tracking-[0.25em] font-mono block drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              Lencana Baru Diperoleh!
+            </span>
+            <h3 className="font-display font-black text-3xl text-white tracking-wide leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]">
+              {currentLvlData.badgeName}
+            </h3>
+            <p className="text-sm text-emerald-100/85 font-semibold max-w-sm px-4 leading-relaxed font-sans">
+              {currentLvlData.badgeDescription}
+            </p>
+          </div>
+
         </div>
       </div>
     )

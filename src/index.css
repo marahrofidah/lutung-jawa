@@ -300,52 +300,26 @@ html, body {
 }
 
 /* Golden Sparkle Celebration Animations */
-@keyframes sparkle-glow {
-  0%, 100% {
-    transform: scale(0.95);
-    filter: drop-shadow(0 0 15px rgba(254, 199, 0, 0.4)) drop-shadow(0 0 30px rgba(254, 199, 0, 0.2));
-  }
-  50% {
-    transform: scale(1.06);
-    filter: drop-shadow(0 0 35px rgba(254, 199, 0, 0.8)) drop-shadow(0 0 60px rgba(254, 199, 0, 0.5));
-  }
+@keyframes spring-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  70% { transform: scale(1.1); }
+  90% { transform: scale(0.96); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.animate-sparkle-glow {
-  animation: sparkle-glow 2s ease-in-out infinite;
+.animate-spring-pop {
+  animation: spring-pop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes spin-slow {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes slide-up-fade {
+  0% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-@keyframes float-particle {
-  0% {
-    transform: translateY(0) scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-    transform: translateY(-20px) scale(1.1) rotate(45deg);
-  }
-  85% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-110px) scale(0) rotate(270deg);
-    opacity: 0;
-  }
-}
-
-.sparkle-particle {
-  position: absolute;
-  pointer-events: none;
-  font-size: 1.5rem;
-  z-index: 40;
-  animation: float-particle 3.5s ease-in-out infinite;
+.fill-mode-forwards {
+  animation-fill-mode: forwards !important;
 }
