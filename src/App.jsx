@@ -14,6 +14,12 @@ import TeacherDashboard from './pages/TeacherDashboard'
 import StudentSetup from './pages/StudentSetup'
 import StudentPlayroom from './pages/StudentPlayroom'
 
+const clearSession = () => {
+  for (const key of ['role', 'teacher_class', 'student_group', 'student_class']) {
+    localStorage.removeItem(key)
+  }
+}
+
 function App() {
   // Navigation & Role States
   // 'landing', 'role-selection', 'teacher-setup', 'teacher-dashboard', 'student-setup', 'student-playroom'
@@ -117,7 +123,7 @@ function App() {
             setScreen('student-playroom')
             triggerAlert('success', `Sesi kelompok '${groupData.group_name}' berhasil dipulihkan!`)
           } else {
-            localStorage.clear()
+            clearSession()
           }
         }
         verifySession()
@@ -134,7 +140,7 @@ function App() {
             setScreen('teacher-dashboard')
             triggerAlert('success', `Dashboard Kelas ${classData.class_code} berhasil dipulihkan!`)
           } else {
-            localStorage.clear()
+            clearSession()
           }
         }
         verifyClass()
@@ -159,9 +165,29 @@ function App() {
     const code = `LTJ-${rand}`
 
     try {
+      const name = teacherName.trim()
+      const { data: existingClass, error: lookupError } = await supabase
+        .from('classes')
+        .select('*')
+        .eq('teacher_name', name)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (lookupError) throw lookupError
+      if (existingClass) {
+        setCurrentClass(existingClass)
+        setTeacherName(existingClass.teacher_name)
+        localStorage.setItem('role', 'teacher')
+        localStorage.setItem('teacher_class', JSON.stringify(existingClass))
+        setScreen('teacher-dashboard')
+        triggerAlert('success', `Selamat datang kembali! Kelas ${existingClass.class_code} dan progres murid tetap tersimpan.`)
+        return
+      }
+
       const { data, error } = await supabase
         .from('classes')
-        .insert([{ class_code: code, teacher_name: teacherName }])
+        .insert([{ class_code: code, teacher_name: name }])
         .select()
         .single()
 
@@ -264,33 +290,36 @@ function App() {
       }
 
       // Check if group name already exists
-      const { data: existingGroup } = await supabase
+      const { data: existingGroup, error: lookupError } = await supabase
         .from('groups')
         .select('*')
         .eq('class_id', classData.id)
         .eq('group_name', groupName.trim())
         .maybeSingle()
 
-      if (existingGroup) {
-        triggerAlert('error', `Nama kelompok '${groupName}' sudah digunakan.`)
-        return
+      if (lookupError) throw lookupError
+
+      let joinedGroup = existingGroup
+      if (!joinedGroup) {
+        const { data: newGroup, error: gError } = await supabase
+          .from('groups')
+          .insert([{ class_id: classData.id, group_name: groupName.trim(), current_level: 1 }])
+          .select()
+          .single()
+
+        if (gError) throw gError
+        joinedGroup = newGroup
       }
 
-      const { data: newGroup, error: gError } = await supabase
-        .from('groups')
-        .insert([{ class_id: classData.id, group_name: groupName.trim(), current_level: 1 }])
-        .select()
-        .single()
-
-      if (gError) throw gError
-
       setStudentClass(classData)
-      setStudentGroup(newGroup)
+      setStudentGroup(joinedGroup)
       localStorage.setItem('role', 'student')
-      localStorage.setItem('student_group', JSON.stringify(newGroup))
+      localStorage.setItem('student_group', JSON.stringify(joinedGroup))
       localStorage.setItem('student_class', JSON.stringify(classData))
       setScreen('student-playroom')
-      triggerAlert('success', `Berhasil bergabung dengan kelas ${classData.class_code}!`)
+      triggerAlert('success', existingGroup
+        ? `Selamat datang kembali, ${joinedGroup.group_name}! Progres sebelumnya berhasil dipulihkan.`
+        : `Berhasil bergabung dengan kelas ${classData.class_code}!`)
     } catch (err) {
       console.error(err)
       triggerAlert('error', `Gagal masuk kelas: ${err.message}`)
@@ -301,13 +330,14 @@ function App() {
 
   // Exit/Logout session
   const handleLogout = () => {
-    if (window.confirm("Apakah Anda yakin ingin keluar dari sesi ini?")) {
-      localStorage.clear()
+    if (window.confirm("Keluar dari sesi ini? Level dan jawaban yang sudah dikirim tetap tersimpan. Masuk lagi dengan nama yang sama untuk melanjutkan.")) {
+      clearSession()
       setScreen('landing')
       setCurrentClass(null)
       setStudentGroup(null)
       setStudentClass(null)
       setGroups([])
+      setSelectedGroupDetails(null)
     }
   }
 

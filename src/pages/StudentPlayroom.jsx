@@ -106,21 +106,26 @@ export default function StudentPlayroom({
     try {
       const level = studentGroup.current_level
 
-      const { data: indData } = await supabase
+      const { data: indData, error: indError } = await supabase
         .from('individual_answers')
         .select('*')
         .eq('group_id', studentGroup.id)
         .eq('level_number', level)
 
-      const { data: decData } = await supabase
+      if (indError) throw indError
+
+      const { data: decData, error: decError } = await supabase
         .from('group_decisions')
         .select('*')
         .eq('group_id', studentGroup.id)
         .eq('level_number', level)
         .maybeSingle()
 
+      if (decError) throw decError
+
       setIndividualAnswers(indData || [])
       setGroupDecision(decData || null)
+      if (!decData && indData?.length) setStage('question')
       
       if (decData) {
         setGroupAnswerInput(decData.final_answer)
@@ -241,7 +246,7 @@ export default function StudentPlayroom({
   }
 
   // Advance group to the next level
-  const handleNextLevel = async () => {
+  const handleNextLevel = async (exitAfterSave = false) => {
     const nextLvl = studentGroup.current_level + 1
     
     try {
@@ -260,6 +265,7 @@ export default function StudentPlayroom({
       if (nextLvl <= 5) {
         triggerAlert('success', `Naik ke Level ${nextLvl}!`)
       }
+      if (exitAfterSave) handleLogout()
     } catch (err) {
       console.error(err)
       triggerAlert('error', `Gagal naik level: ${err.message}`)

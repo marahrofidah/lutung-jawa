@@ -14,7 +14,7 @@ export default function StudentSetup({
       <div className="text-center space-y-2">
         <img src={imgMurid} alt="Murid Mascot" className="w-20 h-20 mx-auto object-contain select-none mb-2" />
         <h3 className="text-2xl font-display font-extrabold text-forest-950">Gabung Bermain</h3>
-        <p className="text-wrap text-slate-500 font-semibold">Masukkan nama kelompok Anda dan dapatkan Kode Kelas dari Guru Anda</p>
+        <p className="text-wrap text-slate-500 font-semibold">Masukkan nama kelompok dan kode kelas dari guru. Gunakan nama kelompok serta kode kelas yang sama untuk melanjutkan progres di hari berikutnya.</p>
       </div>
 
       <form onSubmit={handleStudentJoin} className="space-y-4">

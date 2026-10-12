@@ -7,7 +7,7 @@ export default function TeacherSetup({ teacherName, setTeacherName, handleTeache
       <div className="text-center space-y-2">
         <img src={imgGuru} alt="Guru Mascot" className="w-20 h-20 mx-auto object-contain select-none mb-2" />
         <h3 className="text-2xl font-display font-extrabold text-forest-950">Setup Profil Guru</h3>
-        <p className="text-wrap text-slate-500 font-semibold">Masukkan nama Anda untuk masuk ke Dashboard pengelolaan kelas</p>
+        <p className="text-wrap text-slate-500 font-semibold">Masukkan nama Anda. Gunakan nama yang sama untuk membuka kembali kelas dan progres murid yang tersimpan.</p>
       </div>
 
       <form onSubmit={handleTeacherSetup} className="space-y-4">
@@ -27,7 +27,7 @@ export default function TeacherSetup({ teacherName, setTeacherName, handleTeache
           type="submit"
           className="w-full bg-gradient-to-r from-[#165c43] to-[#0e3b2b] hover:from-[#1b7253] hover:to-[#124d38] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition duration-200 cursor-pointer"
         >
-          Buat Kelas Baru & Lanjut
+          Masuk / Buat Kelas
         </button>
       </form>
 

@@ -173,10 +173,13 @@ export default function StudentBadge({
 
             <div className="pt-6 border-t border-[#02462e]/10">
               <button
-                onClick={handleNextLevel}
+                onClick={() => handleNextLevel()}
                 className="w-full bg-[#02462e] hover:bg-[#fec700] text-white hover:text-[#02462e] font-display font-black py-4 rounded-2xl shadow-md transition duration-150 cursor-pointer border border-[#02462e] text-base"
               >
                 {studentGroup.current_level === 5 ? 'Selesaikan Petualangan!' : 'Lanjut ke Level Berikutnya'}
+              </button>
+              <button onClick={() => handleNextLevel(true)} className="mt-3 w-full text-[#02462e] font-bold py-3 underline cursor-pointer">
+                Simpan Level & Keluar untuk Hari Ini
               </button>
             </div>
 
@@ -200,10 +203,13 @@ export default function StudentBadge({
 
             <div className="pt-6 border-t border-amber-200/60">
               <button
-                onClick={handleNextLevel}
+                onClick={() => handleNextLevel()}
                 className="w-full bg-[#02462e] hover:bg-[#fec700] text-white hover:text-[#02462e] font-display font-black py-4 rounded-2xl shadow-md transition duration-150 cursor-pointer border border-[#02462e] text-base"
               >
                 {studentGroup.current_level === 5 ? 'Selesaikan Petualangan!' : 'Lanjut ke Level Berikutnya'}
+              </button>
+              <button onClick={() => handleNextLevel(true)} className="mt-3 w-full text-[#02462e] font-bold py-3 underline cursor-pointer">
+                Simpan Level & Keluar untuk Hari Ini
               </button>
             </div>
 
