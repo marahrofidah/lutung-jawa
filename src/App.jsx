@@ -55,6 +55,37 @@ function App() {
     }
   }, [volume])
 
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    let active = true
+    const removeListeners = () => {
+      window.removeEventListener('pointerdown', startOnInteraction)
+      window.removeEventListener('keydown', startOnInteraction)
+    }
+    const tryPlay = () => {
+      audio.play().then(() => {
+        if (active) removeListeners()
+      }).catch(() => {
+        // Browsers may require a user interaction before playing sound.
+      })
+    }
+    const startOnInteraction = (event) => {
+      if (event.target.closest?.('[data-music-control]')) {
+        removeListeners()
+        return
+      }
+      tryPlay()
+    }
+    window.addEventListener('pointerdown', startOnInteraction)
+    window.addEventListener('keydown', startOnInteraction)
+    tryPlay()
+    return () => {
+      active = false
+      removeListeners()
+    }
+  }, [])
+
   // Custom cursor state
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 })
   const [isHovered, setIsHovered] = useState(false)
@@ -478,12 +509,16 @@ function App() {
       <audio 
         ref={audioRef} 
         src="/bg-music.mp3" 
+        autoPlay
+        onPlay={() => setIsMuted(false)}
+        onPause={() => setIsMuted(true)}
         loop 
         preload="auto"
       />
 
       {/* Floating Background Music Controller */}
       <div 
+        data-music-control
         className="fixed bottom-5 left-5 z-50 flex items-center gap-2 bg-amber-950/80 border border-[#5c3a21] py-1.5 px-2 rounded-full shadow-lg group hover:pr-4 transition-all duration-300 backdrop-blur-sm"
       >
         <button
@@ -491,7 +526,6 @@ function App() {
             if (!audioRef.current) return
             if (isMuted) {
               audioRef.current.play().catch(err => console.log("Autoplay blocked:", err))
-              setIsMuted(false)
             } else {
               audioRef.current.pause()
               setIsMuted(true)
@@ -532,7 +566,6 @@ function App() {
                 // If user changes volume, make sure they hear it
                 if (val > 0 && isMuted) {
                   audioRef.current.play().catch(err => console.log("Autoplay blocked:", err))
-                  setIsMuted(false)
                 } else if (val === 0 && !isMuted) {
                   audioRef.current.pause()
                   setIsMuted(true)
