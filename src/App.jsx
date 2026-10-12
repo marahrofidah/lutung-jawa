@@ -402,7 +402,7 @@ function App() {
       
       {/* Alert Notification */}
       {alertMsg.text && (
-        <div className={`fixed top-5 right-5 z-50 p-4 rounded-xl shadow-2xl border backdrop-blur-md transition-all duration-300 max-w-sm transform translate-y-0 ${
+        <div className={`fixed top-3 left-3 right-3 sm:top-5 sm:left-auto sm:right-5 z-[110] p-4 rounded-xl shadow-2xl border backdrop-blur-md transition-all duration-300 sm:max-w-sm transform translate-y-0 ${
           alertMsg.type === 'success' 
             ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-200' 
             : 'bg-rose-950/80 border-rose-500/50 text-rose-200'
@@ -491,7 +491,7 @@ function App() {
       {/* Custom Leaf Cursor */}
       {isCursorVisible && (
         <div 
-          className="hidden md:block fixed pointer-events-none z-[9999] transition-[width,height,transform] duration-200 ease-out"
+          className="leaf-cursor hidden md:block fixed pointer-events-none z-[9999] transition-[width,height,transform] duration-200 ease-out"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y}px`,
@@ -519,7 +519,7 @@ function App() {
       {/* Floating Background Music Controller */}
       <div 
         data-music-control
-        className="fixed bottom-5 left-5 z-50 flex items-center gap-2 bg-amber-950/80 border border-[#5c3a21] py-1.5 px-2 rounded-full shadow-lg group hover:pr-4 transition-all duration-300 backdrop-blur-sm"
+        className="music-control fixed bottom-3 left-3 sm:bottom-5 sm:left-5 z-50 flex items-center gap-2 bg-amber-950/80 border border-[#5c3a21] py-1.5 px-2 rounded-full shadow-lg group hover:pr-4 transition-all duration-300 backdrop-blur-sm"
       >
         <button
           onClick={() => {
@@ -551,7 +551,7 @@ function App() {
         </button>
 
         {/* Volume Slider (Slide-out on hover) */}
-        <div className="w-0 overflow-hidden group-hover:w-20 transition-all duration-300 flex items-center">
+        <div className="w-20 md:w-0 overflow-hidden md:group-hover:w-20 group-focus-within:w-20 transition-all duration-300 flex items-center">
           <input
             type="range"
             min="0"
@@ -574,6 +574,7 @@ function App() {
             }}
             className="w-20 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#fec700] hover:accent-[#ffd000]"
             title={`Volume: ${Math.round(volume * 100)}%`}
+            aria-label="Volume musik latar"
           />
         </div>
       </div>

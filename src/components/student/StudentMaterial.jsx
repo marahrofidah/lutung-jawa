@@ -177,7 +177,7 @@ export default function StudentMaterial({ currentLvlData, onNext }) {
           
           {/* Left Clipboard: Responsive Hotspot Map */}
           <div className="w-full lg:w-3/5 paper-container-shadow">
-            <div className="card-paper paper-rough-2 p-4 relative overflow-hidden flex flex-col items-center justify-center min-h-[400px]">
+            <div className="card-paper paper-rough-2 p-4 relative overflow-hidden flex flex-col items-center justify-center min-h-[240px] sm:min-h-[400px]">
               
               {/* Binder clip overlay */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5.5 bg-slate-350 rounded-b-xl border-b border-slate-400 shadow-inner z-10 flex items-center justify-center">

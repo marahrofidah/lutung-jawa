@@ -10,7 +10,7 @@ export default function StudentSetup({
   setScreen 
 }) {
   return (
-    <div className="max-w-md mx-auto w-full bg-white/90 backdrop-blur-md rounded-3xl border border-emerald-500/10 p-8 shadow-2xl space-y-6 animate-fade-in text-forest-950">
+    <div className="max-w-md mx-auto w-full bg-white/90 backdrop-blur-md rounded-3xl border border-emerald-500/10 p-5 sm:p-8 shadow-2xl space-y-6 animate-fade-in text-forest-950">
       <div className="text-center space-y-2">
         <img src={imgMurid} alt="Murid Mascot" className="w-20 h-20 mx-auto object-contain select-none mb-2" />
         <h3 className="text-2xl font-display font-extrabold text-forest-950">Gabung Bermain</h3>

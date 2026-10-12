@@ -106,13 +106,13 @@ export default function StudentBadge({
 
   if (showCelebration) {
     return (
-      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gradient-to-b from-[#022c22]/95 via-[#011f18]/97 to-[#01140f]/98 backdrop-blur-lg overflow-hidden animate-fade-in">
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gradient-to-b from-[#022c22]/95 via-[#011f18]/97 to-[#01140f]/98 backdrop-blur-lg overflow-y-auto overflow-x-hidden py-6 animate-fade-in">
         
         {/* Soft elegant static golden ambient glow in background */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Outer card wrapping badge and text to make it feel cohesive */}
-        <div className="relative z-10 flex flex-col items-center gap-8 max-w-md w-full px-6 text-center select-none">
+        <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-8 max-w-md w-full px-6 my-auto shrink-0 text-center select-none">
           
           {/* Badge Container with Spring Pop-up Animation and a beautiful golden ring */}
           <div className="animate-spring-pop">

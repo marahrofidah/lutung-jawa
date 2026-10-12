@@ -310,10 +310,10 @@ export default function LandingPage({ setScreen }) {
         </div>
 
         {/* 1. ABSOLUTE TRANSPARENT HEADER */}
-        <header className="w-full px-4 sm:px-6 py-4 flex items-center justify-between z-40">
+        <header className="w-full px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3 z-40">
           <div className="flex items-center gap-3 cursor-pointer select-none">
             <div>
-              <h1 className="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-forest-950 flex items-center gap-2">
+              <h1 className="font-display font-extrabold text-xl sm:text-3xl tracking-tight text-forest-950 flex items-center gap-2">
                 LUTUNG JAWA
               </h1>
               <p className="text-xs sm:text-[15px] text-forest-800 font-mono tracking-widest uppercase">Edukasi Konservasi</p>
@@ -321,7 +321,7 @@ export default function LandingPage({ setScreen }) {
           </div>
 
           {/* Hanging Wooden Signs Navigation */}
-          <div className="hidden md:flex items-start gap-6 select-none relative -mt-6">
+          <div className="hidden xl:flex items-start gap-6 select-none relative -mt-6">
             {/* Hanging sign 1: Petunjuk */}
             <div className="flex flex-col items-center group">
               {/* Rope vectors */}
@@ -364,6 +364,11 @@ export default function LandingPage({ setScreen }) {
             </button>
           </div>
         </header>
+
+        <nav aria-label="Navigasi beranda" className="xl:hidden flex flex-wrap gap-3 px-4 sm:px-6 relative z-40">
+          <button onClick={() => scrollToSection('langkah-bermain')} className="bg-white/90 text-forest-950 rounded-full px-4 py-3 text-sm font-bold shadow-sm">Petunjuk</button>
+          <button onClick={() => scrollToSection('sekilas-lutung')} className="bg-white/90 text-forest-950 rounded-full px-4 py-3 text-sm font-bold shadow-sm">Profil Lutung Jawa</button>
+        </nav>
 
         {/* 2. HERO CONTENT OVERLAY */}
         <div className="flex-1 max-w-7xl mx-auto w-full px-6 py-8 md:py-16 flex flex-col justify-between relative z-10">
@@ -654,7 +659,7 @@ export default function LandingPage({ setScreen }) {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
             
             {/* Left Visual Column with dynamic guides */}
-            <div className="flex-1 flex flex-col items-center justify-center relative min-w-[280px] lg:min-w-[320px] reveal-element">
+            <div className="flex-1 w-full min-w-0 flex flex-col items-center justify-center relative lg:min-w-[320px] reveal-element">
               
               {/* Flying Food Overlay */}
               {flyingFood && (
@@ -679,7 +684,7 @@ export default function LandingPage({ setScreen }) {
               <div 
                 onMouseEnter={() => setIsLutungHovered(true)}
                 onMouseLeave={() => setIsLutungHovered(false)}
-                className="relative w-64 h-64 sm:w-80 sm:h-80 cursor-pointer group"
+                className="relative w-full max-w-64 sm:max-w-80 aspect-square cursor-pointer group"
               >
                 <img 
                   src={(isLutungHovered || flyingFood) ? imgLutungJalan : imgLutungMelambai} 
@@ -824,7 +829,7 @@ export default function LandingPage({ setScreen }) {
             
             <button 
               onClick={() => setScreen('role-selection')}
-              className="flex items-center justify-between gap-5 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-extrabold px-8 py-4.5 rounded-full shadow-lg transition duration-200 transform hover:scale-105 cursor-pointer"
+              className="flex w-full sm:w-auto items-center justify-between gap-3 sm:gap-5 bg-[#ffbe0b] hover:bg-[#ffb300] border-2 border-[#cc8d00] text-forest-950 font-extrabold px-4 sm:px-8 py-4.5 rounded-full shadow-lg transition duration-200 transform hover:scale-105 cursor-pointer"
             >
               <span className="font-display text-base sm:text-lg">Mulai Petualangan Sekarang</span>
               <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-forest-800 text-xs shadow-md shrink-0">▶</span>

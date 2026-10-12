@@ -13,7 +13,7 @@ export default function StudentDiscussion({
   return (
     <div className="space-y-6 pt-6 border-t-2 border-white/20 animate-slide-up text-left">
       
-      <div className="flex items-center justify-between px-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-2">
         <h4 className="font-display font-black text-[#fec700] text-xl sm:text-2xl flex items-center gap-2">
           <svg className="w-6 h-6 text-[#fec700]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
@@ -74,7 +74,7 @@ export default function StudentDiscussion({
         {/* Right Card: Consensus Scroll Form */}
         <div className="xl:col-span-2 paper-container-shadow">
           <div className="card-paper-yellow paper-rough-2 border-2 border-[#fec700]/70 p-6 sm:p-7 flex flex-col justify-between gap-6 relative min-h-full">
-            <div className="absolute right-4 top-4 text-xs sm:text-sm font-sans text-[#02462e]/45 font-bold select-none">
+            <div className="text-xs sm:text-sm font-sans text-[#02462e]/65 font-bold select-none">
               Musyawarah Kelompok
             </div>
  

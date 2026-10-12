@@ -4,7 +4,7 @@ import imgMurid from '../assets/murid.webp'
 
 export default function RoleSelection({ setScreen }) {
   return (
-    <div className="w-full relative min-h-[85vh] flex flex-col justify-between py-6 animate-fade-in text-forest-950 px-4 md:px-8 max-w-5xl mx-auto">
+    <div className="w-full relative min-h-[85svh] flex flex-col justify-between py-6 animate-fade-in text-forest-950 px-0 sm:px-4 md:px-8 max-w-5xl mx-auto">
       
       {/* Decorative Forest Leaves in Corners for added parallax depth */}
       <div className="absolute -top-4 -left-12 text-4xl opacity-20 pointer-events-none select-none animate-float hidden lg:block">🌿</div>
@@ -15,14 +15,14 @@ export default function RoleSelection({ setScreen }) {
       {/* Floating Back Button (Top-Left Fixed, matching mockup and breaking out of max-w-7xl container) */}
       <button 
         onClick={() => setScreen('landing')}
-        className="fixed top-6 left-6 md:left-10 lg:left-12 z-30 flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full shadow-md transition duration-155 cursor-pointer text-xl"
+        className="self-start md:fixed md:top-6 md:left-10 lg:left-12 z-30 flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold px-4 sm:px-5 py-3 rounded-full shadow-md transition duration-155 cursor-pointer text-sm sm:text-xl"
       >
         <span className="text-wrap font-semibold"></span>Kembali ke Beranda
       </button>
 
       {/* Main Title Area (Centered, styled matching mockup) */}
-      <div className="text-center space-y-1 mb-10 mt-14 md:mt-10 select-none">
-        <h3 className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight flex items-center justify-center gap-2">
+      <div className="text-center space-y-1 mb-8 sm:mb-10 mt-8 md:mt-10 select-none">
+        <h3 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight flex flex-wrap items-center justify-center gap-2">
           <span className="text-[#165c43]">Pilih</span> <span className="text-[#ffbe0b]">Peranmu</span>
         </h3>
         <p className="text-xs sm:text-2xl text-slate-500 font-bold tracking-wide">
@@ -31,7 +31,7 @@ export default function RoleSelection({ setScreen }) {
       </div>
 
       {/* Cards Grid (Clean vertical cards with hexagon badges) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto w-full items-stretch relative z-10 px-4 mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-3xl mx-auto w-full items-stretch relative z-10 px-0 sm:px-4 mb-12 sm:mb-20">
         
         {/* Option Teacher */}
         <div 

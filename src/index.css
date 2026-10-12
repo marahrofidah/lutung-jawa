@@ -38,6 +38,53 @@ html, body {
   text-align: left !important;
 }
 
+/* Let nested flex/grid content shrink and wrap long names or answers. */
+:where(.flex, .grid) > :where(div, section, article, form) {
+  min-width: 0;
+}
+
+:where(h1, h2, h3, h4, h5, p, span, label, button, td) {
+  overflow-wrap: anywhere;
+}
+
+input, textarea, select {
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  /* Preserve room for content inside nested paper cards. */
+  :is(.card-paper, .card-paper-green, .card-paper-yellow) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  :is(.card-paper, .card-paper-green, .card-paper-yellow).pl-9 {
+    padding-left: 1.75rem;
+  }
+
+  input:not([type="range"]), textarea, select {
+    font-size: 16px;
+  }
+
+  footer {
+    padding-bottom: 6rem;
+  }
+
+  .music-control {
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .music-control > div {
+    width: 5rem;
+  }
+
+  .leaf-cursor {
+    display: none;
+  }
+}
+
 /* Falling Leaves Animations */
 @keyframes leaf-fall {
   0% {
@@ -115,7 +162,7 @@ html, body {
 }
 
 /* Hide default cursor on desktop screens to allow custom leaf cursor */
-@media (min-width: 768px) {
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
   html, body, #root, a, button, select, [role="button"], .cursor-pointer {
     cursor: none !important;
   }

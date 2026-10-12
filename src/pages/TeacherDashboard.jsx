@@ -230,10 +230,10 @@ export default function TeacherDashboard({
       </div>
 
       {/* Tabs Navigation (Teacher Dashboard Pages) */}
-      <div className="flex border-b border-white/20 gap-2">
+      <div className="grid grid-cols-2 sm:flex border-b border-white/20 gap-2">
         <button
           onClick={() => setActiveTab('monitoring')}
-          className={`px-6 py-3 rounded-t-2xl font-display font-bold text-sm transition duration-150 cursor-pointer flex items-center gap-2 relative z-10 ${
+          className={`px-3 sm:px-6 py-3 rounded-t-2xl font-display font-bold text-xs sm:text-sm transition duration-150 cursor-pointer flex items-center justify-center gap-2 relative z-10 ${
             activeTab === 'monitoring'
               ? 'card-paper text-[#02462e] shadow-sm border-b-0 pb-3.5'
               : 'bg-[#02462e]/40 text-white/80 hover:bg-[#02462e]/60'
@@ -243,7 +243,7 @@ export default function TeacherDashboard({
         </button>
         <button
           onClick={() => setActiveTab('summary')}
-          className={`px-6 py-3 rounded-t-2xl font-display font-bold text-sm transition duration-150 cursor-pointer flex items-center gap-2 relative z-10 ${
+          className={`px-3 sm:px-6 py-3 rounded-t-2xl font-display font-bold text-xs sm:text-sm transition duration-150 cursor-pointer flex items-center justify-center gap-2 relative z-10 ${
             activeTab === 'summary'
               ? 'card-paper text-[#02462e] shadow-sm border-b-0 pb-3.5'
               : 'bg-[#02462e]/40 text-white/80 hover:bg-[#02462e]/60'
@@ -275,7 +275,7 @@ export default function TeacherDashboard({
 
             {groups.length === 0 ? (
               <div className="paper-container-shadow">
-                <div className="card-paper paper-rough-2 p-12 text-center text-slate-600 space-y-4 font-sans">
+                <div className="card-paper paper-rough-2 p-6 sm:p-12 text-center text-slate-600 space-y-4 font-sans">
                   <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center animate-pulse relative z-10">
                     <div className="w-3.5 h-3.5 rounded-full bg-[#02462e]"></div>
                   </div>
@@ -299,7 +299,7 @@ export default function TeacherDashboard({
                           setSelectedGroupDetails(group)
                           setTeacherSelectedLevel(group.current_level)
                         }}
-                        className={`min-w-[280px] sm:min-w-[320px] p-5.5 cursor-pointer relative overflow-hidden flex flex-col justify-between gap-3 card-paper paper-rough-2 hover:brightness-95 ${
+                        className={`w-[250px] sm:w-[320px] p-5.5 cursor-pointer relative overflow-hidden flex flex-col justify-between gap-3 card-paper paper-rough-2 hover:brightness-95 ${
                           isSelected ? 'border border-[#fec700]/70' : ''
                         }`}
                       >
@@ -308,12 +308,12 @@ export default function TeacherDashboard({
                         )}
                         
                         <div className="flex justify-between items-start relative z-10">
-                          <div>
+                          <div className="min-w-0 flex-1 pr-2">
                             <span className="text-[10px] text-slate-400 uppercase tracking-widest block font-bold font-sans">Kelompok</span>
                             <h5 className="font-display font-extrabold text-base text-[#02462e] line-clamp-1">{group.group_name}</h5>
                           </div>
                           
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex shrink-0 items-center gap-1.5">
                             <span className={`text-[10px] font-sans font-bold px-2.5 py-1 rounded-lg border ${
                               isSelected 
                                 ? 'bg-[#02462e] text-[#fec700] border-[#fec700]' 
@@ -370,7 +370,7 @@ export default function TeacherDashboard({
                     
                     <div className="relative max-w-2xl mx-auto py-4 z-10">
                       {/* Connection Line (starts at Center of Col 1 and ends at Center of Col 5) */}
-                      <div className="absolute left-[48px] right-[48px] h-1.5 bg-slate-200/80 top-[40px] z-0 rounded-full">
+                      <div className="absolute left-[10%] right-[10%] h-1.5 bg-slate-200/80 top-[38px] z-0 rounded-full">
                         <div 
                           className="bg-gradient-to-r from-[#fec700] to-emerald-600 h-full rounded-full transition-all duration-300"
                           style={{ width: `${((selectedGroupDetails.current_level - 1) / 4) * 100}%` }}
@@ -378,17 +378,17 @@ export default function TeacherDashboard({
                       </div>
 
                       {/* Circles Flex Container */}
-                      <div className="relative flex items-start justify-between z-10 w-full">
+                      <div className="relative grid grid-cols-5 gap-1 z-10 w-full">
                         {[1, 2, 3, 4, 5].map((lvl) => {
                           const isCurrent = lvl === teacherSelectedLevel
                           const isLevelUnlocked = lvl <= selectedGroupDetails.current_level
                           const themeName = levelsData[lvl - 1].theme.split(' - ')[0]
 
                           return (
-                            <div key={lvl} className="flex flex-col items-center gap-2 w-24 text-center z-10">
+                            <div key={lvl} className="flex min-w-0 flex-col items-center gap-2 text-center z-10">
                               <button
                                 onClick={() => isLevelUnlocked && setTeacherSelectedLevel(lvl)}
-                                className={`w-12 h-12 rounded-full font-display font-black text-sm transition-all duration-200 flex items-center justify-center border-4 ${
+                                className={`w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-full font-display font-black text-sm transition-all duration-200 flex items-center justify-center border-2 sm:border-4 ${
                                   isCurrent 
                                     ? 'bg-[#02462e] text-[#fec700] border-[#fec700] scale-110 shadow-md ring-4 ring-[#02462e]/10' 
                                     : isLevelUnlocked 
@@ -400,7 +400,7 @@ export default function TeacherDashboard({
                               >
                                 {lvl}
                               </button>
-                              <span className={`text-[10px] sm:text-xs font-bold tracking-tight leading-tight max-w-[90px] ${isCurrent ? 'text-[#02462e] font-extrabold' : 'text-slate-400'}`}>
+                              <span className={`hidden sm:block text-xs font-bold tracking-tight leading-tight max-w-[90px] ${isCurrent ? 'text-[#02462e] font-extrabold' : 'text-slate-400'}`}>
                                 {themeName}
                               </span>
                             </div>
@@ -497,7 +497,7 @@ export default function TeacherDashboard({
                   {/* Right Side: Parchment Consensus Scroll */}
                   <div className="xl:col-span-2 paper-container-shadow">
                     <div className="card-paper-yellow paper-rough-2 border-2 border-[#fec700]/70 p-6 sm:p-7 flex flex-col justify-between gap-6 relative min-h-full">
-                      <div className="absolute right-4 top-4 text-xs font-sans text-[#02462e]/45 font-bold select-none z-10">Musyawarah Resmi</div>
+                      <div className="text-xs font-sans text-[#02462e]/65 font-bold select-none z-10">Musyawarah Resmi</div>
                       
                       <div className="space-y-4 relative z-10">
                         <div className="flex items-center gap-2 border-b border-amber-200/60 pb-3">
@@ -566,7 +566,7 @@ export default function TeacherDashboard({
           ) : (
             /* Empty State */
             <div className="paper-container-shadow">
-              <div className="card-paper paper-rough-1 p-16 flex flex-col items-center justify-center text-slate-500 py-20 space-y-4 relative">
+              <div className="card-paper paper-rough-1 p-6 sm:p-16 flex flex-col items-center justify-center text-slate-500 py-12 sm:py-20 space-y-4 relative">
                 <div className="w-14 h-14 rounded-full bg-[#02462e]/10 flex items-center justify-center shadow-lg relative z-10">
                   <svg className="w-7 h-7 text-[#02462e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
@@ -643,8 +643,8 @@ export default function TeacherDashboard({
                   <p className="text-sm font-bold">Belum ada data kelompok untuk dirangkum.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto relative z-10">
-                  <table className="w-full text-left border-collapse font-sans">
+                <div className="overflow-x-auto relative z-10" role="region" aria-label="Tabel kelompok, geser untuk melihat semua kolom" tabIndex={0}>
+                  <table className="w-full min-w-[640px] text-left border-collapse font-sans">
                     <thead>
                       <tr className="border-b border-slate-200 text-xs font-bold text-slate-500 tracking-wider">
                         <th className="py-3 px-4">Nama Kelompok</th>
