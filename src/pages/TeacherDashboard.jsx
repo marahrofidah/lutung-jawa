@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { supabase } from '../supabaseClient'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 // Leaf color palette (natural jungle tones)
 const LEAF_COLORS = [
@@ -82,6 +83,7 @@ export default function TeacherDashboard({
   onRefreshData
 }) {
   const [activeTab, setActiveTab] = useState('monitoring') // 'monitoring' | 'summary'
+  useScrollToTop(activeTab, selectedGroupDetails?.id, teacherSelectedLevel)
   const [classCodeCopied, setClassCodeCopied] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 

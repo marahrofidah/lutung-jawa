@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
+import useScrollToTop from '../hooks/useScrollToTop'
 import imgSobatHutan from '../assets/sobat-hutan.webp'
 import imgPecintaDaun from '../assets/pecinta-daun.webp'
 import StudentMaterial from '../components/student/StudentMaterial'
@@ -98,6 +99,7 @@ export default function StudentPlayroom({
 
   // Game Loop stages: 'material' | 'question' | 'video' | 'badge'
   const [stage, setStage] = useState('material')
+  useScrollToTop(stage, studentGroup.id, studentGroup.current_level)
   const [showDiscussion, setShowDiscussion] = useState(false)
 
   // Fetch Playroom Data

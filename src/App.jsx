@@ -13,6 +13,7 @@ import TeacherSetup from './pages/TeacherSetup'
 import TeacherDashboard from './pages/TeacherDashboard'
 import StudentSetup from './pages/StudentSetup'
 import StudentPlayroom from './pages/StudentPlayroom'
+import useScrollToTop from './hooks/useScrollToTop'
 
 const clearSession = () => {
   for (const key of ['role', 'teacher_class', 'student_group', 'student_class']) {
@@ -24,6 +25,7 @@ function App() {
   // Navigation & Role States
   // 'landing', 'role-selection', 'teacher-setup', 'teacher-dashboard', 'student-setup', 'student-playroom'
   const [screen, setScreen] = useState('landing')
+  useScrollToTop(screen)
   
   // Real-time Connection State
   const [dbConnected, setDbConnected] = useState(false)
